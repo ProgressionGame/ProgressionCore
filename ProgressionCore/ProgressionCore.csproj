@@ -83,6 +83,7 @@
     <Compile Include="Civilization\CivilizationManager.cs" />
     <Compile Include="Civilization\IPuppetLevel.cs" />
     <Compile Include="Civilization\PuppetLevel.cs" />
+    <Compile Include="Civilization\Vision.cs" />
     <Compile Include="Keys\Key.cs" />
     <Compile Include="Keys\RootKey.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

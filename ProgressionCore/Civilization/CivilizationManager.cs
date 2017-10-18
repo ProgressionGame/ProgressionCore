@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.Http.Headers;
 using Progression.Engine.Core.Keys;
+using Progression.Engine.Core.World;
 using Progression.Engine.Core.World.Features.Base;
 
 namespace Progression.Engine.Core.Civilization
@@ -32,7 +34,7 @@ namespace Progression.Engine.Core.Civilization
 
         public int AddCivilisation(Civilization civ)
         {
-            if (Count == Max) throw new InvalidOperationException("Maximum number of civilizations reached. Please contact game developer to raise limit");
+            if (Count == Max) throw new InvalidOperationException("Maximum number of Civilizations reached. Please contact game developer to raise limit. (it may be possible to configure ingame or per configuration file. To raise limit in savefile please look out or ask for such a tool.");
             if (_civilizations.Contains(civ)) throw new InvalidOperationException("Cannot register twice.");
             _civilizations.Add(civ);
             return _civilizations.Count - 1;
@@ -51,7 +53,22 @@ namespace Progression.Engine.Core.Civilization
         }
 
         public Civilization this[int index] => _civilizations[index];
+
+        protected DataIdentifier GetVisionDataIdentifier(Tile tile, Civilization civ)
+        {
+            if (InternalType[tile.World.WorldType]) {
+                return civ.CoreDataIdentifierVision;
+            }
+            if (PlayerType[tile.World.WorldType]) {
+                return civ.PlayerDataIdentifierVision;
+            }
+            throw new ArgumentException("World does not have civilization vision features");
+        }
         
+        public Vision GetVision(Tile tile, Civilization civ)
+        {
+            return (Vision) tile[GetVisionDataIdentifier(tile, civ)];
+        }
         
     }
 }

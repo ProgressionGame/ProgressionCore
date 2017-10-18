@@ -48,21 +48,15 @@ namespace Progression.Engine.Core.Civilization
         public int Index { get;}
         public CivilizationManager Manager { get; }
         //only player world
-        DataIdentifier PlayerDataIdentifierVision { get; set; } //0=unknown, 1=discovered, 2= visible, 3=owned
-        DataIdentifier PlayerDataIdentifierLastMapUpdate { get; set; } //15 bits = turn
+        public DataIdentifier PlayerDataIdentifierVision { get; protected internal set; } //0=unknown, 1=discovered, 2= visible, 3=owned //TODO move to manager
+        public DataIdentifier PlayerDataIdentifierLastMapUpdate { get; protected internal set; } //15 bits = turn
         //only core world
-        DataIdentifier CoreDataIdentifierVision { get; set; } //0=unknown, 1=discovered, 2= visible, 3=owned
-        DataIdentifier CoreDataIdentifierOwnerId { get; set; } //custom bit length defined by max civ count
+        public DataIdentifier CoreDataIdentifierVision { get; protected internal set; } //0=unknown, 1=discovered, 2= visible, 3=owned
+        public DataIdentifier CoreDataIdentifierOwnerId { get; protected internal set; } //custom bit length defined by max civ count
         
-        public bool IsDiscovered(Tile tile)
+        public Vision GetVision(Tile tile)
         {
-            throw new NotImplementedException();
-        }
-        
-        
-        public bool IsVisibleToCiv(Tile tile)
-        {
-            throw new NotImplementedException();
+            return Manager.GetVision(tile, this);
         }
 
 
