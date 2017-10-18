@@ -8,11 +8,11 @@ namespace Progression.Engine.Core.Civilization
 {
     public class Civilization : IFeature<Civilization>
     {
-        private readonly List<Civilization> puppets = new List<Civilization>();
+        private readonly List<Civilization> _puppets = new List<Civilization>();
         private IPuppetLevel _puppetLevel;
         public Civilization Master { get; private set; }
         public bool IsPuppet => Master != null;
-        public IEnumerator<Civilization> Puppets => puppets.GetEnumerator();
+        public IEnumerator<Civilization> Puppets => _puppets.GetEnumerator();
 
         public IPuppetLevel PuppetLevel => _puppetLevel;
 
@@ -30,15 +30,15 @@ namespace Progression.Engine.Core.Civilization
 
         public virtual void AddPuppet(Civilization civ, IPuppetLevel puppetLevel)
         {
-            civ.Master?.puppets.Remove(civ);
+            civ.Master?._puppets.Remove(civ);
             civ.Master = this;
             civ._puppetLevel = puppetLevel.Clone();
-            puppets.Add(civ);
+            _puppets.Add(civ);
         }
 
         public virtual void MakeIndependent()
         {
-            Master?.puppets.Remove(this);
+            Master?._puppets.Remove(this);
             _puppetLevel = null;
             Master = null;
         }
@@ -92,7 +92,7 @@ namespace Progression.Engine.Core.Civilization
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (obj.GetType() != GetType()) return false;
             return Equals((Civilization) obj);
         }
 

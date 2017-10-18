@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using Progression.Engine.Core.Keys;
-using Progression.Engine.Core.World.Threading;
 
 namespace Progression.Engine.Core.World.Features.Base
 {

@@ -1,9 +1,9 @@
-﻿using System.Linq;
-using Progression.Engine.Core.Keys;
+﻿using Progression.Engine.Core.Keys;
 using Progression.Engine.Core.World.Features.Base;
 
 namespace Progression.Engine.Core.World.Features.Yield
 {
+    // ReSharper disable once InconsistentNaming
     public class YieldModifyingSMFR<T> : StaticMultiFeatureResolver<T>, ITileYieldModifer
         where T : class, IStaticFeature<T>, ITileYieldModifer
     {

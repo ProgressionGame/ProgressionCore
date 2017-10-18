@@ -6,7 +6,7 @@
         public AdditionYieldModifer(YieldManager manager, double[] modifiers) : base(manager, modifiers) { }
         public override double Modify(YieldType type, Tile tile, double input)
         {
-            return input + _modifiers[type.Index];
+            return input + Modifiers[type.Index];
         }
     }
 }

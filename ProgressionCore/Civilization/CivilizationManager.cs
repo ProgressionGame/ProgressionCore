@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using Progression.Engine.Core.Keys;
-using Progression.Engine.Core.World;
 using Progression.Engine.Core.World.Features.Base;
 
 namespace Progression.Engine.Core.Civilization
@@ -10,8 +9,8 @@ namespace Progression.Engine.Core.Civilization
     public class CivilizationManager : IEnumerable<Civilization>
     {
         private readonly List<Civilization> _civilizations;
-        private readonly WorldType InternalType;
-        private readonly WorldType PlayerType;
+        public readonly WorldType InternalType;
+        public readonly WorldType PlayerType;
         
         
         

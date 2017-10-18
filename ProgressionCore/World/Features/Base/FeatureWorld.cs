@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Runtime.CompilerServices;
 using Progression.Engine.Core.Util.BinPacking;
 using Progression.Engine.Core.World.Features.Yield;
 

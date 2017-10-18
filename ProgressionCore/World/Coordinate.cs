@@ -1,4 +1,4 @@
-﻿namespace Progression.Engine.Core.World.Features
+﻿namespace Progression.Engine.Core.World
 {
     public struct Coordinate
     {

@@ -3,6 +3,7 @@ using Progression.Engine.Core.World.Features.Base;
 
 namespace Progression.Engine.Core.World.Features.Yield
 {
+    // ReSharper disable once InconsistentNaming
     public class YieldModifyingSSFR<T> : StaticSingleFeatureResolver<T>, ITileYieldModifer
         where T : class, IStaticFeature<T>, ITileYieldModifer
     {

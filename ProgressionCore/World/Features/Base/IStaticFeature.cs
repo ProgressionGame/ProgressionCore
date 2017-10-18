@@ -1,7 +1,4 @@
-﻿using System.Collections.Specialized;
-using Progression.Engine.Core.Keys;
-
-namespace Progression.Engine.Core.World.Features.Base
+﻿namespace Progression.Engine.Core.World.Features.Base
 {
     public interface IStaticFeature<T> : IFeature<T>, IStaticFeature where T : class, IStaticFeature<T>
     {

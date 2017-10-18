@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using Progression.Engine.Core.Keys;
 
 namespace Progression.Engine.Core.World.Features.Base
