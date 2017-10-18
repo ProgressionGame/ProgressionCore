@@ -41,7 +41,7 @@ namespace Progression.Engine.Core.World.Features.Base
             foreach (var resolver in _features) {
                 //bitsUsed += resolver.Bits;
                 foreach (var identifier in resolver.GenerateIdentifiers()) {
-                    for (byte i = 0; i < identifier.WorldTypes.Count; i++) {
+                    for (byte i = 0; i < identifier.WorldTypes.Size; i++) {
                         if (identifier.WorldTypes[i]) {
                             packets[i].Add(new Packet(identifier, identifier.Bits)); 
                         }

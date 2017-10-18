@@ -14,7 +14,6 @@ namespace Progression.Engine.Core.World.Features.Base
         /// </summary>
         int Id { get; }
         DataIdentifier DataIdentifier { get; set; }
-        Key Key { get; }
         //StaticFeatureResolver<T> Resolver { get; }
     }
 }

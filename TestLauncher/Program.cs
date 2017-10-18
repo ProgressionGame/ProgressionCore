@@ -10,6 +10,7 @@ using static Progression.Engine.Core.World.Features.Yield.YieldModifierType;
 using static Progression.Engine.Core.World.Features.Yield.TileYieldModifierPriority;
 using System.Collections.Specialized;
 using System.Threading;
+using Progression.Engine.Core.Civilization;
 using Progression.Engine.Core.Util.BinPacking;
 using Progression.Engine.Core.World.Features.Terrain;
 
@@ -270,6 +271,31 @@ namespace TestLauncher
             Console.WriteLine(world.HasFeature(3, 3, grassland));
 
             Console.ReadKey();
+        }
+
+
+        private static void TestPuppetLevel()
+        {
+            var puppetLevel1 = PuppetLevel.Create(masterBuildControl: true);
+            var puppetSpecial1 = new PuppetLevelAddition1(puppetLevel1);
+            var puppetSpecial2 = puppetLevel1.GetSpecialised<PuppetLevelAddition2>();
+            Console.WriteLine(puppetLevel1.MasterBuildControl + " " + puppetSpecial1.MasterBuildControl + " " + puppetSpecial2.MasterBuildControl);
+            var puppetSpecial2_1 = puppetSpecial1.GetSpecialised<PuppetLevelAddition2>();
+            Console.WriteLine(puppetSpecial2 == puppetSpecial2_1);
+            Console.WriteLine();
+            puppetSpecial2.Addition2 = true;
+
+            var puppetLevel1c = puppetLevel1.Clone();
+            var puppetSpecial1c = puppetLevel1c.GetSpecialised<PuppetLevelAddition1>();
+            var puppetSpecial2c = puppetLevel1c.GetSpecialised<PuppetLevelAddition2>();
+            Console.WriteLine(puppetLevel1.MasterBuildControl + " " + puppetSpecial1.MasterBuildControl + " " + puppetSpecial2.MasterBuildControl);
+            Console.WriteLine((puppetLevel1 == puppetLevel1c) + " " + (puppetSpecial1 == puppetSpecial1c) + " " + (puppetSpecial2 == puppetSpecial2c));
+            Console.WriteLine();
+            puppetSpecial1c.Addition1 = true;
+            puppetSpecial2.Addition2 = false;
+            
+            Console.WriteLine(puppetSpecial1.Addition1 + " vs " + puppetSpecial1c.Addition1);
+            Console.WriteLine(puppetSpecial2.Addition2 + " vs " + puppetSpecial2c.Addition2);
         }
 
     }

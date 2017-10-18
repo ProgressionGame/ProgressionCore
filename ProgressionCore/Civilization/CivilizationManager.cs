@@ -10,26 +10,33 @@ namespace Progression.Engine.Core.Civilization
     public class CivilizationManager : IEnumerable<Civilization>
     {
         private readonly List<Civilization> _civilizations;
+        private readonly WorldType InternalType;
+        private readonly WorldType PlayerType;
         
         
         
-        public CivilizationManager(Key key, short max)
+        
+        public CivilizationManager(Key key, short max, WorldType internalType = default(WorldType), WorldType playerType = default(WorldType))
         {
             Key = key;
+            InternalType = internalType;
+            PlayerType = playerType;
             Max = (short) Math.Pow(2, Math.Ceiling(Math.Log(max, 2)));
             _civilizations = new List<Civilization>(Math.Min((short) 128, Max));
             Resolver = new CivilizationFeatureResolver(this);
+            InternalType = internalType.Valid ? internalType : WorldType.Internal;
+            InternalType = playerType.Valid ? playerType : WorldType.Player;
         }
 
         public IEnumerator<Civilization> GetEnumerator() => _civilizations.GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => _civilizations.GetEnumerator();
 
-        public void AddCivilisation(Civilization civ)
+        public int AddCivilisation(Civilization civ)
         {
             if (Count == Max) throw new InvalidOperationException("Maximum number of civilizations reached. Please contact game developer to raise limit");
+            if (_civilizations.Contains(civ)) throw new InvalidOperationException("Cannot register twice.");
             _civilizations.Add(civ);
-            civ.Index = _civilizations.Count - 1;
-            civ.Manager = this;
+            return _civilizations.Count - 1;
         }
         
         public Key Key { get; }
@@ -43,5 +50,9 @@ namespace Progression.Engine.Core.Civilization
             if (Locked) throw new FeatureResolverLockedException("Civilization manager already locked");
             Locked = true;
         }
+
+        public Civilization this[int index] => _civilizations[index];
+        
+        
     }
 }

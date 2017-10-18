@@ -1,35 +1,103 @@
-﻿using Progression.Engine.Core.World;
+﻿using System;
+using System.Collections.Generic;
+using Progression.Engine.Core.Keys;
+using Progression.Engine.Core.World;
 using Progression.Engine.Core.World.Features.Base;
 
 namespace Progression.Engine.Core.Civilization
 {
     public class Civilization : IFeature<Civilization>
     {
-        public Civilization()
-        {
-            Index = -1;
-        }
+        private readonly List<Civilization> puppets = new List<Civilization>();
+        private IPuppetLevel _puppetLevel;
+        public Civilization Master { get; private set; }
+        public bool IsPuppet => Master != null;
+        public IEnumerator<Civilization> Puppets => puppets.GetEnumerator();
+
+        public IPuppetLevel PuppetLevel => _puppetLevel;
 
 
-        bool IFeature.HasFeature(Tile tile)
+        public Civilization(string name, CivilizationManager manager)
         {
-            throw new System.NotImplementedException();
-        }
+            Name = name;
+            Manager = manager;
+            Key = new Key(manager.Key, name);
 
-        void IFeature.AddFeature(Tile tile)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        void IFeature.RemoveFeature(Tile tile)
-        {
-            throw new System.NotImplementedException();
+            Index = Manager.AddCivilisation(this);
         }
 
         IFeatureResolver IFeature.Resolver => Manager.Resolver;
 
+        public virtual void AddPuppet(Civilization civ, IPuppetLevel puppetLevel)
+        {
+            civ.Master?.puppets.Remove(civ);
+            civ.Master = this;
+            civ._puppetLevel = puppetLevel.Clone();
+            puppets.Add(civ);
+        }
+
+        public virtual void MakeIndependent()
+        {
+            Master?.puppets.Remove(this);
+            _puppetLevel = null;
+            Master = null;
+        }
+
         public string Name { get; }
-        public int Index { get; internal set; }
-        public CivilizationManager Manager { get; internal set; }
+        public Key Key { get; }
+        public int Index { get;}
+        public CivilizationManager Manager { get; }
+        //only player world
+        DataIdentifier PlayerDataIdentifierVision { get; set; } //0=unknown, 1=discovered, 2= visible, 3=owned
+        DataIdentifier PlayerDataIdentifierLastMapUpdate { get; set; } //15 bits = turn
+        //only core world
+        DataIdentifier CoreDataIdentifierVision { get; set; } //0=unknown, 1=discovered, 2= visible, 3=owned
+        DataIdentifier CoreDataIdentifierOwnerId { get; set; } //custom bit length defined by max civ count
+        
+        public bool IsDiscovered(Tile tile)
+        {
+            throw new NotImplementedException();
+        }
+        
+        
+        public bool IsVisibleToCiv(Tile tile)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        #region Hidden
+        bool IFeature.HasFeature(Tile tile)
+        {
+            return ((IFeatureResolver<Civilization>) Manager.Resolver).IsFeatureOnTile(tile, this);
+        }
+
+        void IFeature.AddFeature(Tile tile)
+        {
+            ((IFeatureResolver<Civilization>) Manager.Resolver).AddFeature(tile, this);
+        }
+
+        void IFeature.RemoveFeature(Tile tile)
+        {
+            ((IFeatureResolver<Civilization>) Manager.Resolver).RemoveFeature(tile, this);
+        }
+        
+        
+        protected bool Equals(Civilization other)
+        {
+            return Index == other.Index && Equals(Manager, other.Manager);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((Civilization) obj);
+        }
+
+        public override int GetHashCode() => Index;
+
+        #endregion
     }
 }

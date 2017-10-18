@@ -12,7 +12,7 @@ namespace Progression.Engine.Core.World.Features.Base
         public bool Locked { get; private set; }
         protected readonly int IdOffset;
         public readonly WorldType WorldType;
-        
+
         protected StaticFeatureResolver(WorldType worldType, Key featureTypeKey, int idOffset)
         {
             FeatureTypeKey = featureTypeKey;
@@ -22,14 +22,15 @@ namespace Progression.Engine.Core.World.Features.Base
 
         public Key FeatureTypeKey { get; }
         public int Count => Features.Count;
-        public FeatureWorld FeatureWorld { get; protected set; }
+        public FeatureWorld FeatureWorld { get; private set; }
 
         public int Register(T feature)
         {
             if (Locked)
                 throw new FeatureResolverLockedException("Feature locked. Cannot add new features during game.");
+            if (Features.Contains(feature)) throw new InvalidOperationException("Cannot register twice.");
             Features.Add(feature);
-            return Features.Count-1+IdOffset; //id may not match index
+            return Features.Count - 1 + IdOffset; //id may not match index
         }
 
         public T Get(int index) => Features[index];
@@ -47,7 +48,7 @@ namespace Progression.Engine.Core.World.Features.Base
         public abstract bool IsFeatureOnTile(Tile tile, T feature);
         public abstract void AddFeature(Tile tile, T feature);
         public abstract void RemoveFeature(Tile tile, T feature);
-        public virtual void OnLock() {}
+        public virtual void OnLock() { }
         public abstract DataIdentifier[] GenerateIdentifiers();
         public abstract DataIdentifier GetIdentifier(int index);
 
@@ -57,11 +58,14 @@ namespace Progression.Engine.Core.World.Features.Base
             return Features.GetEnumerator();
         }
 
-        //Hidden
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        #region Hidden
 
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        IFeature IFeatureResolver.Get(int index) => Get(index);
         bool IFeatureResolver.IsFeatureOnTile(Tile tile, IFeature feature) => IsFeatureOnTile(tile, (T) feature);
         void IFeatureResolver.AddFeature(Tile tile, IFeature feature) => AddFeature(tile, (T) feature);
         void IFeatureResolver.RemoveFeature(Tile tile, IFeature feature) => RemoveFeature(tile, (T) feature);
+
+        #endregion
     }
 }

@@ -87,6 +87,8 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PuppetLevelAddition1.cs" />
+    <Compile Include="PuppetLevelAddition2.cs" />
     <Compile Include="WorldInterfaceImpl.cs" />
     <Compile Include="YieldManagerImpl.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
