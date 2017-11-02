@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
 using Progression.Engine.Core.Keys;
 using Progression.Engine.Core.World;
 using Progression.Engine.Core.World.Features.Base;
@@ -33,13 +34,12 @@ namespace Progression.Engine.Core.Civilization
 
         public DataIdentifier[] GenerateIdentifiers()
         {
-            throw new NotImplementedException();
+            return Manager.Dis;
         }
 
-        public DataIdentifier GetIdentifier(int index)
-        {
-            throw new NotImplementedException();
-        }
+        public DataIdentifier GetIdentifier(int index) => index < 0 && index + CivilizationManager.DiExtraCount >= 0
+            ? Manager.Dis[index + Manager.Max + CivilizationManager.DiExtraCount]
+            : Manager.Dis[index];
 
         public Civilization Get(int index) => Manager[index];
 

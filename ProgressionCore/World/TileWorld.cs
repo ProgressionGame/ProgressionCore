@@ -12,12 +12,18 @@ namespace Progression.Engine.Core.World
         private readonly BitVector32[,,] _worldData;
         private ScheduleUpdate _updates;
         public readonly byte WorldType;
+        public readonly IWorldHolder Holder;
 
-        public TileWorld(FeatureWorld features, int height, int width,  byte worldType=0)
+
+        public TileWorld(FeatureWorld features, int height, int width) 
+            : this(features, height, width, WorldHolder.BaseWorld) { }
+
+        public TileWorld(FeatureWorld features, int height, int width, IWorldHolder holder)
         {
             FeatureWorld = features;
-            WorldType = worldType;
-            _worldData = new BitVector32[height, width, features.GetTileSize(worldType)];
+            WorldType = holder.WorldType;
+            Holder = holder;
+            _worldData = new BitVector32[height, width, features.GetTileSize(WorldType)];
         }
 
         public int this[int x, int y, DataIdentifier identifier] {
@@ -85,8 +91,7 @@ namespace Progression.Engine.Core.World
         {
             if (_updates == null) {
                 _updates = updateHandler;
-            }
-            else {
+            } else {
                 _updates += updateHandler;
             }
         }

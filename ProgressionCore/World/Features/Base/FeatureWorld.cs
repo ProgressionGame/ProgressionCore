@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using Progression.Engine.Core.Util.BinPacking;
 using Progression.Engine.Core.World.Features.Yield;
@@ -10,7 +11,7 @@ namespace Progression.Engine.Core.World.Features.Base
         private readonly List<IFeatureResolver> _features = new List<IFeatureResolver>();
         private readonly YieldManager _yieldManager;
         private readonly int[] _tileSize;
-        
+
         public FeatureWorld(byte typesCount, YieldManager yieldManager)
         {
             _yieldManager = yieldManager;
@@ -21,10 +22,10 @@ namespace Progression.Engine.Core.World.Features.Base
         public bool Looked { get; private set; }
         public byte TypesCount { get; }
         public int GetTileSize(byte index) => _tileSize[index];
-        
 
 
-        public void Register(IFeatureResolver resolver) {
+        public void Register(IFeatureResolver resolver)
+        {
             _features.Add(resolver);
         }
 
@@ -42,8 +43,13 @@ namespace Progression.Engine.Core.World.Features.Base
                 foreach (var identifier in resolver.GenerateIdentifiers()) {
                     for (byte i = 0; i < identifier.WorldTypes.Size; i++) {
                         if (identifier.WorldTypes[i]) {
-                            packets[i].Add(new Packet(identifier, identifier.Bits)); 
+                            packets[i].Add(new Packet(identifier, identifier.Bits));
                         }
+#if DEBUG
+                        else {
+                            Console.WriteLine($"Debug: identifier not added {resolver.FeatureTypeKey.Name}\\{(identifier.HasFeature ? identifier.Feature.Name : $"\"null\",id={identifier.Index}")} world type: {i}");
+                        }
+#endif
                     }
                 }
             }
@@ -56,7 +62,7 @@ namespace Progression.Engine.Core.World.Features.Base
                 binss[i] = BinPackingSolvers.SolveStupid(packets[i], 32);
                 _tileSize[i] = binss[i].Count;
             }
-            
+
             //set data fields
             for (int i = 0; i < binss.Length; i++) {
                 var bins = binss[i];
@@ -80,17 +86,16 @@ namespace Progression.Engine.Core.World.Features.Base
                         identifier.Locations[i] = location;
                     }
                 }
-
             }
-            
-            
+
+
             //give data to feature resolver
             foreach (var resolver in _features) {
                 resolver.LockRegistration(this);
-                
+
                 AddITileYieldModifers(resolver);
             }
-            
+
             _yieldManager.Lock();
             Looked = true;
         }
@@ -99,12 +104,13 @@ namespace Progression.Engine.Core.World.Features.Base
         {
             if (resolver is ITileYieldModifer tileYieldModifier) {
                 _yieldManager.AddTileYieldModifier(tileYieldModifier);
-            } else foreach (var feature in resolver) {
-                tileYieldModifier = feature as ITileYieldModifer;
-                if (tileYieldModifier != null) {
-                    _yieldManager.AddTileYieldModifier(tileYieldModifier);
+            } else
+                foreach (var feature in resolver) {
+                    tileYieldModifier = feature as ITileYieldModifer;
+                    if (tileYieldModifier != null) {
+                        _yieldManager.AddTileYieldModifier(tileYieldModifier);
+                    }
                 }
-            }
         }
     }
 }

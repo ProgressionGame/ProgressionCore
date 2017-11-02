@@ -125,6 +125,7 @@
     <Compile Include="World\Features\Yield\YieldModifyingSMFR.cs" />
     <Compile Include="World\Features\Yield\YieldModifyingSSFR.cs" />
     <Compile Include="World\Features\Yield\YieldType.cs" />
+    <Compile Include="World\IWorldHolder.cs" />
     <Compile Include="World\Threading\FeatureUpdate.cs" />
     <Compile Include="World\Threading\UpdateManager.cs" />
     <Compile Include="World\Threading\WorldUpdateBase.cs" />

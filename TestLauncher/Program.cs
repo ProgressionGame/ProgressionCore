@@ -155,11 +155,18 @@ namespace TestLauncher
             var mountains = new TerrainLandform("mountains", resTL, ym, Addition, new double[] {-2, 1, 0});
             var highMountains = new TerrainLandform("high mountains", resTL, ym, Addition, new double[] {-2, 0, -1});
 
+            //civs
+            var civMan = new CivilizationManager(new Key(root, "civs"), 4);
+            var rome = new Civilization("Rome", civMan);
+            var egypt = new Civilization("Egypt", civMan);
+            
+            
             //init
             var fw = new FeatureWorld(2, ym);
             fw.Register(resTB);
             fw.Register(resTV);
             fw.Register(resTL);
+            fw.Register(civMan.Resolver);
             fw.Lock();
 
             //world creation
@@ -184,6 +191,18 @@ namespace TestLauncher
             Console.WriteLine(world.HasFeature(3, 3, grassland));
             Console.WriteLine(world.HasFeature(3, 3, forest));
             Console.WriteLine(world.HasFeature(3, 3, hills));
+            
+            Console.WriteLine($"Owner: 2,3={civMan.GetOwner(world[2,3])?.Name??"NoMensLand"}");
+            Console.WriteLine($"Rome Vision={rome.GetVision(world[2,3])}, Egypt Vision={egypt.GetVision(world[2,3])}, ");
+            rome.Own(world[2, 3]);
+            Console.WriteLine($"Owner: 2,3={civMan.GetOwner(world[2,3])?.Name??"NoMensLand"}");
+            Console.WriteLine($"Rome Vision={rome.GetVision(world[2,3])}, Egypt Vision={egypt.GetVision(world[2,3])}, ");
+            egypt.Own(world[2, 3]);
+            Console.WriteLine($"Owner: 2,3={civMan.GetOwner(world[2,3])?.Name??"NoMensLand"}");
+            Console.WriteLine($"Rome Vision={rome.GetVision(world[2,3])}, Egypt Vision={egypt.GetVision(world[2,3])}, ");
+            Console.WriteLine($"Owner: 3,2={civMan.GetOwner(world[3,2])?.Name??"NoMensLand"}");
+            
+            
 
             Console.ReadKey();
 
@@ -191,8 +210,9 @@ namespace TestLauncher
             
             //big world alloc
             sw.Start();
-            world = new TileWorld(fw, 10000, 10000);
-            var world2 = new TileWorld(fw, 10000, 10000);
+            const int worldSize = 5000;
+            world = new TileWorld(fw, worldSize, worldSize);
+            var world2 = new TileWorld(fw, worldSize, worldSize);
             sw.Stop();
             GC.Collect();
             Console.WriteLine("ms:" + sw.ElapsedMilliseconds);
@@ -245,8 +265,8 @@ namespace TestLauncher
             Console.WriteLine("random updates");
             
             sw.Start();
-            for (int i = 0; i < 10_000_000; i++) {
-                world[rnd.Next(10000), rnd.Next(10000), allFeatures[rnd.Next(allFeatures.Length)]] = true;
+            for (int i = 0; i < 1_000_000; i++) {
+                world[rnd.Next(worldSize), rnd.Next(worldSize), allFeatures[rnd.Next(allFeatures.Length)]] = true;
             }
             sw.Stop();
             lock (monitor) Monitor.Pulse(monitor);
@@ -257,8 +277,8 @@ namespace TestLauncher
             
             Console.WriteLine("random updates parallel");
             lock (monitor) Monitor.Pulse(monitor);
-            for (int i = 0; i < 10_000_000; i++) {
-                world[rnd.Next(10000), rnd.Next(10000), allFeatures[rnd.Next(allFeatures.Length)]] = true;
+            for (int i = 0; i < 1_000_000; i++) {
+                world[rnd.Next(worldSize), rnd.Next(worldSize), allFeatures[rnd.Next(allFeatures.Length)]] = true;
             }
             flag[0] = false;
             Console.WriteLine("random updates parallel done");

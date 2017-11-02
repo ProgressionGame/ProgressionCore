@@ -6,7 +6,7 @@ using Progression.Engine.Core.World.Features.Base;
 
 namespace Progression.Engine.Core.Civilization
 {
-    public class Civilization : IFeature<Civilization>
+    public class Civilization : IFeature<Civilization>, IWorldHolder
     {
         private readonly List<Civilization> _puppets = new List<Civilization>();
         private IPuppetLevel _puppetLevel;
@@ -22,7 +22,7 @@ namespace Progression.Engine.Core.Civilization
             Name = name;
             Manager = manager;
             Key = new Key(manager.Key, name);
-
+            Index = -1; //this is done to avoid to make this civ not equal another civ with index 0
             Index = Manager.AddCivilisation(this);
         }
 
@@ -45,22 +45,30 @@ namespace Progression.Engine.Core.Civilization
 
         public string Name { get; }
         public Key Key { get; }
-        public int Index { get;}
+        public int Index { get; }
         public CivilizationManager Manager { get; }
-        //only player world
-        public DataIdentifier PlayerDataIdentifierVision { get; protected internal set; } //0=unknown, 1=discovered, 2= visible, 3=owned //TODO move to manager
-        public DataIdentifier PlayerDataIdentifierLastMapUpdate { get; protected internal set; } //15 bits = turn
-        //only core world
-        public DataIdentifier CoreDataIdentifierVision { get; protected internal set; } //0=unknown, 1=discovered, 2= visible, 3=owned
-        public DataIdentifier CoreDataIdentifierOwnerId { get; protected internal set; } //custom bit length defined by max civ count
-        
+
+
         public Vision GetVision(Tile tile)
         {
             return Manager.GetVision(tile, this);
         }
 
+        public int GetLastMapUpdate(Tile tile) => Manager.GetLastMapUpdate(tile);
+
+        public bool IsOwning(Tile tile)
+        {
+            return Manager.GetOwnerId(tile) == Index;
+        }
+
+        public void Own(Tile tile)
+        {
+            Manager.SetOwner(tile, this);
+        }
+
 
         #region Hidden
+
         bool IFeature.HasFeature(Tile tile)
         {
             return ((IFeatureResolver<Civilization>) Manager.Resolver).IsFeatureOnTile(tile, this);
@@ -75,11 +83,11 @@ namespace Progression.Engine.Core.Civilization
         {
             ((IFeatureResolver<Civilization>) Manager.Resolver).RemoveFeature(tile, this);
         }
-        
-        
+
+
         protected bool Equals(Civilization other)
         {
-            return Index == other.Index && Equals(Manager, other.Manager);
+            return Index!=-1 && Index == other.Index && Equals(Manager, other.Manager);
         }
 
         public override bool Equals(object obj)
@@ -93,5 +101,7 @@ namespace Progression.Engine.Core.Civilization
         public override int GetHashCode() => Index;
 
         #endregion
+
+        public byte WorldType => Manager.WorldTypePlayerId;
     }
 }
