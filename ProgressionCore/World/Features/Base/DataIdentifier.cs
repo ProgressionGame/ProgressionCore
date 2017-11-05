@@ -20,7 +20,7 @@ namespace Progression.Engine.Core.World.Features.Base
             get => _feature;
             set {
                 if (_feature != null) throw new InvalidOperationException("Cannot change Feature");
-                if (value != null && value.Resolver != Resolver) throw new ArgumentException("Cannot set feature to a feature not managed by the reolver of this DataIdenditfier");
+                if (value != null && value.Resolver != Resolver) throw new ArgumentException("Cannot set feature to a feature not managed by the resolver of this DataIdenditfier");
                 _feature = value;
             }
         }

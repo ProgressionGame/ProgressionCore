@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Progression.Engine.Core.Keys;
@@ -9,8 +10,11 @@ using static Progression.Engine.Core.World.Features.Yield.YieldModifierType;
 using static Progression.Engine.Core.World.Features.Yield.TileYieldModifierPriority;
 using System.Threading;
 using Progression.Engine.Core.Civilization;
+using Progression.Engine.Core.Util;
 using Progression.Engine.Core.Util.BinPacking;
 using Progression.Engine.Core.World.Features.Terrain;
+
+// ReSharper disable LocalizableElement
 
 namespace TestLauncher
 {
@@ -25,46 +29,46 @@ namespace TestLauncher
             TestWorld();
         }
 
+
         private static void TestBinPackingRealistic()
         {
-            List<Packet> packets = new List<Packet>();
             const int size = 32;
             const int amount = 200;
-            
-            
-            
-            packets = new List<Packet>();
+
+
+            var packets = new List<Packet>();
             var rnd = new Random();
-            for (int i = 0; i < 40*amount; i++) {
+            for (int i = 0; i < 40 * amount; i++) {
                 packets.Add(new Packet(null, rnd.Next(1, 6)));
             }
-            for (int i = 0; i < 15*amount; i++) {
+            for (int i = 0; i < 15 * amount; i++) {
                 packets.Add(new Packet(null, rnd.Next(6, 20)));
             }
-            for (int i = 0; i < 3*amount; i++) {
+            for (int i = 0; i < 3 * amount; i++) {
                 packets.Add(new Packet(null, rnd.Next(16, 33)));
             }
-            
+
             var sws = new Stopwatch();
             sws.Start();
             var binsStupid = BinPackingSolvers.SolveStupid(new List<Packet>(packets), size);
             sws.Stop();
-            
-            var swBF = new Stopwatch();
-            swBF.Start();
-            var binsBF = BinPackingSolvers.SolveBestFitMaybe(new List<Packet>(packets), size);
-            swBF.Stop();
-            
+
+            var swBf = new Stopwatch();
+            swBf.Start();
+            var binsBf = BinPackingSolvers.SolveBestFitMaybe(new List<Packet>(packets), size);
+            swBf.Stop();
+
 //            Console.WriteLine("binsStupid:");
 //            printBin(binsStupid, size);
 //            Console.WriteLine("binsBF:");
 //            printBin(binsBF, size);
-            Console.WriteLine("binsStupid:" + binsStupid.Count + " " + CalcFreeSpaceBins(binsStupid, size) + " " + sws.ElapsedMilliseconds + "ms+" + sws.ElapsedTicks);
-            Console.WriteLine("binsBF:" + binsBF.Count+ " " + CalcFreeSpaceBins(binsBF, size) + " " + swBF.ElapsedMilliseconds + "ms+" + swBF.ElapsedTicks);
-            
-            
-            Console.ReadKey();
+            Console.WriteLine("binsStupid:" + binsStupid.Count + " " + CalcFreeSpaceBins(binsStupid, size) + " " +
+                              sws.ElapsedMilliseconds + "ms+" + sws.ElapsedTicks);
+            Console.WriteLine("binsBF:" + binsBf.Count + " " + CalcFreeSpaceBins(binsBf, size) + " " +
+                              swBf.ElapsedMilliseconds + "ms+" + swBf.ElapsedTicks);
 
+
+            Console.ReadKey();
         }
 
         private static void TestBinPacking()
@@ -74,35 +78,34 @@ namespace TestLauncher
             const int max = 8;
             const int size = 10;
             const int amount = 1;
-            
-            
+
+
             for (int j = 0; j < amount; j++) {
                 for (int i = min; i <= max; i++) {
                     packets.Add(new Packet(null, i));
                 }
             }
             var binsStupid = BinPackingSolvers.SolveStupid(new List<Packet>(packets), size);
-            var binsBF = BinPackingSolvers.SolveBestFitMaybe(new List<Packet>(packets), size);
+            var binsBf = BinPackingSolvers.SolveBestFitMaybe(new List<Packet>(packets), size);
             Console.WriteLine("binsStupid:" + binsStupid.Count + " " + CalcFreeSpaceBins(binsStupid, size));
             PrintBin(binsStupid, size);
-            Console.WriteLine("binsBF:" + binsBF.Count+ " " + CalcFreeSpaceBins(binsBF, size));
-            PrintBin(binsBF, size);
+            Console.WriteLine("binsBF:" + binsBf.Count + " " + CalcFreeSpaceBins(binsBf, size));
+            PrintBin(binsBf, size);
             Console.WriteLine("now random numbers");
             packets = new List<Packet>();
             var rnd = new Random();
-            for (int i = 0; i < (max-min+1)*amount; i++) {
+            for (int i = 0; i < (max - min + 1) * amount; i++) {
                 packets.Add(new Packet(null, rnd.Next(min, max)));
             }
             binsStupid = BinPackingSolvers.SolveStupid(new List<Packet>(packets), size);
-            binsBF = BinPackingSolvers.SolveBestFitMaybe(new List<Packet>(packets), size);
+            binsBf = BinPackingSolvers.SolveBestFitMaybe(new List<Packet>(packets), size);
             Console.WriteLine("binsStupid:" + binsStupid.Count + " " + CalcFreeSpaceBins(binsStupid, size));
             PrintBin(binsStupid, size);
-            Console.WriteLine("binsBF:" + binsBF.Count+ " " + CalcFreeSpaceBins(binsBF, size));
-            PrintBin(binsBF, size);
-            
-            
-            Console.ReadKey();
+            Console.WriteLine("binsBF:" + binsBf.Count + " " + CalcFreeSpaceBins(binsBf, size));
+            PrintBin(binsBf, size);
 
+
+            Console.ReadKey();
         }
 
         private static int CalcFreeSpaceBins(List<Bin> bins, int size)
@@ -121,7 +124,7 @@ namespace TestLauncher
         {
             for (int i = 0; i < bins.Count; i++) {
                 var bin = bins[i];
-                Console.Write("Bin " + i + " " + bin.Used+"/"+size + ":");
+                Console.Write("Bin " + i + " " + bin.Used + "/" + size + ":");
                 foreach (var packet in bin) {
                     Console.Write(" " + packet.Size);
                 }
@@ -139,39 +142,39 @@ namespace TestLauncher
             var production = new YieldType("production", ym);
             var commerce = new YieldType("commerce", ym);
 
-            var resTB = new YieldModifyingSSFR<TerrainBiome>(WorldType.World, new Key(root, "tb"), false, Terrain);
-            var grassland = new TerrainBiome("grassland", resTB, ym, Addition, new double[] {2, 0, 0});
-            var plains = new TerrainBiome("plains", resTB, ym, Addition, new double[] {1, 1, 0});
-            var desert = new TerrainBiome("desert", resTB, ym, Addition, new double[] {0, 1, 0});
-            var tundra = new TerrainBiome("tundra", resTB, ym, Addition, new double[] {1, 0, 0});
-            var ice = new TerrainBiome("ice", resTB, ym, Addition, new double[] {0, 0, 0});
-            var resTV = new YieldModifyingSMFR<TerrainVegetation>(WorldType.World, new Key(root, "tv"), Terrain);
-            var jungle = new TerrainVegetation("jungle", resTV, ym, Addition, new double[] {0, -1, -1});
-            var forest = new TerrainVegetation("forest", resTV, ym, Addition, new double[] {0, 1, 0});
-            var pineForest = new TerrainVegetation("pine forest", resTV, ym, Addition, new double[] {0, 1, 0});
-            var resTL = new YieldModifyingSSFR<TerrainLandform>(WorldType.World, new Key(root, "tl"), false, Terrain);
-            var flatland = new TerrainLandform("flatland", resTL, ym, Addition, new double[] {0, 0, 0});
-            var hills = new TerrainLandform("hills", resTL, ym, Addition, new double[] {-1, 1, 0});
-            var mountains = new TerrainLandform("mountains", resTL, ym, Addition, new double[] {-2, 1, 0});
-            var highMountains = new TerrainLandform("high mountains", resTL, ym, Addition, new double[] {-2, 0, -1});
+            var resTb = new YieldModifyingSSFR<TerrainBiome>(WorldType.World, new Key(root, "tb"), false, Terrain);
+            var grassland = new TerrainBiome("grassland", resTb, ym, Addition, new double[] {2, 0, 0});
+            var plains = new TerrainBiome("plains", resTb, ym, Addition, new double[] {1, 1, 0});
+            var desert = new TerrainBiome("desert", resTb, ym, Addition, new double[] {0, 1, 0});
+            var tundra = new TerrainBiome("tundra", resTb, ym, Addition, new double[] {1, 0, 0});
+            var ice = new TerrainBiome("ice", resTb, ym, Addition, new double[] {0, 0, 0});
+            var resTv = new YieldModifyingSMFR<TerrainVegetation>(WorldType.World, new Key(root, "tv"), Terrain);
+            var jungle = new TerrainVegetation("jungle", resTv, ym, Addition, new double[] {0, -1, -1});
+            var forest = new TerrainVegetation("forest", resTv, ym, Addition, new double[] {0, 1, 0});
+            var pineForest = new TerrainVegetation("pine forest", resTv, ym, Addition, new double[] {0, 1, 0});
+            var resTl = new YieldModifyingSSFR<TerrainLandform>(WorldType.World, new Key(root, "tl"), false, Terrain);
+            var flatland = new TerrainLandform("flatland", resTl, ym, Addition, new double[] {0, 0, 0});
+            var hills = new TerrainLandform("hills", resTl, ym, Addition, new double[] {-1, 1, 0});
+            var mountains = new TerrainLandform("mountains", resTl, ym, Addition, new double[] {-2, 1, 0});
+            var highMountains = new TerrainLandform("high mountains", resTl, ym, Addition, new double[] {-2, 0, -1});
 
             //civs
             var civMan = new CivilizationManager(new Key(root, "civs"), 4);
             var rome = new Civilization("Rome", civMan);
             var egypt = new Civilization("Egypt", civMan);
-            
-            
+
+
             //init
             var fw = new FeatureWorld(2, ym);
-            fw.Register(resTB);
-            fw.Register(resTV);
-            fw.Register(resTL);
+            fw.Register(resTb);
+            fw.Register(resTv);
+            fw.Register(resTl);
             fw.Register(civMan.Resolver);
             fw.Lock();
 
             //world creation
             var world = new TileWorld(fw, 5, 5);
-            
+
             Console.WriteLine(world.HasFeature(3, 3, grassland));
             Console.WriteLine(world.HasFeature(3, 3, flatland));
             Console.WriteLine(world.HasFeature(3, 3, jungle));
@@ -191,23 +194,25 @@ namespace TestLauncher
             Console.WriteLine(world.HasFeature(3, 3, grassland));
             Console.WriteLine(world.HasFeature(3, 3, forest));
             Console.WriteLine(world.HasFeature(3, 3, hills));
-            
-            Console.WriteLine($"Owner: 2,3={civMan.GetOwner(world[2,3])?.Name??"NoMensLand"}");
-            Console.WriteLine($"Rome Vision={rome.GetVision(world[2,3])}, Egypt Vision={egypt.GetVision(world[2,3])}, ");
+
+            Console.WriteLine($"Owner: 2,3={civMan.GetOwner(world[2, 3])?.Name ?? "NoMensLand"}");
+            Console.WriteLine(
+                $"Rome Vision={rome.GetVision(world[2, 3])}, Egypt Vision={egypt.GetVision(world[2, 3])}, ");
             rome.Own(world[2, 3]);
-            Console.WriteLine($"Owner: 2,3={civMan.GetOwner(world[2,3])?.Name??"NoMensLand"}");
-            Console.WriteLine($"Rome Vision={rome.GetVision(world[2,3])}, Egypt Vision={egypt.GetVision(world[2,3])}, ");
+            Console.WriteLine($"Owner: 2,3={civMan.GetOwner(world[2, 3])?.Name ?? "NoMensLand"}");
+            Console.WriteLine(
+                $"Rome Vision={rome.GetVision(world[2, 3])}, Egypt Vision={egypt.GetVision(world[2, 3])}, ");
             egypt.Own(world[2, 3]);
-            Console.WriteLine($"Owner: 2,3={civMan.GetOwner(world[2,3])?.Name??"NoMensLand"}");
-            Console.WriteLine($"Rome Vision={rome.GetVision(world[2,3])}, Egypt Vision={egypt.GetVision(world[2,3])}, ");
-            Console.WriteLine($"Owner: 3,2={civMan.GetOwner(world[3,2])?.Name??"NoMensLand"}");
-            
-            
+            Console.WriteLine($"Owner: 2,3={civMan.GetOwner(world[2, 3])?.Name ?? "NoMensLand"}");
+            Console.WriteLine(
+                $"Rome Vision={rome.GetVision(world[2, 3])}, Egypt Vision={egypt.GetVision(world[2, 3])}, ");
+            Console.WriteLine($"Owner: 3,2={civMan.GetOwner(world[3, 2])?.Name ?? "NoMensLand"}");
+
 
             Console.ReadKey();
 
             var sw = new Stopwatch();
-            
+
             //big world alloc
             sw.Start();
             const int worldSize = 5000;
@@ -216,14 +221,14 @@ namespace TestLauncher
             sw.Stop();
             GC.Collect();
             Console.WriteLine("ms:" + sw.ElapsedMilliseconds);
-            
+
             //prepair multithreading test
             var wInterface = new WorldInterfaceImpl(world2);
             var monitor = new object();
             bool[] flag = {
                 true
             };
-           
+
             var thread2 = new Thread(() => {
                 lock (monitor) Monitor.Wait(monitor);
                 Console.WriteLine("Thread 2 stopped waiting");
@@ -250,11 +255,12 @@ namespace TestLauncher
                         j = 0;
                     }
                 }
-                
-                Console.WriteLine("Thread 2 made " + workLoops + "/" +  allLoops + " loops. Took: " + new TimeSpan(lastTiming).TotalMilliseconds + "ms");
+
+                Console.WriteLine("Thread 2 made " + workLoops + "/" + allLoops + " loops. Took: " +
+                                  new TimeSpan(lastTiming).TotalMilliseconds + "ms");
             });
             thread2.Start();
-            
+
             //random updates
             world.RegisterUpdate(wInterface.ScheduleUpdate);
             IFeature[] allFeatures = {
@@ -263,7 +269,7 @@ namespace TestLauncher
             };
             var rnd = new Random();
             Console.WriteLine("random updates");
-            
+
             sw.Start();
             for (int i = 0; i < 1_000_000; i++) {
                 world[rnd.Next(worldSize), rnd.Next(worldSize), allFeatures[rnd.Next(allFeatures.Length)]] = true;
@@ -273,8 +279,8 @@ namespace TestLauncher
             Console.WriteLine("random updates done. took " + sw.ElapsedMilliseconds + "ms");
             lock (monitor) Monitor.Wait(monitor);
             Console.ReadKey();
-            
-            
+
+
             Console.WriteLine("random updates parallel");
             lock (monitor) Monitor.Pulse(monitor);
             for (int i = 0; i < 1_000_000; i++) {
@@ -282,8 +288,8 @@ namespace TestLauncher
             }
             flag[0] = false;
             Console.WriteLine("random updates parallel done");
-            
-            
+
+
             Console.ReadKey();
             Console.WriteLine(world.HasFeature(3, 3, mountains));
             Console.WriteLine(world.HasFeature(3, 3, grassland));
@@ -297,24 +303,26 @@ namespace TestLauncher
             var puppetLevel1 = PuppetLevel.Create(masterBuildControl: true);
             var puppetSpecial1 = new PuppetLevelAddition1(puppetLevel1);
             var puppetSpecial2 = puppetLevel1.GetSpecialised<PuppetLevelAddition2>();
-            Console.WriteLine(puppetLevel1.MasterBuildControl + " " + puppetSpecial1.MasterBuildControl + " " + puppetSpecial2.MasterBuildControl);
-            var puppetSpecial2_1 = puppetSpecial1.GetSpecialised<PuppetLevelAddition2>();
-            Console.WriteLine(puppetSpecial2 == puppetSpecial2_1);
+            Console.WriteLine(puppetLevel1.MasterBuildControl + " " + puppetSpecial1.MasterBuildControl + " " +
+                              puppetSpecial2.MasterBuildControl);
+            var puppetSpecial21 = puppetSpecial1.GetSpecialised<PuppetLevelAddition2>();
+            Console.WriteLine(puppetSpecial2 == puppetSpecial21);
             Console.WriteLine();
             puppetSpecial2.Addition2 = true;
 
-            var puppetLevel1c = puppetLevel1.Clone();
-            var puppetSpecial1c = puppetLevel1c.GetSpecialised<PuppetLevelAddition1>();
-            var puppetSpecial2c = puppetLevel1c.GetSpecialised<PuppetLevelAddition2>();
-            Console.WriteLine(puppetLevel1.MasterBuildControl + " " + puppetSpecial1.MasterBuildControl + " " + puppetSpecial2.MasterBuildControl);
-            Console.WriteLine((puppetLevel1 == puppetLevel1c) + " " + (puppetSpecial1 == puppetSpecial1c) + " " + (puppetSpecial2 == puppetSpecial2c));
+            var puppetLevel1C = puppetLevel1.Clone();
+            var puppetSpecial1C = puppetLevel1C.GetSpecialised<PuppetLevelAddition1>();
+            var puppetSpecial2C = puppetLevel1C.GetSpecialised<PuppetLevelAddition2>();
+            Console.WriteLine(puppetLevel1.MasterBuildControl + " " + puppetSpecial1.MasterBuildControl + " " +
+                              puppetSpecial2.MasterBuildControl);
+            Console.WriteLine((puppetLevel1 == puppetLevel1C) + " " + (puppetSpecial1 == puppetSpecial1C) + " " +
+                              (puppetSpecial2 == puppetSpecial2C));
             Console.WriteLine();
-            puppetSpecial1c.Addition1 = true;
+            puppetSpecial1C.Addition1 = true;
             puppetSpecial2.Addition2 = false;
-            
-            Console.WriteLine(puppetSpecial1.Addition1 + " vs " + puppetSpecial1c.Addition1);
-            Console.WriteLine(puppetSpecial2.Addition2 + " vs " + puppetSpecial2c.Addition2);
-        }
 
+            Console.WriteLine(puppetSpecial1.Addition1 + " vs " + puppetSpecial1C.Addition1);
+            Console.WriteLine(puppetSpecial2.Addition2 + " vs " + puppetSpecial2C.Addition2);
+        }
     }
 }

@@ -3,7 +3,7 @@
 namespace Progression.Engine.Core.Civilization
 {
     public class PuppetLevel : IPuppetLevel
-    {
+    {  //just saying i have no idea if that was a good idea. probably going to improve on this
         protected IPuppetLevel Parent;
         protected PuppetLevelData Data;
 

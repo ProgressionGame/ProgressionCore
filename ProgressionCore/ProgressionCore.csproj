@@ -78,6 +78,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="City\City.cs" />
     <Compile Include="Civilization\Civilization.cs" />
     <Compile Include="Civilization\CivilizationFeatureResolver.cs" />
     <Compile Include="Civilization\CivilizationManager.cs" />
@@ -92,6 +93,7 @@
     <Compile Include="Util\BinPacking\Bin.cs" />
     <Compile Include="Util\BinPacking\Packet.cs" />
     <Compile Include="Util\BinPacking\BinPackingSolvers.cs" />
+    <Compile Include="Util\JoinedEnumerator.cs" />
     <Compile Include="World\Coordinate.cs" />
     <Compile Include="World\DataLocation.cs" />
     <Compile Include="World\Features\Base\DataIdentifier.cs" />
@@ -112,6 +114,9 @@
     <Compile Include="World\Features\Terrain\TerrainFeature.cs" />
     <Compile Include="World\Features\Terrain\TerrainLandform.cs" />
     <Compile Include="World\Features\Terrain\TerrainVegetation.cs" />
+    <Compile Include="World\Features\UniqueStructure\IUniqueStructure.cs" />
+    <Compile Include="World\Features\UniqueStructure\IUniqueStructureManager.cs" />
+    <Compile Include="World\Features\UniqueStructure\UniqueStructureResolver.cs" />
     <Compile Include="World\Features\Yield\AdditionYieldModifer.cs" />
     <Compile Include="World\Features\Yield\ITileYieldModifer.cs" />
     <Compile Include="World\Features\Yield\MultiplicationYieldModifier.cs" />

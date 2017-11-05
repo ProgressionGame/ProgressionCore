@@ -23,7 +23,7 @@ namespace Progression.Engine.Core.World.Features.Yield
             Array.Copy(modifiers, Modifiers, modifiers.Length);
         }
 
-        public void setModifier(YieldType type, double newValue)
+        public void SetModifier(YieldType type, double newValue)
         {
             Modifiers[type.Index] = newValue;
         }
