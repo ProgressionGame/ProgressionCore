@@ -7,6 +7,7 @@ namespace Progression.CCL.Windows
     {
         public const int StdOutputHandle = -11;
         public const uint ConsoleModeEnableVirtualTerminalProcessing = 0x0004;
+        public const uint ConsoleModeDisableNewlineAutoReturn  = 0x0008;
         public const string IOErrorMessageGeneric = "Kernel call failed";
 
         [DllImport("kernel32.dll")]

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 
 namespace Progression.Engine.Core.World.Features.UniqueStructure
 {
@@ -8,7 +9,7 @@ namespace Progression.Engine.Core.World.Features.UniqueStructure
         new TStructure Get(int index);
     }
     
-    public interface IUniqueStructureManager : IEnumerable<IUniqueStructure>
+    public interface IUniqueStructureManager : IEnumerable
     {
         IUniqueStructure Get(int index);
         void Lock();

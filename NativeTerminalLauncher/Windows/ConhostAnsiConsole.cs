@@ -25,10 +25,34 @@ namespace Progression.CCL.Windows
         public void EnableAnsi()
         {
             var mode = ConsoleMode;
-            if ((mode & Kernel32.ConsoleModeEnableVirtualTerminalProcessing) == 0) {
-                ConsoleMode = mode | Kernel32.ConsoleModeEnableVirtualTerminalProcessing;
+            var result = mode;
+            result |= Kernel32.ConsoleModeEnableVirtualTerminalProcessing;
+            result |= Kernel32.ConsoleModeDisableNewlineAutoReturn;
+            if (mode != result) {
+                ConsoleMode = result;
             }
         }
+
+        public void EnableMouse()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool SetTitleInteropt(string title)
+        {
+            Console.Title = title;
+            return true;
+        }
+
+        public bool SetCursorVisibilityInteropt(bool value)
+        {
+            Console.CursorVisible = value;
+            return true;
+        }
+
+        //this should not be done this way. (can be attached to different console handle)
+        public int Height => Console.WindowHeight;
+        public int Width => Console.WindowWidth;
 
         public uint ConsoleMode {
             get {

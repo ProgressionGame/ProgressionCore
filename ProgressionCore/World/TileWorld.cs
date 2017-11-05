@@ -8,6 +8,8 @@ namespace Progression.Engine.Core.World
 {
     public class TileWorld
     {
+        public int Height { get; }
+        public int Width { get; }
         public readonly FeatureWorld FeatureWorld;
         private readonly BitVector32[,,] _worldData;
         private ScheduleUpdate _updates;
@@ -20,6 +22,8 @@ namespace Progression.Engine.Core.World
 
         public TileWorld(FeatureWorld features, int height, int width, IWorldHolder holder)
         {
+            Height = height;
+            Width = width;
             FeatureWorld = features;
             WorldType = holder.WorldType;
             Holder = holder;

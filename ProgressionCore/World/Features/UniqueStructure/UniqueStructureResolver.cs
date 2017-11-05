@@ -8,7 +8,7 @@ using Progression.Engine.Core.World.Features.Base;
 namespace Progression.Engine.Core.World.Features.UniqueStructure
 {
     public class UniqueStructureResolver : IFeatureResolver<IUniqueStructure> {
-        private readonly List<IUniqueStructureManager> _managers = new List<IUniqueStructureManager>();
+        private readonly List<IUniqueStructureManager<IUniqueStructure>> _managers = new List<IUniqueStructureManager<IUniqueStructure>>();
         
         
 

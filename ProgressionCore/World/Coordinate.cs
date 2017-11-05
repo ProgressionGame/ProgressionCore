@@ -24,8 +24,8 @@
 
         public override bool Equals(object o)
         {
-            if (o is Coordinate)
-                return Equals((Coordinate) o);
+            if (o is Coordinate coordinate)
+                return Equals(coordinate);
             return false;
         }
 
