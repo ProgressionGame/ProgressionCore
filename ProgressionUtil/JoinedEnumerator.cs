@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 
-namespace Progression.Engine.Core.Util
+namespace Progression.Util
 {
     public class JoinedEnumerator<T> : IEnumerator<T>
     {

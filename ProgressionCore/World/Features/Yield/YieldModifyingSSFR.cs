@@ -1,5 +1,5 @@
-﻿using Progression.Engine.Core.Keys;
-using Progression.Engine.Core.World.Features.Base;
+﻿using Progression.Engine.Core.World.Features.Base;
+using Progression.Util.Keys;
 
 namespace Progression.Engine.Core.World.Features.Yield
 {

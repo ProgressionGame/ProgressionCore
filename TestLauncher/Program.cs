@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Progression.Engine.Core.Keys;
+using Progression.Util.Keys;
 using Progression.Engine.Core.World;
 using Progression.Engine.Core.World.Features.Base;
 using Progression.Engine.Core.World.Features.Yield;
@@ -10,8 +9,7 @@ using static Progression.Engine.Core.World.Features.Yield.YieldModifierType;
 using static Progression.Engine.Core.World.Features.Yield.TileYieldModifierPriority;
 using System.Threading;
 using Progression.Engine.Core.Civilization;
-using Progression.Engine.Core.Util;
-using Progression.Engine.Core.Util.BinPacking;
+using Progression.Util.BinPacking;
 using Progression.Engine.Core.World.Features.Terrain;
 
 // ReSharper disable LocalizableElement

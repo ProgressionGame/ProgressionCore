@@ -1,5 +1,5 @@
 ﻿using System;
-using Progression.Engine.Core.Keys;
+using Progression.Util.Keys;
 
 namespace Progression.Engine.Core.World.Features.Base
 {

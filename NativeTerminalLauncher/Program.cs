@@ -1,7 +1,4 @@
 ﻿using System;
-using System.IO;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
 using Progression.CCL.Generic;
 using Progression.CCL.Windows;

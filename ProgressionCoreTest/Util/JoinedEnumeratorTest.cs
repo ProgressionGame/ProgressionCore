@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using Progression.Engine.Core.Util;
+using Progression.Util;
 using Xunit;
 
 namespace Progression.Test.Engine.Core.Util

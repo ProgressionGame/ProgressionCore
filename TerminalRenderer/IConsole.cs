@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Progression.TerminalRenderer
+﻿namespace Progression.TerminalRenderer
 {
     public interface IConsole
     {

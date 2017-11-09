@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Progression.Engine.Core.Util.BinPacking
+namespace Progression.Util.BinPacking
 {
     public static class BinPackingSolvers
     {

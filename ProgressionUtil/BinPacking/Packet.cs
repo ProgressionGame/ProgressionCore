@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Progression.Engine.Core.Util.BinPacking
+namespace Progression.Util.BinPacking
 {
     public class Packet : IComparable<Packet>
     {

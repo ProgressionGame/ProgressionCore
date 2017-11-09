@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using Progression.Engine.Core.World;
 
 namespace Progression.TerminalRenderer

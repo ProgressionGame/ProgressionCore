@@ -1,5 +1,4 @@
-﻿using Progression.Engine.Core.World.Features;
-using Progression.Engine.Core.World.Features.Base;
+﻿using Progression.Engine.Core.World.Features.Base;
 using Progression.Engine.Core.World.Features.Yield;
 using Progression.Engine.Core.World.Threading;
 

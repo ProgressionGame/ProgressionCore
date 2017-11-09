@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Progression.CCL
+﻿namespace Progression.CCL
 {
     public interface IAnsiConsole
     {

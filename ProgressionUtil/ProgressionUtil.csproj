@@ -4,12 +4,12 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{749933BF-4F38-425A-B9ED-EFAC30C46A87}</ProjectGuid>
+    <ProjectGuid>{BF8E1E3F-8E30-4496-B69C-2E07036C4E67}</ProjectGuid>
     <ProjectTypeGuids>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Progression.TerminalRenderer</RootNamespace>
-    <AssemblyName>TerminalRenderer</AssemblyName>
+    <RootNamespace>Progression.Util</RootNamespace>
+    <AssemblyName>ProgressionUtil</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -39,27 +39,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ClearScreenMode.cs" />
-    <Compile Include="Colour.cs" />
-    <Compile Include="IConsole.cs" />
-    <Compile Include="ICRenderer.cs" />
-    <Compile Include="IView.cs" />
+    <Compile Include="BinPacking\Bin.cs" />
+    <Compile Include="BinPacking\BinPackingSolvers.cs" />
+    <Compile Include="BinPacking\Packet.cs" />
+    <Compile Include="INameable.cs" />
+    <Compile Include="JoinedEnumerator.cs" />
+    <Compile Include="Keys\Key.cs" />
+    <Compile Include="Keys\RootKey.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Test.cs" />
-    <Compile Include="TestCRenderer.cs" />
-    <Compile Include="View.cs" />
-    <Compile Include="WorldView.cs" />
-    <Compile Include="YieldManagerImpl.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ProgressionCore\ProgressionCore.csproj">
-      <Project>{7a0311e6-40f8-4e36-adfa-c23dfc1bf491}</Project>
-      <Name>ProgressionCore</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ProgressionUtil\ProgressionUtil.csproj">
-      <Project>{BF8E1E3F-8E30-4496-B69C-2E07036C4E67}</Project>
-      <Name>ProgressionUtil</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

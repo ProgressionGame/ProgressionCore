@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace Progression.Engine.Core.Keys
+namespace Progression.Util.Keys
 {
     public class RootKey : Key
     {

@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-namespace Progression.Engine.Core.Util.BinPacking
+namespace Progression.Util.BinPacking
 {
     public class Bin : IEnumerable<Packet>
     {

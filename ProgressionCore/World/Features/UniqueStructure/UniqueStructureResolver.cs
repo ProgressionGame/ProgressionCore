@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using Progression.Engine.Core.Keys;
-using Progression.Engine.Core.Util;
 using Progression.Engine.Core.World.Features.Base;
+using Progression.Util;
+using Progression.Util.Keys;
 
 namespace Progression.Engine.Core.World.Features.UniqueStructure
 {

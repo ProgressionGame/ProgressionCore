@@ -1,6 +1,5 @@
 ﻿using System;
 using Progression.Engine.Core.Threading;
-using Progression.Engine.Core.World.Features;
 using Progression.Engine.Core.World.Features.Base;
 
 namespace Progression.Engine.Core.World.Threading

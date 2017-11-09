@@ -118,6 +118,10 @@
       <Project>{7a0311e6-40f8-4e36-adfa-c23dfc1bf491}</Project>
       <Name>ProgressionCore</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ProgressionUtil\ProgressionUtil.csproj">
+      <Project>{BF8E1E3F-8E30-4496-B69C-2E07036C4E67}</Project>
+      <Name>ProgressionUtil</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
