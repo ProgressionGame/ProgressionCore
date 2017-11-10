@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using Progression.Util.Keys;
 using Progression.Engine.Core.World;
 using Progression.Engine.Core.World.Features.Base;
@@ -11,6 +12,8 @@ using System.Threading;
 using Progression.Engine.Core.Civilization;
 using Progression.Util.BinPacking;
 using Progression.Engine.Core.World.Features.Terrain;
+using Progression.Resources.Manager;
+using Progression.Util.Generics;
 
 // ReSharper disable LocalizableElement
 
@@ -24,7 +27,10 @@ namespace TestLauncher
         [STAThread]
         private static void Main()
         {
-            TestWorld();
+            Console.WriteLine(Directory.GetCurrentDirectory());
+            var resMan = new ResourceManager();
+            resMan.LoadPlugins();
+            //TestWorld();
         }
 
 

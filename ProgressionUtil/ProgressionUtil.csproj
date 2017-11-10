@@ -42,6 +42,10 @@
     <Compile Include="BinPacking\Bin.cs" />
     <Compile Include="BinPacking\BinPackingSolvers.cs" />
     <Compile Include="BinPacking\Packet.cs" />
+    <Compile Include="Generics\BaseTypeEnumerableWrapper.cs" />
+    <Compile Include="Generics\BaseTypeKeyValuePairEnumeratorWrapper.cs" />
+    <Compile Include="Generics\DoubleTypeDictionary.cs" />
+    <Compile Include="Generics\BaseTypeEnumeratorWrapper.cs" />
     <Compile Include="INameable.cs" />
     <Compile Include="JoinedEnumerator.cs" />
     <Compile Include="Keys\Key.cs" />

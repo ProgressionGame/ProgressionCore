@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Progression.Util;
 
 namespace Progression.Resources.Manager
@@ -10,7 +11,8 @@ namespace Progression.Resources.Manager
     
     public interface IFileFormat : INameable
     {
-        ReadOnlyCollection<string> FileExtensions{ get; }
+        IReadOnlyCollection<string> FileExtensions{ get; }
+        void AddFileExtension(string extension);
         IDecoder Decoder { get; }
     }
 }

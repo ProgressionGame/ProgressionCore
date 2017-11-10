@@ -4,13 +4,13 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{610A364F-87D0-45E7-94EB-F4623AB0C373}</ProjectGuid>
+    <ProjectGuid>{8B34FFDB-8810-4369-9918-B9EADACBB760}</ProjectGuid>
     <ProjectTypeGuids>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TestEnvironment</RootNamespace>
-    <AssemblyName>TestEnvironment</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <RootNamespace>Progression.Resources.Decoder.Yaml</RootNamespace>
+    <AssemblyName>YamlSupport</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -33,10 +33,23 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="Standard\resources\" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Standard\lib\res\YamlSupport.json" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="YamlResPlugin.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ResPlugin.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ResourceManager\ResourceManager.csproj">
+      <Project>{05E278AE-1235-4993-9F1D-D9D84A1D85C7}</Project>
+      <Name>ResourceManager</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

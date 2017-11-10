@@ -122,6 +122,10 @@
       <Project>{BF8E1E3F-8E30-4496-B69C-2E07036C4E67}</Project>
       <Name>ProgressionUtil</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ResourceManager\ResourceManager.csproj">
+      <Project>{05E278AE-1235-4993-9F1D-D9D84A1D85C7}</Project>
+      <Name>ResourceManager</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
