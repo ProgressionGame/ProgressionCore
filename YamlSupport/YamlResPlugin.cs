@@ -5,13 +5,14 @@ namespace Progression.Resources.Decoder.Yaml
 {
     public class YamlResPlugin : IResPlugin
     {
+        public YamlResPlugin(ResourceDecoderManager man) { }
         public string Name => "YAML1.2";
-        public void Load(ResourceManager man)
+        public void Load(ResourceDecoderManager man)
         {
-            Console.WriteLine("Load");
+            Console.WriteLine("Loadasdas");
         }
 
-        public void Init(ResourceManager man)
+        public void Init(ResourceDecoderManager man)
         {
             Console.WriteLine("Init");
         }

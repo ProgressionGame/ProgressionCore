@@ -36,7 +36,7 @@
     <Folder Include="Standard\resources\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Standard\lib\res\YamlSupport.json" />
+    <Content Include="Standard\extension\reslib\YamlSupport.json" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

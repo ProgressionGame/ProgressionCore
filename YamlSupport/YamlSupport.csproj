@@ -43,9 +43,13 @@
     <Compile Include="YamlResPlugin.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ResPlugin.json" />
+    <EmbeddedResource Include="ResLib.json" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ProgressionUtil\ProgressionUtil.csproj">
+      <Project>{bf8e1e3f-8e30-4496-b69c-2e07036c4e67}</Project>
+      <Name>ProgressionUtil</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ResourceManager\ResourceManager.csproj">
       <Project>{05E278AE-1235-4993-9F1D-D9D84A1D85C7}</Project>
       <Name>ResourceManager</Name>

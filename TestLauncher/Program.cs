@@ -28,7 +28,8 @@ namespace TestLauncher
         private static void Main()
         {
             Console.WriteLine(Directory.GetCurrentDirectory());
-            var resMan = new ResourceManager();
+            var resMan = new ResourceDecoderManager();
+            resMan.Init();
             resMan.LoadPlugins();
             //TestWorld();
         }

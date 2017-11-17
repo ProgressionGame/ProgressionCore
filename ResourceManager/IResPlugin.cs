@@ -1,9 +1,8 @@
-﻿namespace Progression.Resources.Manager
+﻿using Progression.Util.Plugin;
+
+namespace Progression.Resources.Manager
 {
-    public interface IResPlugin
+    public interface IResPlugin : IPlugin<IResPlugin, ResourceDecoderManager>
     {
-        string Name { get; }
-        void Load(ResourceManager man);
-        void Init(ResourceManager man);
     }
 }

@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestLauncher", "TestLauncher\TestLauncher.csproj", "{9638DAA8-6016-47C9-935A-102E611E33CB}"
+	ProjectSection(ProjectDependencies) = postProject
+		{8B34FFDB-8810-4369-9918-B9EADACBB760} = {8B34FFDB-8810-4369-9918-B9EADACBB760}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProgressionCore", "ProgressionCore\ProgressionCore.csproj", "{7A0311E6-40F8-4E36-ADFA-C23DFC1BF491}"
 EndProject
