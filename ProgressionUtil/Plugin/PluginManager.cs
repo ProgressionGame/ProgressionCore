@@ -13,22 +13,19 @@ namespace Progression.Util.Plugin
     {
         public const string RessourceFileMainKey = "Entry";
         public const string LinkerFileMainKey = "Location";
-        
-        
-        
+
+
         public override void LoadPlugins()
         {
             if (!Initilized) throw new InvalidOperationException("Plugin manager is not initialized");
-            
-            
+
+
             foreach (var file in Directory.GetFiles("*.json")) {
-                Console.WriteLine(file.Name);
                 LoadIndirectJson(file).Load((TMan) this);
             }
 
 
             foreach (var file in Directory.GetFiles("*.dll")) {
-                Console.WriteLine(file.Name);
                 LoadFrom(file);
             }
         }
@@ -37,14 +34,12 @@ namespace Progression.Util.Plugin
         {
             var content = JObject.Load(new JsonTextReader(File.OpenText(file.FullName)));
             var loc = content[LinkerFileMainKey];
-            if (loc == null) {
+            if (loc == null)
                 throw new InvalidOperationException(
                     $"Json file must have key \'{LinkerFileMainKey}\' of type string");
-            }
-            if (loc.Type != JTokenType.String) {
+            if (loc.Type != JTokenType.String)
                 throw new InvalidOperationException(
                     $"Json file has key \'{LinkerFileMainKey}\' of type {loc.Type} but it needs to be string");
-            }
             return LoadFrom(new FileInfo(Utils.ReplaceFileString(loc.Value<string>())));
         }
 
@@ -60,31 +55,32 @@ namespace Progression.Util.Plugin
                         throw new InvalidOperationException("Resource file that says it there can not be found?!"))));
 
                     var loc = content[RessourceFileMainKey];
-                    if (loc == null) {
+                    if (loc == null)
                         throw new InvalidOperationException(
                             $"Json resource file must have key \'{RessourceFileMainKey}\' of type string");
-                    }
-                    if (loc.Type != JTokenType.String) {
+                    if (loc.Type != JTokenType.String)
                         throw new InvalidOperationException(
-                            $"Json resource file has key \'Entry\' of type {loc.Type} but it needs to be string");
-                    }
+                            $"Json resource file has key \'{RessourceFileMainKey}\' of type {loc.Type} but it needs to be string");
                     var pluginClass = loc.Value<string>();
-                    
-                    
+
+
                     var classType = asm.GetType(pluginClass);
-                    var superType = Type.ReflectionOnlyGetType(typeof(TPlugin).AssemblyQualifiedName ?? throw new InvalidOperationException("weird"), true, false);
-                    var manType = Type.ReflectionOnlyGetType(typeof(TMan).AssemblyQualifiedName ?? throw new InvalidOperationException("weird"), true, false);
+                    var superType = Type.ReflectionOnlyGetType(typeof(TPlugin).AssemblyQualifiedName ?? 
+                        throw new InvalidOperationException("weird"), true, false);
+                    var manType = Type.ReflectionOnlyGetType(typeof(TMan).AssemblyQualifiedName ??
+                                                             throw new InvalidOperationException("weird"), true, false);
                     if (manType == null || superType == null) throw new InvalidOperationException("weird");
                     if (!superType.IsAssignableFrom(classType))
                         throw new InvalidOperationException(
                             $"{pluginClass} does not implement {typeof(TPlugin).FullName}");
                     if (classType.IsAbstract) throw new InvalidOperationException($"{pluginClass} cannot be abstract");
-                    if (classType.GetConstructor(new[] {manType}) == null) throw new InvalidOperationException(
-                        $"{pluginClass} must provide a constructor with parameter {typeof(TMan).FullName}");
+                    if (classType.GetConstructor(new[] {manType}) == null)
+                        throw new InvalidOperationException(
+                            $"{pluginClass} must provide a constructor with parameter {typeof(TMan).FullName}");
                     //all possible checks done. load assembly into app
-                    asm = Assembly.LoadFrom(file.FullName); 
+                    asm = Assembly.LoadFrom(file.FullName);
                     classType = asm.GetType(pluginClass);
-                    return (TPlugin)classType.GetConstructor(new[] {typeof(TMan)})?.Invoke(new object[] {this});
+                    return (TPlugin) classType.GetConstructor(new[] {typeof(TMan)})?.Invoke(new object[] {this});
                 }
             }
 
@@ -96,17 +92,16 @@ namespace Progression.Util.Plugin
     {
         static PluginManager()
         {
-            AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve += 
+            AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve +=
                 ReflectionOnlyAssemblyResolve;
         }
 
-       
 
-    public static Assembly ReflectionOnlyAssemblyResolve(object sender, 
-    ResolveEventArgs args)
-    {
+        public static Assembly ReflectionOnlyAssemblyResolve(object sender,
+            ResolveEventArgs args)
+        {
             return Assembly.ReflectionOnlyLoad(args.Name);
-    }
+        }
 
 
         public abstract void LoadPlugins();
@@ -122,6 +117,5 @@ namespace Progression.Util.Plugin
         public abstract DirectoryInfo Directory { get; }
         public abstract string InfoRessourceName { get; }
         public bool Initilized { get; private set; }
-
     }
 }

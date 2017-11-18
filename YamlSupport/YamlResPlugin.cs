@@ -9,12 +9,12 @@ namespace Progression.Resources.Decoder.Yaml
         public string Name => "YAML1.2";
         public void Load(ResourceDecoderManager man)
         {
-            Console.WriteLine("Loadasdas");
+            Console.WriteLine("Yaml Load");
         }
 
         public void Init(ResourceDecoderManager man)
         {
-            Console.WriteLine("Init");
+            Console.WriteLine("Yaml Init");
         }
     }
 }

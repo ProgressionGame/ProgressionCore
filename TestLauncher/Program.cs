@@ -27,7 +27,6 @@ namespace TestLauncher
         [STAThread]
         private static void Main()
         {
-            Console.WriteLine(Directory.GetCurrentDirectory());
             var resMan = new ResourceDecoderManager();
             resMan.Init();
             resMan.LoadPlugins();

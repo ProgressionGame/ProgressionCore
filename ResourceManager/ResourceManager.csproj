@@ -49,6 +49,7 @@
     <Compile Include="IResPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResourceDecoderManager.cs" />
+    <Compile Include="ResourceDomain.cs" />
     <Compile Include="ResourceType.cs" />
   </ItemGroup>
   <ItemGroup>
