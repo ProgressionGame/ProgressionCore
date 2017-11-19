@@ -1,8 +1,8 @@
-﻿using Progression.Util.Plugin;
+﻿using Progression.Util.Extension;
 
 namespace Progression.Resources.Manager
 {
-    public interface IResPlugin : IPlugin<IResPlugin, ResourceDecoderManager>
+    public interface IResPlugin : IExtension<IResPlugin, ResourceDecoderManager>
     {
     }
 }

@@ -1,18 +1,17 @@
 ﻿using System;
-using System.Configuration;
 using System.IO;
 using System.Reflection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace Progression.Util.Plugin
+namespace Progression.Util.Extension
 {
-    public static class PluginInspectorHelper
+    public static class ExtensionInspectorHelper
     {
         
-        public static string Validate<TPlugin, TMan>(FileInfo file, string infoRessourceName, string ressourceFileMainKey,
+        public static string Validate<TExtension, TMan>(FileInfo file, string infoRessourceName, string ressourceFileMainKey,
             params Type[] furtherCheckerTypes)
-            where TPlugin : IPlugin<TPlugin, TMan> where TMan : PluginManager<TPlugin, TMan>
+            where TExtension : IExtension<TExtension, TMan> where TMan : ExtensionManager<TExtension, TMan>
         {
             AppDomain domain = null;
             try {
@@ -20,16 +19,16 @@ namespace Progression.Util.Plugin
                 // ReSharper disable once AssignNullToNotNullAttribute
                 var c = (StandardValidator) domain.CreateInstanceAndUnwrap(Assembly.GetExecutingAssembly().FullName,
                     typeof(StandardValidator).FullName);
-                var furtherChecks = new PluginValidator[furtherCheckerTypes.Length];
+                var furtherChecks = new ExtensionValidator[furtherCheckerTypes.Length];
                 for (var i = 0; i < furtherCheckerTypes.Length; i++) {
-                    if (!typeof(PluginValidator).IsAssignableFrom(furtherCheckerTypes[i])) throw new ArgumentException($"{nameof(furtherCheckerTypes)}[{i}] must be a subtype of {nameof(PluginValidator)}");
+                    if (!typeof(ExtensionValidator).IsAssignableFrom(furtherCheckerTypes[i])) throw new ArgumentException($"{nameof(furtherCheckerTypes)}[{i}] must be a subtype of {nameof(ExtensionValidator)}");
                     
                     
                     // ReSharper disable once AssignNullToNotNullAttribute
-                    furtherChecks[i] = (PluginValidator) domain.CreateInstanceAndUnwrap(
+                    furtherChecks[i] = (ExtensionValidator) domain.CreateInstanceAndUnwrap(
                         furtherCheckerTypes[i].Assembly.FullName, furtherCheckerTypes[i].FullName);
                 }
-                return c.Validate<TPlugin, TMan>(file, infoRessourceName, ressourceFileMainKey, furtherChecks);
+                return c.Validate<TExtension, TMan>(file, infoRessourceName, ressourceFileMainKey, furtherChecks);
             } finally {
                 if (domain != null) {
                     AppDomain.Unload(domain);
@@ -40,8 +39,8 @@ namespace Progression.Util.Plugin
         public class StandardValidator : MarshalByRefObject
         {
             public string Validate<TPlugin, TMan>(FileInfo file, string infoRessourceName, string ressourceFileMainKey,
-                params PluginValidator[] furtherChecks)
-                where TPlugin : IPlugin<TPlugin, TMan> where TMan : PluginManager<TPlugin, TMan>
+                params ExtensionValidator[] furtherChecks)
+                where TPlugin : IExtension<TPlugin, TMan> where TMan : ExtensionManager<TPlugin, TMan>
             {
                 AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve += ReflectionOnlyAssemblyResolve;
                 var asm = Assembly.ReflectionOnlyLoadFrom(file.FullName);

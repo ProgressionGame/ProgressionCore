@@ -3,11 +3,11 @@ using System.IO;
 using System.Reflection;
 using Newtonsoft.Json.Linq;
 using Progression.Util;
-using Progression.Util.Plugin;
+using Progression.Util.Extension;
 
 namespace Progression.Resources.Manager
 {
-    public class ResourceDecoderManager : PluginManager<IResPlugin, ResourceDecoderManager>
+    public class ResourceDecoderManager : ExtensionManager<IResPlugin, ResourceDecoderManager>
     {
         public override DirectoryInfo Directory => Utils.ResLibraryDirectory;
         public override string InfoRessourceName => "ResLib";
@@ -18,9 +18,9 @@ namespace Progression.Resources.Manager
             AddValidator<ResValidator>();
         }
 
-        private class ResValidator : PluginValidator
+        private class ResValidator : ExtensionValidator
         {
-            public override void Validate(Type pluginType, Type superType, Type managerType, JObject json)
+            public override void Validate(Type extensionType, Type superType, Type managerType, JObject json)
             {
                 //this is more or less a test right now. maybe used later for real
                 

@@ -1,29 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace Progression.Util.Plugin
+namespace Progression.Util.Extension
 {
-    public abstract class PluginManager<TPlugin, TMan> : PluginManager where TPlugin : IPlugin<TPlugin, TMan>
-        where TMan : PluginManager<TPlugin, TMan>
+    public abstract class ExtensionManager<TExtension, TMan> : ExtensionManager where TExtension : IExtension<TExtension, TMan>
+        where TMan : ExtensionManager<TExtension, TMan>
     {
         public const string RessourceFileMainKey = "Entry";
         public const string LinkerFileMainKey = "Location";
 
 #if DEBUG
-        protected PluginManager()
+        protected ExtensionManager()
         {
             if (!typeof(TMan).IsAssignableFrom(GetType())) 
                 throw new ArgumentException($"Generic {nameof(TMan)} is supposed to point to inheriting class");
         }
 #endif
 
-        public override void LoadPlugins()
+        public override void LoadExtensions()
         {
             if (!Initilized) throw new InvalidOperationException("Plugin manager is not initialized");
 
@@ -38,7 +37,7 @@ namespace Progression.Util.Plugin
             }
         }
 
-        protected virtual TPlugin LoadIndirectJson(FileInfo file)
+        protected virtual TExtension LoadIndirectJson(FileInfo file)
         {
             var content = JObject.Load(new JsonTextReader(File.OpenText(file.FullName)));
             var loc = content[LinkerFileMainKey];
@@ -52,25 +51,25 @@ namespace Progression.Util.Plugin
         }
 
 
-        protected virtual TPlugin LoadFrom(FileInfo file)
+        protected virtual TExtension LoadFrom(FileInfo file)
         {
-            var typeName = PluginInspectorHelper.Validate<TPlugin, TMan>(
+            var typeName = ExtensionInspectorHelper.Validate<TExtension, TMan>(
                 file, InfoRessourceName, RessourceFileMainKey, Validators);
 
 
             //all possible checks done. load assembly into app
             var asm = Assembly.LoadFrom(file.FullName);
             var classType = asm.GetType(typeName);
-            return (TPlugin) classType.GetConstructor(new[] {typeof(TMan)})?.Invoke(new object[] {this});
+            return (TExtension) classType.GetConstructor(new[] {typeof(TMan)})?.Invoke(new object[] {this});
         }
     }
 
-    public abstract class PluginManager
+    public abstract class ExtensionManager
     {
         private HashSet<Type> _validators = new HashSet<Type>();
         protected Type[] Validators;
 
-        public abstract void LoadPlugins();
+        public abstract void LoadExtensions();
 
         public void Init()
         {
@@ -86,7 +85,7 @@ namespace Progression.Util.Plugin
             if (!Directory.Exists) Directory.Create();
         }
 
-        protected void AddValidator<TValidator>() where TValidator : PluginValidator
+        protected void AddValidator<TValidator>() where TValidator : ExtensionValidator
         {
             if (Initilized) throw new InvalidOperationException("Cannot add validator after initialization");
             _validators.Add(typeof(TValidator));

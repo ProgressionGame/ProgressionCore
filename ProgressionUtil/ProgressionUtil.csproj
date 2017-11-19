@@ -53,10 +53,10 @@
     <Compile Include="JoinedEnumerator.cs" />
     <Compile Include="Keys\Key.cs" />
     <Compile Include="Keys\RootKey.cs" />
-    <Compile Include="Plugin\IPlugin.cs" />
-    <Compile Include="Plugin\PluginInspectorHelper.cs" />
-    <Compile Include="Plugin\PluginManager.cs" />
-    <Compile Include="Plugin\PluginValidator.cs" />
+    <Compile Include="Extension\IExtension.cs" />
+    <Compile Include="Extension\ExtensionInspectorHelper.cs" />
+    <Compile Include="Extension\ExtensionManager.cs" />
+    <Compile Include="Extension\ExtensionValidator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReleaseType.cs" />
     <Compile Include="Utils.cs" />

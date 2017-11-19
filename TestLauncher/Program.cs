@@ -29,7 +29,7 @@ namespace TestLauncher
         {
             var resMan = new ResourceDecoderManager();
             resMan.Init();
-            resMan.LoadPlugins();
+            resMan.LoadExtensions();
             //TestWorld();
         }
 
