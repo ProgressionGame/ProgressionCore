@@ -1,3 +1,4 @@
 ﻿{
-    "Entry": "Progression.Resources.Decoder.Yaml.YamlResPlugin"
+  "Entry": "Progression.Resources.Decoder.Yaml.YamlResPlugin",
+  "Version": "1.1"
 }

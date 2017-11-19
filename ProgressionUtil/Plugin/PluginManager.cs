@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Dynamic;
 using System.IO;
 using System.Linq;
@@ -14,6 +15,13 @@ namespace Progression.Util.Plugin
         public const string RessourceFileMainKey = "Entry";
         public const string LinkerFileMainKey = "Location";
 
+#if DEBUG
+        protected PluginManager()
+        {
+            if (!typeof(TMan).IsAssignableFrom(GetType())) 
+                throw new ArgumentException($"Generic {nameof(TMan)} is supposed to point to inheriting class");
+        }
+#endif
 
         public override void LoadPlugins()
         {
@@ -46,72 +54,42 @@ namespace Progression.Util.Plugin
 
         protected virtual TPlugin LoadFrom(FileInfo file)
         {
-            var asm = Assembly.ReflectionOnlyLoadFrom(file.FullName);
-            string[] strings = asm.GetManifestResourceNames();
-            foreach (var s in strings) {
-                if (s.EndsWith("." + InfoRessourceName + ".json")) {
-                    JObject content = JObject.Load(new JsonTextReader(new StreamReader(
-                        asm.GetManifestResourceStream(s) ??
-                        throw new InvalidOperationException("Resource file that says it there can not be found?!"))));
-
-                    var loc = content[RessourceFileMainKey];
-                    if (loc == null)
-                        throw new InvalidOperationException(
-                            $"Json resource file must have key \'{RessourceFileMainKey}\' of type string");
-                    if (loc.Type != JTokenType.String)
-                        throw new InvalidOperationException(
-                            $"Json resource file has key \'{RessourceFileMainKey}\' of type {loc.Type} but it needs to be string");
-                    var pluginClass = loc.Value<string>();
+            var typeName = PluginInspectorHelper.Validate<TPlugin, TMan>(
+                file, InfoRessourceName, RessourceFileMainKey, Validators);
 
 
-                    var classType = asm.GetType(pluginClass);
-                    var superType = Type.ReflectionOnlyGetType(typeof(TPlugin).AssemblyQualifiedName ?? 
-                        throw new InvalidOperationException("weird"), true, false);
-                    var manType = Type.ReflectionOnlyGetType(typeof(TMan).AssemblyQualifiedName ??
-                                                             throw new InvalidOperationException("weird"), true, false);
-                    if (manType == null || superType == null) throw new InvalidOperationException("weird");
-                    if (!superType.IsAssignableFrom(classType))
-                        throw new InvalidOperationException(
-                            $"{pluginClass} does not implement {typeof(TPlugin).FullName}");
-                    if (classType.IsAbstract) throw new InvalidOperationException($"{pluginClass} cannot be abstract");
-                    if (classType.GetConstructor(new[] {manType}) == null)
-                        throw new InvalidOperationException(
-                            $"{pluginClass} must provide a constructor with parameter {typeof(TMan).FullName}");
-                    //all possible checks done. load assembly into app
-                    asm = Assembly.LoadFrom(file.FullName);
-                    classType = asm.GetType(pluginClass);
-                    return (TPlugin) classType.GetConstructor(new[] {typeof(TMan)})?.Invoke(new object[] {this});
-                }
-            }
-
-            throw new InvalidOperationException($"Assembly does not contain {InfoRessourceName}.json file");
+            //all possible checks done. load assembly into app
+            var asm = Assembly.LoadFrom(file.FullName);
+            var classType = asm.GetType(typeName);
+            return (TPlugin) classType.GetConstructor(new[] {typeof(TMan)})?.Invoke(new object[] {this});
         }
     }
 
     public abstract class PluginManager
     {
-        static PluginManager()
-        {
-            AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve +=
-                ReflectionOnlyAssemblyResolve;
-        }
-
-
-        public static Assembly ReflectionOnlyAssemblyResolve(object sender,
-            ResolveEventArgs args)
-        {
-            return Assembly.ReflectionOnlyLoad(args.Name);
-        }
-
+        private HashSet<Type> _validators = new HashSet<Type>();
+        protected Type[] Validators;
 
         public abstract void LoadPlugins();
 
-
-        public virtual void Init()
+        public void Init()
         {
-            if (Initilized) throw new InvalidOperationException("Cannot be initilized twice");
-            if (!Directory.Exists) Directory.Create();
+            if (Initilized) throw new InvalidOperationException("Cannot be initialized twice");
+            InitInternal();
+            Validators = _validators.ToArray();
+            _validators = null;
             Initilized = true;
+        }
+
+        protected virtual void InitInternal()
+        {
+            if (!Directory.Exists) Directory.Create();
+        }
+
+        protected void AddValidator<TValidator>() where TValidator : PluginValidator
+        {
+            if (Initilized) throw new InvalidOperationException("Cannot add validator after initialization");
+            _validators.Add(typeof(TValidator));
         }
 
         public abstract DirectoryInfo Directory { get; }
