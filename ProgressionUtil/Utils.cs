@@ -44,6 +44,7 @@ namespace Progression.Util
             var sb = new StringBuilder(input);
             sb.Replace("$WorkingDir", WorkingDirectory.FullName);
             sb.Replace("$BuildType", ReleaseType.ToString());
+            sb.Replace('/', Path.DirectorySeparatorChar);
             return sb.ToString();
         }
 
