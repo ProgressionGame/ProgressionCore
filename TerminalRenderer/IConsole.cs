@@ -42,6 +42,7 @@
 
         void Write(string str);
         void Write(char c);
+        void Write<T>(T o);
 
         void Init();
 

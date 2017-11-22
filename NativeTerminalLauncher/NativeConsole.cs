@@ -151,6 +151,11 @@ namespace Progression.CCL
             _sb.Append(c);
         }
 
+        public void Write<T>(T o)
+        {
+            Write(o.ToString());
+        }
+
         public void Init()
         {
             Console.EnableAnsi();

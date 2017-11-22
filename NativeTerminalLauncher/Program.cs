@@ -1,116 +1,146 @@
 ﻿using System;
+using System.IO;
+using System.Text;
 using System.Threading;
 using Progression.CCL.Generic;
 using Progression.CCL.Windows;
 using Progression.TerminalRenderer;
+using static Progression.TerminalRenderer.Colour.Common;
 
 namespace Progression.CCL
 {
-    internal class Program
+    internal static class Program
     {
+        private static bool running = true;
+        private static string[] ErrorDisplay;
+        private static Colour ErrorColour;
+        private static long ErrorUntil;
+        private static string CurrentInput;
+        private static int CurrentCursor;
+
+
         public static void Main(string[] args)
         {
+            AppDomain.CurrentDomain.ProcessExit += On_ProcessExit;
+
+            new Thread(Listener).Start();
+
+
             var platform = Environment.OSVersion.Platform;
             var winNt = platform == PlatformID.Win32NT;
-            IConsole con = new NativeConsole(winNt&&!Console.IsOutputRedirected?(IAnsiConsole)new ConhostAnsiConsole(): new GenericAnsiConsole());
-            
+            IConsole con = new NativeConsole(winNt && !Console.IsOutputRedirected
+                ? (IAnsiConsole) new ConhostAnsiConsole()
+                : new GenericAnsiConsole());
+
             con.Init();
             var view = Test.CreateView(con);
             con.UseNewScreenBuffer();
-            while (true) {
+            while (running) {
                 view.Render();
                 Thread.Sleep(32);
-
+                if (ErrorUntil > DateTime.Now.Ticks) {
+                    con.SetForegroundColour(ErrorColour);
+                    int i = 0;
+                    foreach (var s in ErrorDisplay) {
+                        con.SetCurrentPos(con.Height - ErrorDisplay.Length + i++, 2);
+                        con.Write(s);
+                    }
+                }
+                if (!string.IsNullOrEmpty(CurrentInput)) {
+                    con.SetCurrentPos(con.Height, 1);
+                    con.SetForegroundColour(Lime);
+                    con.Write('>');
+                    con.SetForegroundColour(White);
+                    con.Write(CurrentInput);
+                    con.Write(' ');
+                    con.SetCurrentPos(con.Height + (1+CurrentCursor)/con.Width - (1+CurrentInput.Length)/con.Width, (CurrentCursor + 1)%con.Width + 1);
+                    if (DateTime.Now.Ticks % 10_000_000 < 5000000) {
+                        con.Write('_');
+                    }
+                }
+                con.Flush();
             }
-            con.SetCurrentPos(5,5);
-                             con.Write("Line1");
-                             con.SetCurrentPos(6,con.Width-7);
-                             con.Write("Line2");
-                             con.Flush();
-            Console.Read();
 
-            /*Console.WriteLine(platform);
-            con.Init();
-            con.SetForegroundColour(255, 0, 0);
-            con.Write("a");
-            con.SetForegroundColour(128, 0, 0);
-            con.Write("a");
-            con.SetForegroundColour(64, 0, 0);
-            con.Write("a");
-            con.SetForegroundColour(32, 0, 0);
-            con.Write("a\n");
-            con.Bold();
-            con.SetForegroundColour(255, 0, 0);
-            con.Write("a");
-            con.SetForegroundColour(128, 0, 0);
-            con.Write("a");
-            con.SetForegroundColour(64, 0, 0);
-            con.Write("a");
-            con.SetForegroundColour(32, 0, 0);
-            con.Write("a");
-            con.Normal();
-            con.CursorUp(2);
-            Console.WriteLine("Wrote: " + con.Flush());
-            
-            con.CursorDown(2);
-            con.BlinkSlow();
-            con.Write("\nTestTest\n\n");
-            con.BlinkOff();
-            con.Bold();
-            con.Write("TestTest\n");
-            con.SetTitle("This is my title!!!!");
-            con.Flush();
-            
-            
-            Console.WriteLine("\x1b[36mTEST\x1b[0m");
-            
-            Console.ReadKey();
-            con.UseNewScreenBuffer();
-            con.Write("TestTest1\n\n");
-            con.Flush();
-            Console.ReadKey();
-            con.UseNewScreenBuffer();
-            con.Write("TestTest2\n\n");
-            con.Flush();
-            Console.ReadKey();
             con.UseMainScreenBuffer();
-            con.Write("done");
+            con.Write("Program closing...\n");
             con.Flush();
-            Console.ReadKey();
-            
-
-/*
-            Console.ForegroundColor = ConsoleColor.DarkGreen;
-            var con = new WindowsConsoleHelper();
-            con.Write("\x1b[36mTEST\x1b[0m\n");
-            Console.WriteLine(con.ConsoleMode);
-            Console.WriteLine();
-
-            con.ConsoleMode |= 0x0004;
-            con.Write("\x1b[36mTEST\x1b[0m\n");
-            Console.WriteLine(con.ConsoleMode);
-            Console.WriteLine();
-            
-            
-            Console.WriteLine(Console.WindowWidth);
-            Console.WriteLine(Console.LargestWindowWidth);
-            Console.WindowWidth = 50;
-            Console.WriteLine(Console.WindowHeight);
-            var stdout = Console.OpenStandardOutput();
-            var conSw = new StreamWriter(stdout, Encoding.ASCII);
-            conSw.AutoFlush = true;
-            Console.SetOut(conSw);
-
-            Console.WriteLine("\x1b[36mTEST\x1b[0m");
-            Console.WriteLine("done");
-            Console.ReadKey();
-*/
-
+            Thread.Sleep(200);
         }
-        
+
+
+        public static void Listener()
+        {
+            Thread.CurrentThread.IsBackground = true;
+            Console.TreatControlCAsInput = true;
+            while (running) {
+                var line = ReadLine();
+                if (String.IsNullOrWhiteSpace(line)) continue;
+                DisplayError("Unknown input: \n" + line);
+                if (line.Equals("exit", StringComparison.CurrentCultureIgnoreCase)) {
+                    running = false;
+                }
+            }
+        }
+
+        public static string ReadLine()
+        {
+            StringBuilder sb = new StringBuilder();
+            int num;
+            int cursor = 0;
+            while (true) {
+                num = Console.ReadKey(true).KeyChar;
+                switch (num) {
+                    case 3:
+                        running = false;
+                        break;
+                    case 1:
+                        if (cursor > 0) cursor--;
+                        break;
+                    case 4:
+                        if (cursor < sb.Length) cursor++;
+                        break;
+                    case 8:
+                    case 19:
+                    case 27:
+                        if (cursor > 0) {
+                            sb.Remove(cursor - 1, 1);
+                            cursor--;
+                        }
+                        break;
+                    case 23:
+                        if (cursor < sb.Length) {
+                            sb.Remove(cursor, 1);
+                        }
+                        break;
+                    case 13:
+                    case 10:
+                        CurrentInput = null;
+                        return sb.ToString();
+                    default:
+                        if (num>27) {
+                            sb.Insert(cursor, (char) num);
+                            cursor++;
+                        }
+                        break;
+                }
+                CurrentInput = sb.ToString();
+                CurrentCursor = cursor;
+            }
+        }
+
+        static void On_ProcessExit(object sender, EventArgs e)
+        {
+            running = false;
+        }
+
+        static void DisplayError(string error)
+        {
+            ErrorDisplay = error.Split('\n');
+            ErrorUntil = DateTime.Now.Ticks + 10_000 * (1000 + error.Length * 80);
+            ErrorColour = Red;
+        }
+
         private const int VK_ESCAPE = 0x1B;
         private const int WM_KEYDOWN = 0x0100;
-
-        
     }
 }

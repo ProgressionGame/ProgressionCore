@@ -7,7 +7,9 @@
             public static readonly Colour Black = new Colour();
             public static readonly Colour White = new Colour(255,255,255);
             public static readonly Colour Red = new Colour(red: 255);
-            public static readonly Colour Green = new Colour(green: 255);
+            public static readonly Colour Lime = new Colour(green: 255);
+            public static readonly Colour ForestGreen = new Colour(0x22, 0x8B, 0x22);
+            public static readonly Colour Green = new Colour(green: 128);
             public static readonly Colour Blue = new Colour(blue: 255);
             //I am much too lazy to expend this
         }

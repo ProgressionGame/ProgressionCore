@@ -13,6 +13,7 @@ using Progression.Engine.Core.Civilization;
 using Progression.Util.BinPacking;
 using Progression.Engine.Core.World.Features.Terrain;
 using Progression.Resources.Manager;
+using Progression.Util;
 using Progression.Util.Generics;
 
 // ReSharper disable LocalizableElement
@@ -27,9 +28,15 @@ namespace TestLauncher
         [STAThread]
         private static void Main()
         {
+            Console.WriteLine($"Starting version {Utils.ReleaseType}");
+            
             var resMan = new ResourceDecoderManager();
             resMan.Init();
+            var sw = new Stopwatch();
+            sw.Start();
             resMan.LoadExtensions();
+            sw.Stop();
+            Console.WriteLine($"Loading ressource plugins took {sw.ElapsedMilliseconds}ms");
             //TestWorld();
         }
 
@@ -66,10 +73,10 @@ namespace TestLauncher
 //            printBin(binsStupid, size);
 //            Console.WriteLine("binsBF:");
 //            printBin(binsBF, size);
-            Console.WriteLine("binsStupid:" + binsStupid.Count + " " + CalcFreeSpaceBins(binsStupid, size) + " " +
-                              sws.ElapsedMilliseconds + "ms+" + sws.ElapsedTicks);
-            Console.WriteLine("binsBF:" + binsBf.Count + " " + CalcFreeSpaceBins(binsBf, size) + " " +
-                              swBf.ElapsedMilliseconds + "ms+" + swBf.ElapsedTicks);
+            Console.WriteLine(
+                $"binsStupid:{binsStupid.Count} {CalcFreeSpaceBins(binsStupid, size)} {sws.ElapsedMilliseconds}ms+{sws.ElapsedTicks}");
+            Console.WriteLine(
+                $"binsBF:{binsBf.Count} {CalcFreeSpaceBins(binsBf, size)} {swBf.ElapsedMilliseconds}ms+{swBf.ElapsedTicks}");
 
 
             Console.ReadKey();
@@ -91,9 +98,9 @@ namespace TestLauncher
             }
             var binsStupid = BinPackingSolvers.SolveStupid(new List<Packet>(packets), size);
             var binsBf = BinPackingSolvers.SolveBestFitMaybe(new List<Packet>(packets), size);
-            Console.WriteLine("binsStupid:" + binsStupid.Count + " " + CalcFreeSpaceBins(binsStupid, size));
+            Console.WriteLine($"binsStupid:{binsStupid.Count} {CalcFreeSpaceBins(binsStupid, size)}");
             PrintBin(binsStupid, size);
-            Console.WriteLine("binsBF:" + binsBf.Count + " " + CalcFreeSpaceBins(binsBf, size));
+            Console.WriteLine($"binsBF:{binsBf.Count} {CalcFreeSpaceBins(binsBf, size)}");
             PrintBin(binsBf, size);
             Console.WriteLine("now random numbers");
             packets = new List<Packet>();
@@ -103,9 +110,9 @@ namespace TestLauncher
             }
             binsStupid = BinPackingSolvers.SolveStupid(new List<Packet>(packets), size);
             binsBf = BinPackingSolvers.SolveBestFitMaybe(new List<Packet>(packets), size);
-            Console.WriteLine("binsStupid:" + binsStupid.Count + " " + CalcFreeSpaceBins(binsStupid, size));
+            Console.WriteLine($"binsStupid:{binsStupid.Count} {CalcFreeSpaceBins(binsStupid, size)}");
             PrintBin(binsStupid, size);
-            Console.WriteLine("binsBF:" + binsBf.Count + " " + CalcFreeSpaceBins(binsBf, size));
+            Console.WriteLine($"binsBF:{binsBf.Count} {CalcFreeSpaceBins(binsBf, size)}");
             PrintBin(binsBf, size);
 
 
@@ -128,9 +135,9 @@ namespace TestLauncher
         {
             for (int i = 0; i < bins.Count; i++) {
                 var bin = bins[i];
-                Console.Write("Bin " + i + " " + bin.Used + "/" + size + ":");
+                Console.Write($"Bin {i} {bin.Used}/{size}:");
                 foreach (var packet in bin) {
-                    Console.Write(" " + packet.Size);
+                    Console.Write($" {packet.Size}");
                 }
                 Console.WriteLine();
             }
@@ -187,14 +194,14 @@ namespace TestLauncher
             Console.WriteLine(hills.Id);
             Console.WriteLine(mountains.Id);
             Console.WriteLine();
-            Console.WriteLine(world.CalcYield(3, 3, food) + ", " + world.CalcYield(3, 3, production) + ", " +
-                              world.CalcYield(3, 3, commerce));
+            Console.WriteLine(
+                $"{world.CalcYield(3, 3, food)}, {world.CalcYield(3, 3, production)}, {world.CalcYield(3, 3, commerce)}");
             world.AddFeature(3, 3, forest);
-            Console.WriteLine(world.CalcYield(3, 3, food) + ", " + world.CalcYield(3, 3, production) + ", " +
-                              world.CalcYield(3, 3, commerce));
+            Console.WriteLine(
+                $"{world.CalcYield(3, 3, food)}, {world.CalcYield(3, 3, production)}, {world.CalcYield(3, 3, commerce)}");
             world.AddFeature(3, 3, hills);
-            Console.WriteLine(world.CalcYield(3, 3, food) + ", " + world.CalcYield(3, 3, production) + ", " +
-                              world.CalcYield(3, 3, commerce));
+            Console.WriteLine(
+                $"{world.CalcYield(3, 3, food)}, {world.CalcYield(3, 3, production)}, {world.CalcYield(3, 3, commerce)}");
             Console.WriteLine(world.HasFeature(3, 3, grassland));
             Console.WriteLine(world.HasFeature(3, 3, forest));
             Console.WriteLine(world.HasFeature(3, 3, hills));
@@ -224,7 +231,7 @@ namespace TestLauncher
             var world2 = new TileWorld(fw, worldSize, worldSize);
             sw.Stop();
             GC.Collect();
-            Console.WriteLine("ms:" + sw.ElapsedMilliseconds);
+            Console.WriteLine($"ms:{sw.ElapsedMilliseconds}");
 
             //prepair multithreading test
             var wInterface = new WorldInterfaceImpl(world2);
@@ -240,7 +247,7 @@ namespace TestLauncher
                 sw2.Start();
                 wInterface.Execute();
                 sw2.Stop();
-                Console.WriteLine("Thread 2 took " + sw2.Elapsed.TotalMilliseconds + "ms");
+                Console.WriteLine($"Thread 2 took {sw2.Elapsed.TotalMilliseconds}ms");
                 lock (monitor) Monitor.Pulse(monitor);
                 lock (monitor) Monitor.Wait(monitor);
                 int workLoops = 0;
@@ -260,8 +267,8 @@ namespace TestLauncher
                     }
                 }
 
-                Console.WriteLine("Thread 2 made " + workLoops + "/" + allLoops + " loops. Took: " +
-                                  new TimeSpan(lastTiming).TotalMilliseconds + "ms");
+                Console.WriteLine(
+                    $"Thread 2 made {workLoops}/{allLoops} loops. Took: {new TimeSpan(lastTiming).TotalMilliseconds}ms");
             });
             thread2.Start();
 
@@ -280,7 +287,7 @@ namespace TestLauncher
             }
             sw.Stop();
             lock (monitor) Monitor.Pulse(monitor);
-            Console.WriteLine("random updates done. took " + sw.ElapsedMilliseconds + "ms");
+            Console.WriteLine($"random updates done. took {sw.ElapsedMilliseconds}ms");
             lock (monitor) Monitor.Wait(monitor);
             Console.ReadKey();
 
@@ -307,8 +314,8 @@ namespace TestLauncher
             var puppetLevel1 = PuppetLevel.Create(masterBuildControl: true);
             var puppetSpecial1 = new PuppetLevelAddition1(puppetLevel1);
             var puppetSpecial2 = puppetLevel1.GetSpecialised<PuppetLevelAddition2>();
-            Console.WriteLine(puppetLevel1.MasterBuildControl + " " + puppetSpecial1.MasterBuildControl + " " +
-                              puppetSpecial2.MasterBuildControl);
+            Console.WriteLine(
+                $"{puppetLevel1.MasterBuildControl} {puppetSpecial1.MasterBuildControl} {puppetSpecial2.MasterBuildControl}");
             var puppetSpecial21 = puppetSpecial1.GetSpecialised<PuppetLevelAddition2>();
             Console.WriteLine(puppetSpecial2 == puppetSpecial21);
             Console.WriteLine();
@@ -317,16 +324,16 @@ namespace TestLauncher
             var puppetLevel1C = puppetLevel1.Clone();
             var puppetSpecial1C = puppetLevel1C.GetSpecialised<PuppetLevelAddition1>();
             var puppetSpecial2C = puppetLevel1C.GetSpecialised<PuppetLevelAddition2>();
-            Console.WriteLine(puppetLevel1.MasterBuildControl + " " + puppetSpecial1.MasterBuildControl + " " +
-                              puppetSpecial2.MasterBuildControl);
-            Console.WriteLine((puppetLevel1 == puppetLevel1C) + " " + (puppetSpecial1 == puppetSpecial1C) + " " +
-                              (puppetSpecial2 == puppetSpecial2C));
+            Console.WriteLine(
+                $"{puppetLevel1.MasterBuildControl} {puppetSpecial1.MasterBuildControl} {puppetSpecial2.MasterBuildControl}");
+            Console.WriteLine(
+                $"{puppetLevel1 == puppetLevel1C} {puppetSpecial1 == puppetSpecial1C} {puppetSpecial2 == puppetSpecial2C}");
             Console.WriteLine();
             puppetSpecial1C.Addition1 = true;
             puppetSpecial2.Addition2 = false;
 
-            Console.WriteLine(puppetSpecial1.Addition1 + " vs " + puppetSpecial1C.Addition1);
-            Console.WriteLine(puppetSpecial2.Addition2 + " vs " + puppetSpecial2C.Addition2);
+            Console.WriteLine($"{puppetSpecial1.Addition1} vs {puppetSpecial1C.Addition1}");
+            Console.WriteLine($"{puppetSpecial2.Addition2} vs {puppetSpecial2C.Addition2}");
         }
     }
 }

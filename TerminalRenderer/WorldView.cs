@@ -69,8 +69,6 @@ namespace Progression.TerminalRenderer
             } else {
                 //todo
             }
-            //Console.Write(heightPx + " " + Console.Height);
-            Console.Flush();
             _inboundUpdates.Clear();
         }
 
