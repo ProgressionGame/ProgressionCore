@@ -11,12 +11,13 @@ namespace Progression.CCL
 {
     internal static class Program
     {
-        private static bool running = true;
-        private static string[] ErrorDisplay;
-        private static Colour ErrorColour;
-        private static long ErrorUntil;
-        private static string CurrentInput;
-        private static int CurrentCursor;
+        private static bool _running = true;
+        private static bool _render = true;
+        private static string[] _errorDisplay;
+        private static Colour _errorColour;
+        private static long _errorUntil;
+        private static string _currentInput;
+        private static int _currentCursor;
 
 
         public static void Main(string[] args)
@@ -35,30 +36,30 @@ namespace Progression.CCL
             con.Init();
             var view = Test.CreateView(con);
             con.UseNewScreenBuffer();
-            while (running) {
-                view.Render();
-                Thread.Sleep(32);
-                if (ErrorUntil > DateTime.Now.Ticks) {
-                    con.SetForegroundColour(ErrorColour);
+            while (_running) {
+                if (_render)view.Render();
+                if (_errorUntil > DateTime.Now.Ticks) {
+                    con.SetForegroundColour(_errorColour);
                     int i = 0;
-                    foreach (var s in ErrorDisplay) {
-                        con.SetCurrentPos(con.Height - ErrorDisplay.Length + i++, 2);
+                    foreach (var s in _errorDisplay) {
+                        con.SetCurrentPos(con.Height - _errorDisplay.Length + i++, 2);
                         con.Write(s);
                     }
                 }
-                if (!string.IsNullOrEmpty(CurrentInput)) {
+                if (!string.IsNullOrEmpty(_currentInput)) {
                     con.SetCurrentPos(con.Height, 1);
                     con.SetForegroundColour(Lime);
                     con.Write('>');
                     con.SetForegroundColour(White);
-                    con.Write(CurrentInput);
+                    con.Write(_currentInput);
                     con.Write(' ');
-                    con.SetCurrentPos(con.Height + (1+CurrentCursor)/con.Width - (1+CurrentInput.Length)/con.Width, (CurrentCursor + 1)%con.Width + 1);
+                    con.SetCurrentPos(con.Height + (1+_currentCursor)/con.Width - (1+_currentInput.Length)/con.Width, (_currentCursor + 1)%con.Width + 1);
                     if (DateTime.Now.Ticks % 10_000_000 < 5000000) {
                         con.Write('_');
                     }
                 }
                 con.Flush();
+                Thread.Sleep(32);
             }
 
             con.UseMainScreenBuffer();
@@ -72,12 +73,15 @@ namespace Progression.CCL
         {
             Thread.CurrentThread.IsBackground = true;
             Console.TreatControlCAsInput = true;
-            while (running) {
+            while (_running) {
                 var line = ReadLine();
                 if (String.IsNullOrWhiteSpace(line)) continue;
-                DisplayError("Unknown input: \n" + line);
                 if (line.Equals("exit", StringComparison.CurrentCultureIgnoreCase)) {
-                    running = false;
+                    _running = false;
+                } else if (line.Equals("render", StringComparison.CurrentCultureIgnoreCase)) {
+                    _render = !_render;
+                } else {
+                    DisplayError("Unknown input: \n" + line);
                 }
             }
         }
@@ -91,7 +95,7 @@ namespace Progression.CCL
                 num = Console.ReadKey(true).KeyChar;
                 switch (num) {
                     case 3:
-                        running = false;
+                        _running = false;
                         break;
                     case 1:
                         if (cursor > 0) cursor--;
@@ -114,7 +118,7 @@ namespace Progression.CCL
                         break;
                     case 13:
                     case 10:
-                        CurrentInput = null;
+                        _currentInput = null;
                         return sb.ToString();
                     default:
                         if (num>27) {
@@ -123,24 +127,24 @@ namespace Progression.CCL
                         }
                         break;
                 }
-                CurrentInput = sb.ToString();
-                CurrentCursor = cursor;
+                _currentInput = sb.ToString();
+                _currentCursor = cursor;
             }
         }
 
-        static void On_ProcessExit(object sender, EventArgs e)
+        private static void On_ProcessExit(object sender, EventArgs e)
         {
-            running = false;
+            _running = false;
         }
 
-        static void DisplayError(string error)
+        private static void DisplayError(string error)
         {
-            ErrorDisplay = error.Split('\n');
-            ErrorUntil = DateTime.Now.Ticks + 10_000 * (1000 + error.Length * 80);
-            ErrorColour = Red;
+            _errorDisplay = error.Split('\n');
+            _errorUntil = DateTime.Now.Ticks + 10_000 * (1000 + error.Length * 80);
+            _errorColour = Red;
         }
 
-        private const int VK_ESCAPE = 0x1B;
-        private const int WM_KEYDOWN = 0x0100;
+        private const int VkEscape = 0x1B;
+        private const int WmKeydown = 0x0100;
     }
 }
