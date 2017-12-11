@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using Progression.Util.Keys;
 using Progression.Engine.Core.World;
@@ -20,6 +21,7 @@ using Progression.Util.Generics;
 
 namespace TestLauncher
 {
+    [SuppressMessage("ReSharper", "HeapView.BoxingAllocation")]
     internal static class Program
     {
         /// <summary>
