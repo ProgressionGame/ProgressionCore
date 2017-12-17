@@ -37,8 +37,8 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Generic\ConsoleSizeProvider.cs" />
-    <Compile Include="Generic\ISizeProvider.cs" />
+    <Compile Include="Generic\ConsoleInterOpt.cs" />
+    <Compile Include="Generic\IInterOpt.cs" />
     <Compile Include="NativeConsole.cs" />
     <Compile Include="Generic\GenericAnsiConsole.cs" />
     <Compile Include="IAnsiConsole.cs" />

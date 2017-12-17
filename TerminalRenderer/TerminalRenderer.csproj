@@ -39,6 +39,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Ansi\AnsiInputConverter.cs" />
+    <Compile Include="Ansi\AnsiInputEvent.cs" />
+    <Compile Include="Ansi\CharacterTester.cs" />
+    <Compile Include="Ansi\DataInitializer.cs" />
+    <Compile Include="Ansi\DSeqDic.cs" />
+    <Compile Include="Ansi\ISequenceConsumer.cs" />
+    <Compile Include="Ansi\ISequenceTraverserPart.cs" />
+    <Compile Include="Ansi\KeyEvent.cs" />
+    <Compile Include="Ansi\NumberParser.cs" />
+    <Compile Include="Ansi\SeqDic.cs" />
+    <Compile Include="Ansi\SizeEvent.cs" />
+    <Compile Include="Ansi\SizeEventDataConsumer.cs" />
+    <Compile Include="Ansi\SpecialKey.cs" />
     <Compile Include="ClearScreenMode.cs" />
     <Compile Include="Colour.cs" />
     <Compile Include="IConsole.cs" />

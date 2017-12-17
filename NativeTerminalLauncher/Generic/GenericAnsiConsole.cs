@@ -8,16 +8,16 @@ namespace Progression.CCL.Generic
     {
         public TextWriter Writer { get; private set; }
         private bool _consoleWriter;
-        private readonly ISizeProvider _sizeProvider;
+        private readonly ISizeProvider _interOpt;
         
-        public GenericAnsiConsole(TextWriter writer, ISizeProvider sizeProvider)
+        public GenericAnsiConsole(TextWriter writer, ISizeProvider interOpt)
         {
             Writer = writer;
             _consoleWriter = false;
-            _sizeProvider = sizeProvider;
+            _interOpt = interOpt;
         }
 
-        public GenericAnsiConsole() : this(Console.Out, ConsoleSizeProvider.Instance) {
+        public GenericAnsiConsole() : this(Console.Out, ConsoleInterOpt.Instance) {
             _consoleWriter = true;
             
         }
@@ -47,7 +47,7 @@ namespace Progression.CCL.Generic
         public bool SetTitleInteropt(string title) => false;
         public bool SetCursorVisibilityInteropt(bool value) => false;
 
-        public int Height => _sizeProvider.Height;
-        public int Width => _sizeProvider.Width;
+        public int Height => _interOpt.Height;
+        public int Width => _interOpt.Width;
     }
 }

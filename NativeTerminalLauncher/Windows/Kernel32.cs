@@ -6,8 +6,20 @@ namespace Progression.CCL.Windows
     public static class Kernel32
     {
         public const int StdOutputHandle = -11;
-        public const uint ConsoleModeEnableVirtualTerminalProcessing = 0x0004;
-        public const uint ConsoleModeDisableNewlineAutoReturn  = 0x0008;
+        public const int StdInputHandle = -10;
+        
+        public const uint ConsoleOutModeEnableProcessedOutput  = 0x0001;
+        public const uint ConsoleOutModeEnableWrapAtEolOutput  = 0x0002;
+        public const uint ConsoleOutModeEnableVirtualTerminalProcessing = 0x0004;
+        public const uint ConsoleOutModeDisableNewlineAutoReturn  = 0x0008;
+        
+        
+        public const uint ConsoleInModeEnableProcessedInput   = 0x0001;
+        public const uint ConsoleInModeEnableLineInput   = 0x0002;
+        public const uint ConsoleInModeEnableEchoInput   = 0x0004;
+        public const uint ConsoleInModeEnableMouseInput  = 0x0010;
+        //public const uint ConsoleInMode  = 0x0000;
+        public const uint ConsoleInModeEnableVirtualTerminalInput   = 0x0200;
         public const string IOErrorMessageGeneric = "Kernel call failed";
 
         [DllImport("kernel32.dll")]

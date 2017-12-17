@@ -4,5 +4,6 @@
     {
         int Height { get; }
         int Width { get; }
+        void EnableAnsi();
     }
 }

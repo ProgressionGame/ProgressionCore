@@ -10,7 +10,7 @@ namespace Progression.CCL
         public const string AnsiForegroundColour24Bit = "38;2;";
         public const string AnsiBackgroundColour24Bit = "48;2;";
         
-        private readonly StringBuilder _sb = new StringBuilder();
+        private readonly StringBuilder _sb = new StringBuilder(100);
         public NativeConsole(IAnsiConsole console)
         {
             Console = console;
@@ -159,6 +159,12 @@ namespace Progression.CCL
         public void Init()
         {
             Console.EnableAnsi();
+            Write("GetSize");
+            SGR("19;;t"); //dxterm get size - http://invisible-island.net/xterm/ctlseqs/ctlseqs.html
+            Write("\nGetPos");
+            SGR("6n");
+            Write('\n');
+            Flush();
         }
 
         public int Flush()
