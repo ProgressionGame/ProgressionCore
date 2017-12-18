@@ -15,18 +15,6 @@ namespace Progression.Util.Keys
         }
 
         public IKeyFlavourable KeyFlavourable { get; }
-        
-        public bool IsFree(int id)
-        {
-            return _attachmentKeys.Count >= id || _attachmentKeys[id]==null;
-        }
-
-        public void Register(int id)
-        {
-            while (_attachmentKeys.Count < id) {
-                
-            }
-        }
 
         public bool IsFree(int id, AttachmentKey attachmentKey)
         {
