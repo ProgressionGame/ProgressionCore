@@ -7,8 +7,6 @@ namespace Progression.Engine.Core.World
     public struct Tile
     {
         public readonly Coordinate Coordinate;
-        public ushort X => Coordinate.X;
-        public ushort Y => Coordinate.Y;
         
         public readonly TileWorld World;
 
@@ -21,8 +19,8 @@ namespace Progression.Engine.Core.World
         public Tile(ushort x, ushort y, TileWorld world) : this(new Coordinate(x, y), world) {}
 
         public int this[DataIdentifier identifier] {
-            get => World[X, Y, identifier];
-            set => World[X, Y, identifier]=value;
+            get => World[Coordinate, identifier];
+            set => World[Coordinate, identifier]=value;
         }
 
         public bool this[IFeature feature] {

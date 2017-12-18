@@ -29,9 +29,9 @@ namespace Progression.Engine.Core.World
             _worldData = new BitVector32[height, width, features.GetTileSize(WorldType)];
         }
 
-        public int this[int x, int y, DataIdentifier identifier] {
-            get => _worldData[x, y, identifier[WorldType].Index][identifier[WorldType].Section];
-            set => _worldData[x, y, identifier[WorldType].Index][identifier[WorldType].Section] = value;
+        public int this[Coordinate c, DataIdentifier identifier] {
+            get => _worldData[c.X, c.Y, identifier[WorldType].Index][identifier[WorldType].Section];
+            set => _worldData[c.X, c.Y, identifier[WorldType].Index][identifier[WorldType].Section] = value;
         }
 
         public bool this[int x, int y, IFeature feature] {

@@ -41,7 +41,7 @@ namespace Progression.Engine.Core.World.Features.Base
 
         public override DataIdentifier[] GenerateIdentifiers()
         {
-            if (_identifiers != null || Locked) {
+            if (_identifiers != null || IsFrozen) {
                 throw new InvalidOperationException("GenerateIdentifiers should only be called by FeatureWorld");
             }
             _identifiers = new DataIdentifier[Count];

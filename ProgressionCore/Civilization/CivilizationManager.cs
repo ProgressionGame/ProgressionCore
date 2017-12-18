@@ -3,11 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using Progression.Engine.Core.World;
 using Progression.Engine.Core.World.Features.Base;
+using Progression.Util;
 using Progression.Util.Keys;
 
 namespace Progression.Engine.Core.Civilization
 {
-    public class CivilizationManager : IEnumerable<Civilization>
+    public class CivilizationManager : IEnumerable<Civilization>, IFrozen, IKeyFlavourable
     {
         protected internal const int DiExtraCount = 3;
         private readonly List<Civilization> _civilizations;
@@ -97,15 +98,15 @@ namespace Progression.Engine.Core.Civilization
         }
 
         public Key Key { get; }
-        public bool Locked { get; private set; }
+        public bool IsFrozen { get; private set; }
         public short Count => (short) _civilizations.Count;
         public short Max { get; }
         public CivilizationFeatureResolver Resolver { get; }
 
-        public void Lock()
+        public void Freeze()
         {
-            if (Locked) throw new FeatureResolverLockedException("Civilization manager already locked");
-            Locked = true;
+            if (IsFrozen) throw new FeatureResolverLockedException("Civilization manager already locked");
+            IsFrozen = true;
         }
 
         public Civilization this[int index] => _civilizations[index];
@@ -141,7 +142,7 @@ namespace Progression.Engine.Core.Civilization
 
         public int GetLastMapUpdate(Tile tile)
         {
-#if DEBUG
+#if DEBUG 
             if (!DiCivastMapUpdate.WorldTypes[tile.World.WorldType])
                 throw new ArgumentException(
                     "Debug build only: Last map update data is only stored in per player world.");
@@ -175,5 +176,7 @@ namespace Progression.Engine.Core.Civilization
             }
             tile[DiOwnerId] = newOwnerValue;
         }
+
+        public KeyFlavour KeyFlavour => Resolver.KeyFlavour;
     }
 }

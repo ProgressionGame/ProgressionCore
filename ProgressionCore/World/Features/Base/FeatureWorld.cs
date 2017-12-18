@@ -91,7 +91,7 @@ namespace Progression.Engine.Core.World.Features.Base
 
             //give data to feature resolver
             foreach (var resolver in _features) {
-                resolver.LockRegistration(this);
+                resolver.Freeze(this);
 
                 AddITileYieldModifers(resolver);
             }

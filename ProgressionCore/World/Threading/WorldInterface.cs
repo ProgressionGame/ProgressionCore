@@ -25,7 +25,7 @@ namespace Progression.Engine.Core.World.Threading
                     "FeatureWorld not matching! This is a serious exception. This should never ever happen. This exception will only be thrown in Debug mode. Please fix your programm. ");
 #endif
 
-            World[coord.X, coord.Y, dataIdentifier] = newValue;
+            World[coord, dataIdentifier] = newValue;
         }
     }
 }

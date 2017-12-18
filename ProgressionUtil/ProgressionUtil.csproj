@@ -8,7 +8,7 @@
     <ProjectTypeGuids>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Progression.Util</RootNamespace>
+    <RootNamespace>Progression</RootNamespace>
     <AssemblyName>ProgressionUtil</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -42,27 +42,36 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BinPacking\Bin.cs" />
-    <Compile Include="BinPacking\BinPackingSolvers.cs" />
-    <Compile Include="BinPacking\Packet.cs" />
-    <Compile Include="Generics\BaseTypeEnumerableWrapper.cs" />
-    <Compile Include="Generics\BaseTypeKeyValuePairEnumeratorWrapper.cs" />
-    <Compile Include="Generics\DoubleTypeDictionary.cs" />
-    <Compile Include="Generics\BaseTypeEnumeratorWrapper.cs" />
-    <Compile Include="INameable.cs" />
-    <Compile Include="JoinedEnumerator.cs" />
-    <Compile Include="Keys\Key.cs" />
-    <Compile Include="Keys\RootKey.cs" />
-    <Compile Include="Extension\IExtension.cs" />
-    <Compile Include="Extension\ExtensionInspectorHelper.cs" />
-    <Compile Include="Extension\ExtensionManager.cs" />
-    <Compile Include="Extension\ExtensionValidator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ReleaseType.cs" />
-    <Compile Include="Utils.cs" />
+    <Compile Include="Resource\Util\IResourceable.cs" />
+    <Compile Include="Resource\Util\IResourceManager.cs" />
+    <Compile Include="Resource\Util\ResMan.cs" />
+    <Compile Include="Util\BinPacking\Bin.cs" />
+    <Compile Include="Util\BinPacking\BinPackingSolvers.cs" />
+    <Compile Include="Util\BinPacking\Packet.cs" />
+    <Compile Include="Util\Extension\ExtensionInspectorHelper.cs" />
+    <Compile Include="Util\Extension\ExtensionManager.cs" />
+    <Compile Include="Util\Extension\ExtensionValidator.cs" />
+    <Compile Include="Util\Extension\IExtension.cs" />
+    <Compile Include="Util\Generics\BaseTypeEnumerableWrapper.cs" />
+    <Compile Include="Util\Generics\BaseTypeEnumeratorWrapper.cs" />
+    <Compile Include="Util\Generics\BaseTypeKeyValuePairEnumeratorWrapper.cs" />
+    <Compile Include="Util\Generics\DoubleTypeDictionary.cs" />
+    <Compile Include="Util\IFreezable.cs" />
+    <Compile Include="Util\INameable.cs" />
+    <Compile Include="Util\JoinedEnumerator.cs" />
+    <Compile Include="Util\Keys\AttachmentKey.cs" />
+    <Compile Include="Util\Keys\IKeyFlavourable.cs" />
+    <Compile Include="Util\Keys\IKeyed.cs" />
+    <Compile Include="Util\Keys\IKeyNameable.cs" />
+    <Compile Include="Util\Keys\Key.cs" />
+    <Compile Include="Util\Keys\KeyFlavour.cs" />
+    <Compile Include="Util\Keys\RootKey.cs" />
+    <Compile Include="Util\ReleaseType.cs" />
+    <Compile Include="Util\Utils.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <None Include="Util\packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

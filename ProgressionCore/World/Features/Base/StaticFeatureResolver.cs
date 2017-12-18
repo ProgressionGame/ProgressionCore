@@ -1,70 +1,60 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Progression.Resource.Util;
+using Progression.Util.Generics;
 using Progression.Util.Keys;
 
 namespace Progression.Engine.Core.World.Features.Base
 {
-    public abstract class StaticFeatureResolver<T> : IFeatureResolver<T> where T : class, IStaticFeature<T>
+    public abstract class StaticFeatureResolver<T> : FeatureResolverBase<T> where T : class, IStaticFeature<T>
     {
         protected readonly List<T> Features = new List<T>();
-        public bool Locked { get; private set; }
         protected readonly int IdOffset;
         public readonly WorldType WorldType;
 
-        protected StaticFeatureResolver(WorldType worldType, Key featureTypeKey, int idOffset)
+        protected StaticFeatureResolver(WorldType worldType, Key featureTypeKey, int idOffset) : base(featureTypeKey)
         {
-            FeatureTypeKey = featureTypeKey;
             IdOffset = idOffset;
             WorldType = worldType;
         }
 
-        public Key FeatureTypeKey { get; }
-        public int Count => Features.Count;
-        public FeatureWorld FeatureWorld { get; private set; }
+        public override int Count => Features.Count;
 
         public int Register(T feature)
         {
-            if (Locked)
+            if (IsFrozen)
                 throw new FeatureResolverLockedException("Feature locked. Cannot add new features during game.");
             if (Features.Contains(feature)) throw new InvalidOperationException("Cannot register twice.");
             Features.Add(feature);
             return Features.Count - 1 + IdOffset; //id may not match index
         }
 
-        public T Get(int index) => Features[index];
+        public override T Get(int index) => Features[index];
 
-        public void LockRegistration(FeatureWorld fw)
+        public override void Freeze(FeatureWorld fw)
         {
-            if (Locked) throw new FeatureResolverLockedException("Feature already locked.");
+            if (IsFrozen) throw new FeatureResolverLockedException("Feature already locked.");
             FeatureWorld = fw;
             Features.TrimExcess();
-            OnLock();
-            Locked = true;
+            OnFreeze();
+            IsFrozen = true;
+            ResMan.GetInstance().FreezeResourceable(this);
         }
 
-        public abstract bool HasFeature(Tile tile);
-        public abstract bool IsFeatureOnTile(Tile tile, T feature);
-        public abstract void AddFeature(Tile tile, T feature);
-        public abstract void RemoveFeature(Tile tile, T feature);
-        public virtual void OnLock() { }
-        public abstract DataIdentifier[] GenerateIdentifiers();
-        public abstract DataIdentifier GetIdentifier(int index);
+        public abstract override bool HasFeature(Tile tile);
+        public abstract override bool IsFeatureOnTile(Tile tile, T feature);
+        public abstract override void AddFeature(Tile tile, T feature);
+        public abstract override void RemoveFeature(Tile tile, T feature);
+        protected virtual void OnFreeze() { }
+        public abstract override DataIdentifier[] GenerateIdentifiers();
+        public abstract override DataIdentifier GetIdentifier(int index);
 
 
-        public IEnumerator<T> GetEnumerator()
+        public override IEnumerator<T> GetEnumerator()
         {
             return Features.GetEnumerator();
         }
 
-        #region Hidden
-
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-        IFeature IFeatureResolver.Get(int index) => Get(index);
-        bool IFeatureResolver.IsFeatureOnTile(Tile tile, IFeature feature) => IsFeatureOnTile(tile, (T) feature);
-        void IFeatureResolver.AddFeature(Tile tile, IFeature feature) => AddFeature(tile, (T) feature);
-        void IFeatureResolver.RemoveFeature(Tile tile, IFeature feature) => RemoveFeature(tile, (T) feature);
-
-        #endregion
     }
 }

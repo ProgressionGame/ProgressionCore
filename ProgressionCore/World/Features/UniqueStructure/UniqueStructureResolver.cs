@@ -2,12 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using Progression.Engine.Core.World.Features.Base;
+using Progression.Resource.Util;
 using Progression.Util;
+using Progression.Util.Generics;
 using Progression.Util.Keys;
 
 namespace Progression.Engine.Core.World.Features.UniqueStructure
 {
-    public class UniqueStructureResolver : IFeatureResolver<IUniqueStructure> {
+    public class UniqueStructureResolver : FeatureResolverBase<IUniqueStructure> {
         private readonly List<IUniqueStructureManager<IUniqueStructure>> _managers = new List<IUniqueStructureManager<IUniqueStructure>>();
         
         
@@ -17,95 +19,83 @@ namespace Progression.Engine.Core.World.Features.UniqueStructure
         //Type identifer
         protected internal DataIdentifier DiType { get; protected set; }
         
-        public IEnumerator<IUniqueStructure> GetEnumerator()
+        public override IEnumerator<IUniqueStructure> GetEnumerator()
         {
             return new JoinedEnumerator<IUniqueStructure>(_managers);
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
-        public bool HasFeature(Tile tile)
+        public override bool HasFeature(Tile tile)
         {
             throw new System.NotImplementedException();
         }
 
-        public void LockRegistration(FeatureWorld fw)
+        public override void Freeze(FeatureWorld fw)
         {
             
             FeatureWorld = fw;
             foreach (var manager in _managers) {
-                manager.Lock();
+                manager.Freeze();
             }
+            IsFrozen = true;
         }
 
-        Key IFeatureResolver.FeatureTypeKey => null;
-        public int Count => _managers.Count;
-        public FeatureWorld FeatureWorld { get; private set; }
+        public override int Count => _managers.Count;
         public readonly byte IndexLength;
         
-        public UniqueStructureResolver(byte indexLength = 15)
+        public UniqueStructureResolver(byte indexLength = 15) : base(null) //todo remove null
         {
             if (indexLength < 1 || indexLength > 15) throw new ArgumentException("Needs to be between 1 and 15", nameof(indexLength));
             IndexLength = indexLength;
         }
 
-        public bool IsFeatureOnTile(Tile tile, IUniqueStructure feature)
+        public override bool IsFeatureOnTile(Tile tile, IUniqueStructure feature)
         {
             throw new System.NotImplementedException();
         }
 
-        public void AddFeature(Tile tile, IUniqueStructure feature)
+        public override void AddFeature(Tile tile, IUniqueStructure feature)
         {
             throw new System.NotImplementedException();
         }
 
-        void IFeatureResolver<IUniqueStructure>.RemoveFeature(Tile tile, IUniqueStructure feature)
-        {
-            RemoveFeature(tile, feature);
-        }
 
-        
-        private void RemoveFeature(Tile tile, IUniqueStructure feature)
+        public override void RemoveFeature(Tile tile, IUniqueStructure feature)
         {
             throw new System.NotImplementedException();
         }
         
-        IFeature IFeatureResolver.Get(int index)
-        {
-            return Get(index);
-        }
 
-        public IUniqueStructure Get(int index)
+        public override IUniqueStructure Get(int index)
         {
             throw new System.NotImplementedException();
         }
 
-        public bool IsFeatureOnTile(Tile tile, IFeature feature)
+        public override DataIdentifier[] GenerateIdentifiers()
         {
             throw new System.NotImplementedException();
         }
 
-        public void AddFeature(Tile tile, IFeature feature)
+        public override DataIdentifier GetIdentifier(int index)
         {
             throw new System.NotImplementedException();
         }
+        
+       
+        
+//        public IUniqueStructure GetResourceable(string name)
+//        {
+//            throw new NotImplementedException();
+//        }
+//
+//        IKNamed IResourceable.GetResourceable(string name)
+//        {
+//            return GetResourceable(name);
+//        }
 
-        void IFeatureResolver.RemoveFeature(Tile tile, IFeature feature)
-        {
-            RemoveFeature(tile, (IUniqueStructure) feature);
-        }
-
-        public DataIdentifier[] GenerateIdentifiers()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public DataIdentifier GetIdentifier(int index)
-        {
-            throw new System.NotImplementedException();
-        }
+        
+        
+//        IUniqueStructure IResourceable<IUniqueStructure>.GetResourceable(string name) => (IUniqueStructure) FeatureTypeKey.GetChild(name).Holder;
+//        IKNamed IResourceable.GetResourceable(string name) =>(IUniqueStructure) FeatureTypeKey.GetChild(name).Holder;
+//        Key IKeyed.Key => FeatureTypeKey;
     }
 }

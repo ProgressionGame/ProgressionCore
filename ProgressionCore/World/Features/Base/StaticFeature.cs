@@ -18,7 +18,7 @@ namespace Progression.Engine.Core.World.Features.Base
         public DataIdentifier DataIdentifier {
             get => _dataIdentifier;
             set {
-                if (Resolver.Locked)
+                if (Resolver.IsFrozen)
                     throw new FeatureResolverLockedException("DataOffset has only to be changed by FeatureManager");
                 _dataIdentifier = value;
             }

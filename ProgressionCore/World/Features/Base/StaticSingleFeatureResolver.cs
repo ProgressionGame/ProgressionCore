@@ -43,7 +43,7 @@ namespace Progression.Engine.Core.World.Features.Base
 
         public override DataIdentifier[] GenerateIdentifiers()
         {
-            if (DataIdentifier != null || Locked) {
+            if (DataIdentifier != null || IsFrozen) {
                 throw new InvalidOperationException("GenerateIdentifiers should only be called by FeatureWorld");
             }
             DataIdentifier = new DataIdentifier(this, 0, (int)Math.Ceiling(Math.Log((int)Math.Ceiling(Math.Log(Count+IdOffset, 2)), 2)), WorldType);

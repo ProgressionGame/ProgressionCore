@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
+using System.Runtime.CompilerServices;
 using Progression.Util.Keys;
 using Progression.Engine.Core.World;
 using Progression.Engine.Core.World.Features.Base;
@@ -15,7 +15,7 @@ using Progression.Util.BinPacking;
 using Progression.Engine.Core.World.Features.Terrain;
 using Progression.Resources.Manager;
 using Progression.Util;
-using Progression.Util.Generics;
+using static Progression.Resources.Manager.ResourceTypeEnum;
 
 // ReSharper disable LocalizableElement
 
@@ -30,8 +30,12 @@ namespace TestLauncher
         [STAThread]
         private static void Main()
         {
-            Console.WriteLine($"Starting version {Utils.ReleaseType}");
+            MethodCall();
             
+            Console.WriteLine($"Starting version {Utils.ReleaseType}");
+
+            Console.WriteLine($"Category of {CategoryUndefined} is {CategoryUndefined.Category()}");
+
             var resMan = new ResourceDecoderManager();
             resMan.Init();
             var sw = new Stopwatch();
@@ -336,6 +340,100 @@ namespace TestLauncher
 
             Console.WriteLine($"{puppetSpecial1.Addition1} vs {puppetSpecial1C.Addition1}");
             Console.WriteLine($"{puppetSpecial2.Addition2} vs {puppetSpecial2C.Addition2}");
+        }
+
+
+        //bnechmark 
+        abstract class ClassA
+        {
+            public abstract int Func2(int a);
+            public abstract int Func3(int a);
+        }
+
+        class ClassB : ClassA
+        {
+            [MethodImpl(MethodImplOptions.NoInlining)]
+            public int Func1(int a)
+            {
+                return a + 2;
+            }
+
+            public override int Func2(int a)
+            {
+                return a + 2;
+            }
+
+            public sealed override int Func3(int a)
+            {
+                return a + 2;
+            }
+        }
+
+        public static void MethodCall()
+        {
+            const int loops = 1000000000;
+            int x = 0;
+            ClassB b = new ClassB();
+
+            Console.WriteLine("Method Call Overhead:");
+
+            Stopwatch watch = new Stopwatch();
+            watch.Start();
+            for (int i = 0; i < loops; i++) {
+                x = x + 2;
+            }
+            watch.Stop();
+            Report("No function", loops, watch.ElapsedMilliseconds);
+            x -= 2 * loops;
+
+            watch.Restart();
+            for (int i = 0; i < loops; i++) {
+                x = b.Func1(x);
+            }
+            watch.Stop();
+            Report("Non-virtual", loops, watch.ElapsedMilliseconds);
+            x -= 2 * loops;
+
+            watch.Restart();
+            for (int i = 0; i < loops; i++) {
+                x = b.Func2(x);
+            }
+            watch.Stop();
+            Report("override", loops, watch.ElapsedMilliseconds);
+            x -= 2 * loops;
+
+            watch.Restart();
+            for (int i = 0; i < loops; i++) {
+                x = b.Func3(x);
+            }
+            watch.Stop();
+            Report("sealed override", loops, watch.ElapsedMilliseconds);
+            x -= 2 * loops;
+
+            ClassA a = b;
+            watch.Restart();
+            for (int i = 0; i < loops; i++) {
+                x = a.Func2(x);
+            }
+            watch.Stop();
+            Report("virtual via override", loops, watch.ElapsedMilliseconds);
+            x -= 2 * loops;
+
+            watch.Restart();
+            for (int i = 0; i < loops; i++) {
+                x = a.Func3(x);
+            }
+            watch.Stop();
+            Report("Sealed via override", loops, watch.ElapsedMilliseconds);
+            x -= 2 * loops;
+
+            Console.WriteLine(x); // so the compiler doesn't optimize it away
+        }
+
+        static void Report(string message, int iterations, long milliseconds)
+        {
+            Console.WriteLine(string.Format("{0,-26:} {1,10:N1} MOps/s, {2,7:N3} s", message,
+                (double) iterations / 1000.0 / milliseconds, milliseconds / 1000.0));
         }
     }
 }

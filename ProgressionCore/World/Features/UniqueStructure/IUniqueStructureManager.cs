@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Progression.Util;
 
 namespace Progression.Engine.Core.World.Features.UniqueStructure
 {
@@ -9,9 +10,8 @@ namespace Progression.Engine.Core.World.Features.UniqueStructure
         new TStructure Get(int index);
     }
     
-    public interface IUniqueStructureManager : IEnumerable
+    public interface IUniqueStructureManager : IEnumerable, IFreezable
     {
         IUniqueStructure Get(int index);
-        void Lock();
     }
 }

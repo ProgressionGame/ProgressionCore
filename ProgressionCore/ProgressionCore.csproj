@@ -91,6 +91,8 @@
     <Compile Include="World\Coordinate.cs" />
     <Compile Include="World\DataLocation.cs" />
     <Compile Include="World\Features\Base\DataIdentifier.cs" />
+    <Compile Include="World\Features\Base\FeatureResolverBase.cs" />
+    <Compile Include="World\Features\Base\FeatureResolverSpecialisedBase.cs" />
     <Compile Include="World\Features\Base\FeatureWorld.cs" />
     <Compile Include="World\Features\Base\IMultiFeatureResolver.cs" />
     <Compile Include="World\Features\Base\ISingleFeatureResolver.cs" />
