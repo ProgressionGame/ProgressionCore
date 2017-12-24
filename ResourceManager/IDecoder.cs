@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using Progression.Util;
 
-namespace Progression.Resources.Manager
+namespace Progression.Resource
 {
     public interface IDecoder<out T> : IDecoder
     {

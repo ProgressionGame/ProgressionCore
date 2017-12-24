@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using Progression.Engine.Core.World;
 using Progression.Engine.Core.World.Features.Base;
-using Progression.Resource.Util;
 using Progression.Util;
 using Progression.Util.Generics;
 using Progression.Util.Keys;
@@ -46,25 +45,6 @@ namespace Progression.Engine.Core.Civilization
 
         
         #region Hidden
-        protected override bool IsFeatureOnTile(Tile tile, Civilization feature)
-        {
-            throw new NotImplementedException("This operation is undefined for this object");
-        }
-
-        protected override void AddFeature(Tile tile, Civilization feature)
-        {
-            throw new NotImplementedException("This operation is undefined for this object");
-        }
-
-        protected override void RemoveFeature(Tile tile, Civilization feature)
-        {
-            throw new NotImplementedException("This operation is undefined for this object");
-        }
-
-        protected override bool HasFeature(Tile tile)
-        {
-            throw new NotImplementedException("This operation is undefined for this object");
-        }
         #endregion
 
         public override bool IsFrozen {

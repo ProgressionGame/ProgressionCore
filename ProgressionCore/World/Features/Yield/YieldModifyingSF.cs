@@ -1,14 +1,15 @@
 ﻿using System;
 using Progression.Engine.Core.World.Features.Base;
+using Progression.Engine.Core.World.Features.Simple;
 
 namespace Progression.Engine.Core.World.Features.Yield
 {
-    public class StaticYieldModifyingFeature<T> : StaticFeature<T>, ITileYieldModifer
-        where T : StaticYieldModifyingFeature<T>
+    public class SimpleYieldModifyingFeature<T> : SimpleFeature<T>, ITileYieldModifer
+        where T : SimpleYieldModifyingFeature<T>
     {
         private readonly IYieldModifer _modifier;
 
-        public StaticYieldModifyingFeature(string name, StaticFeatureResolver<T> resolver, IYieldModifer modifier,
+        public SimpleYieldModifyingFeature(string name, StaticFeatureResolver<T> resolver, IYieldModifer modifier,
             TileYieldModifierPriority priority) :
             base(name, resolver)
         {
@@ -16,7 +17,7 @@ namespace Progression.Engine.Core.World.Features.Yield
             Priority = priority;
         }
 
-        public StaticYieldModifyingFeature(string name, StaticFeatureResolver<T> resolver, YieldManager yieldManager,
+        public SimpleYieldModifyingFeature(string name, StaticFeatureResolver<T> resolver, YieldManager yieldManager,
             YieldModifierType type, double[] modifiers, TileYieldModifierPriority priority) :
             base(name, resolver)
         {

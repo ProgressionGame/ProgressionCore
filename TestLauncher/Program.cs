@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using Progression.Util.Keys;
 using Progression.Engine.Core.World;
 using Progression.Engine.Core.World.Features.Base;
@@ -11,11 +12,12 @@ using static Progression.Engine.Core.World.Features.Yield.YieldModifierType;
 using static Progression.Engine.Core.World.Features.Yield.TileYieldModifierPriority;
 using System.Threading;
 using Progression.Engine.Core.Civilization;
+using Progression.Engine.Core.World.Features.Simple;
 using Progression.Util.BinPacking;
 using Progression.Engine.Core.World.Features.Terrain;
-using Progression.Resources.Manager;
+using Progression.Resource;
 using Progression.Util;
-using static Progression.Resources.Manager.ResourceTypeEnum;
+using static Progression.Resource.ResourceTypeEnum;
 
 // ReSharper disable LocalizableElement
 
@@ -180,7 +182,6 @@ namespace TestLauncher
             var rome = new Civilization("Rome", civMan);
             var egypt = new Civilization("Egypt", civMan);
 
-
             //init
             var fw = new FeatureWorld(2, ym);
             fw.Register(resTb);
@@ -192,25 +193,28 @@ namespace TestLauncher
             //world creation
             var world = new TileWorld(fw, 5, 5);
 
-            Console.WriteLine(world.HasFeature(3, 3, grassland));
-            Console.WriteLine(world.HasFeature(3, 3, flatland));
-            Console.WriteLine(world.HasFeature(3, 3, jungle));
-            Console.WriteLine(world.HasFeature(3, 3, mountains));
+            // ReSharper disable once InconsistentNaming
+            var tile3_3 = world[3, 3];
+
+        Console.WriteLine(grassland.HasFeature(tile3_3));
+            Console.WriteLine(flatland.HasFeature(tile3_3));
+            Console.WriteLine(jungle.HasFeature(tile3_3));
+            Console.WriteLine(mountains.HasFeature(tile3_3));
             Console.WriteLine(flatland.Id);
             Console.WriteLine(hills.Id);
             Console.WriteLine(mountains.Id);
             Console.WriteLine();
             Console.WriteLine(
                 $"{world.CalcYield(3, 3, food)}, {world.CalcYield(3, 3, production)}, {world.CalcYield(3, 3, commerce)}");
-            world.AddFeature(3, 3, forest);
+            forest.AddFeature(tile3_3);
             Console.WriteLine(
                 $"{world.CalcYield(3, 3, food)}, {world.CalcYield(3, 3, production)}, {world.CalcYield(3, 3, commerce)}");
-            world.AddFeature(3, 3, hills);
+            hills.AddFeature(tile3_3);
             Console.WriteLine(
                 $"{world.CalcYield(3, 3, food)}, {world.CalcYield(3, 3, production)}, {world.CalcYield(3, 3, commerce)}");
-            Console.WriteLine(world.HasFeature(3, 3, grassland));
-            Console.WriteLine(world.HasFeature(3, 3, forest));
-            Console.WriteLine(world.HasFeature(3, 3, hills));
+            Console.WriteLine(grassland.HasFeature(tile3_3));
+            Console.WriteLine(forest.HasFeature(tile3_3));
+            Console.WriteLine(hills.HasFeature(tile3_3));
 
             Console.WriteLine($"Owner: 2,3={civMan.GetOwner(world[2, 3])?.Name ?? "NoMensLand"}");
             Console.WriteLine(
@@ -280,7 +284,7 @@ namespace TestLauncher
 
             //random updates
             world.RegisterUpdate(wInterface.ScheduleUpdate);
-            IFeature[] allFeatures = {
+            ISimpleFeature[] allFeatures = {
                 desert, flatland, forest, grassland, highMountains, hills, ice, jungle, mountains, pineForest, plains,
                 tundra
             };
@@ -289,7 +293,7 @@ namespace TestLauncher
 
             sw.Start();
             for (int i = 0; i < 1_000_000; i++) {
-                world[rnd.Next(worldSize), rnd.Next(worldSize), allFeatures[rnd.Next(allFeatures.Length)]] = true;
+                allFeatures[rnd.Next(allFeatures.Length)].AddFeature(world[rnd.Next(worldSize), rnd.Next(worldSize)]);
             }
             sw.Stop();
             lock (monitor) Monitor.Pulse(monitor);
@@ -301,15 +305,15 @@ namespace TestLauncher
             Console.WriteLine("random updates parallel");
             lock (monitor) Monitor.Pulse(monitor);
             for (int i = 0; i < 1_000_000; i++) {
-                world[rnd.Next(worldSize), rnd.Next(worldSize), allFeatures[rnd.Next(allFeatures.Length)]] = true;
+                allFeatures[rnd.Next(allFeatures.Length)].AddFeature(world[rnd.Next(worldSize), rnd.Next(worldSize)]);
             }
             flag[0] = false;
             Console.WriteLine("random updates parallel done");
 
 
             Console.ReadKey();
-            Console.WriteLine(world.HasFeature(3, 3, mountains));
-            Console.WriteLine(world.HasFeature(3, 3, grassland));
+            Console.WriteLine(grassland.HasFeature(tile3_3));
+            Console.WriteLine(mountains.HasFeature(tile3_3));
 
             Console.ReadKey();
         }
@@ -350,14 +354,19 @@ namespace TestLauncher
             public abstract int Func3(int a);
         }
 
-        class ClassB : ClassA
+        interface IC
         {
-            [MethodImpl(MethodImplOptions.NoInlining)]
+            int Func1(int a);
+        }
+
+        class ClassB : ClassA, IC
+        {
             public int Func1(int a)
             {
                 return a + 2;
             }
 
+            
             public override int Func2(int a)
             {
                 return a + 2;
@@ -430,7 +439,7 @@ namespace TestLauncher
             Console.WriteLine(x); // so the compiler doesn't optimize it away
         }
 
-        static void Report(string message, int iterations, long milliseconds)
+        private static void Report(string message, int iterations, long milliseconds)
         {
             Console.WriteLine(string.Format("{0,-26:} {1,10:N1} MOps/s, {2,7:N3} s", message,
                 (double) iterations / 1000.0 / milliseconds, milliseconds / 1000.0));

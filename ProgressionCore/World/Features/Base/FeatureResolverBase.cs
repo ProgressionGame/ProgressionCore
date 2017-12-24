@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using Progression.Resource.Util;
+using Progression.Resource;
 using Progression.Util.Generics;
 using Progression.Util.Keys;
 
@@ -15,12 +15,12 @@ namespace Progression.Engine.Core.World.Features.Base
         }
         
         public abstract IEnumerator<T> GetEnumerator(); //idk whether this is a good idea or not
-        public abstract bool HasFeature(Tile tile);
+//        public abstract bool HasFeature(Tile tile);
         public abstract void Freeze(FeatureWorld fw);
         public abstract int Count { get; }
-        public abstract bool IsFeatureOnTile(Tile tile, T feature);
-        public abstract void AddFeature(Tile tile, T feature);
-        public abstract void RemoveFeature(Tile tile, T feature);
+//        public abstract bool IsFeatureOnTile(Tile tile, T feature);
+//        public abstract void AddFeature(Tile tile, T feature);
+//        public abstract void RemoveFeature(Tile tile, T feature);
         public abstract T Get(int index);
         public abstract DataIdentifier[] GenerateIdentifiers();
         public abstract DataIdentifier GetIdentifier(int index);
@@ -36,9 +36,9 @@ namespace Progression.Engine.Core.World.Features.Base
         
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         IFeature IFeatureResolver.Get(int index) => Get(index);
-        bool IFeatureResolver.IsFeatureOnTile(Tile tile, IFeature feature) => IsFeatureOnTile(tile, (T) feature);
-        void IFeatureResolver.AddFeature(Tile tile, IFeature feature) => AddFeature(tile, (T) feature);
-        void IFeatureResolver.RemoveFeature(Tile tile, IFeature feature) => RemoveFeature(tile, (T) feature);
+//        bool IFeatureResolver.IsFeatureOnTile(Tile tile, IFeature feature) => IsFeatureOnTile(tile, (T) feature);
+//        void IFeatureResolver.AddFeature(Tile tile, IFeature feature) => AddFeature(tile, (T) feature);
+//        void IFeatureResolver.RemoveFeature(Tile tile, IFeature feature) => RemoveFeature(tile, (T) feature);
         IEnumerator<IKeyNameable> IResourceable.GetResourceables() => new BaseTypeEnumeratorWrapper<T,IKeyNameable>(GetEnumerator());
         IEnumerator<T> IResourceable<T>.GetResourceables() => GetEnumerator();
         Key IKeyed.Key => FeatureTypeKey;

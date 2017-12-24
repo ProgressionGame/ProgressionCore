@@ -1,4 +1,5 @@
 ﻿using Progression.Engine.Core.World.Features.Base;
+using Progression.Engine.Core.World.Features.Simple;
 using Progression.Engine.Core.World.Features.Yield;
 
 namespace Progression.Engine.Core.World.Features.Terrain

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Progression.Resources.Manager
+namespace Progression.Resource
 {
     [Flags]
     public enum ResourceDomain

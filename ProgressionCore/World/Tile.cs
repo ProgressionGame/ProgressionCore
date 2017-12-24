@@ -1,5 +1,5 @@
-﻿using Progression.Engine.Core.World.Features.Base;
-using Progression.Engine.Core.World.Features.Yield;
+﻿using System.Runtime.CompilerServices;
+using Progression.Engine.Core.World.Features.Base;
 using Progression.Engine.Core.World.Threading;
 
 namespace Progression.Engine.Core.World
@@ -19,37 +19,39 @@ namespace Progression.Engine.Core.World
         public Tile(ushort x, ushort y, TileWorld world) : this(new Coordinate(x, y), world) {}
 
         public int this[DataIdentifier identifier] {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get => World[Coordinate, identifier];
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             set => World[Coordinate, identifier]=value;
         }
 
-        public bool this[IFeature feature] {
-            get => feature.HasFeature(this);
-            set {
-                if (value) feature.AddFeature(this);
-                else feature.RemoveFeature(this);
-            }
-        }
-        
-        public bool HasFeature<T>(T feature) where T : class, IFeature<T>
-        {
-            return feature.HasFeature(this);
-        }
-
-        public void AddFeature<T>(T feature) where T : class, IFeature<T>
-        {
-            feature.AddFeature(this);
-        }
-
-        public void RemoveFeature<T>(T feature) where T : class, IFeature<T>
-        {
-            feature.RemoveFeature(this);
-        }
-
-        public double CalcYield(YieldType type)
-        {
-            return type.Manager.CalcYield(type, this);
-        }
+//        public bool this[IFeature feature] {
+//            get => feature.HasFeature(this);
+//            set {
+//                if (value) feature.AddFeature(this);
+//                else feature.RemoveFeature(this);
+//            }
+//        }
+//        
+//        public bool HasFeature<T>(T feature) where T : class, IFeature<T>
+//        {
+//            return feature.HasFeature(this);
+//        }
+//
+//        public void AddFeature<T>(T feature) where T : class, IFeature<T>
+//        {
+//            feature.AddFeature(this);
+//        }
+//
+//        public void RemoveFeature<T>(T feature) where T : class, IFeature<T>
+//        {
+//            feature.RemoveFeature(this);
+//        }
+//
+//        public double CalcYield(YieldType type)
+//        {
+//            return type.Manager.CalcYield(type, this);
+//        }
 
         public void InvokeTileUpdate<TFeature, TResolver>(TResolver resolver, TFeature feature, int newValue,
             DataIdentifier dataIdentifier)

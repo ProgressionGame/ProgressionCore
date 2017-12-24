@@ -1,4 +1,4 @@
-﻿namespace Progression.Resource.Util
+﻿namespace Progression.Resource
 {
     public static class ResMan
     {

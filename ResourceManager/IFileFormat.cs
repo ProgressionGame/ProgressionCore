@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using Progression.Util;
 
-namespace Progression.Resources.Manager
+namespace Progression.Resource
 {
     public interface IFileFormat<T> : IFileFormat
     {

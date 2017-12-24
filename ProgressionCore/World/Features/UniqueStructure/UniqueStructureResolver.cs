@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using Progression.Engine.Core.World.Features.Base;
-using Progression.Resource.Util;
 using Progression.Util;
 using Progression.Util.Generics;
 using Progression.Util.Keys;
@@ -24,11 +23,6 @@ namespace Progression.Engine.Core.World.Features.UniqueStructure
             return new JoinedEnumerator<IUniqueStructure>(_managers);
         }
 
-        public override bool HasFeature(Tile tile)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public override void Freeze(FeatureWorld fw)
         {
             
@@ -47,22 +41,6 @@ namespace Progression.Engine.Core.World.Features.UniqueStructure
             if (indexLength < 1 || indexLength > 15) throw new ArgumentException("Needs to be between 1 and 15", nameof(indexLength));
             IndexLength = indexLength;
         }
-
-        public override bool IsFeatureOnTile(Tile tile, IUniqueStructure feature)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override void AddFeature(Tile tile, IUniqueStructure feature)
-        {
-            throw new System.NotImplementedException();
-        }
-
-
-        public override void RemoveFeature(Tile tile, IUniqueStructure feature)
-        {
-            throw new System.NotImplementedException();
-        }
         
 
         public override IUniqueStructure Get(int index)
@@ -79,23 +57,5 @@ namespace Progression.Engine.Core.World.Features.UniqueStructure
         {
             throw new System.NotImplementedException();
         }
-        
-       
-        
-//        public IUniqueStructure GetResourceable(string name)
-//        {
-//            throw new NotImplementedException();
-//        }
-//
-//        IKNamed IResourceable.GetResourceable(string name)
-//        {
-//            return GetResourceable(name);
-//        }
-
-        
-        
-//        IUniqueStructure IResourceable<IUniqueStructure>.GetResourceable(string name) => (IUniqueStructure) FeatureTypeKey.GetChild(name).Holder;
-//        IKNamed IResourceable.GetResourceable(string name) =>(IUniqueStructure) FeatureTypeKey.GetChild(name).Holder;
-//        Key IKeyed.Key => FeatureTypeKey;
     }
 }

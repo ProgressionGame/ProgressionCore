@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using Progression.Resource.Util;
-using Progression.Util.Generics;
+using Progression.Engine.Core.World.Features.Base;
+using Progression.Resource;
 using Progression.Util.Keys;
 
-namespace Progression.Engine.Core.World.Features.Base
+namespace Progression.Engine.Core.World.Features.Simple
 {
-    public abstract class StaticFeatureResolver<T> : FeatureResolverBase<T> where T : class, IStaticFeature<T>
+    public abstract class StaticFeatureResolver<T> : FeatureResolverBase<T> where T : class, ISimpleFeature<T>
     {
         protected readonly List<T> Features = new List<T>();
         protected readonly int IdOffset;
@@ -39,13 +38,13 @@ namespace Progression.Engine.Core.World.Features.Base
             Features.TrimExcess();
             OnFreeze();
             IsFrozen = true;
-            ResMan.GetInstance().FreezeResourceable(this);
+            ResMan.GetInstance().FreezeResourceable(this); //so that hooks on this get resolved
         }
 
-        public abstract override bool HasFeature(Tile tile);
-        public abstract override bool IsFeatureOnTile(Tile tile, T feature);
-        public abstract override void AddFeature(Tile tile, T feature);
-        public abstract override void RemoveFeature(Tile tile, T feature);
+//        public abstract override bool HasFeature(Tile tile);
+//        public abstract override bool IsFeatureOnTile(Tile tile, T feature);
+//        public abstract override void AddFeature(Tile tile, T feature);
+//        public abstract override void RemoveFeature(Tile tile, T feature);
         protected virtual void OnFreeze() { }
         public abstract override DataIdentifier[] GenerateIdentifiers();
         public abstract override DataIdentifier GetIdentifier(int index);

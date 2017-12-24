@@ -1,45 +1,46 @@
 ﻿using System;
+using Progression.Engine.Core.World.Features.Base;
 using Progression.Util.Keys;
 
-namespace Progression.Engine.Core.World.Features.Base
+namespace Progression.Engine.Core.World.Features.Simple
 {
-    public class StaticSingleFeatureResolver<T> : StaticFeatureResolver<T>, ISingleFeatureResolver<T>
-        where T : class, IStaticFeature<T>
+    public class SingleFeatureResolver<T> : StaticFeatureResolver<T>, ISingleFeatureResolver<T>
+        where T : class, ISimpleFeature<T>
     {
-        public StaticSingleFeatureResolver(WorldType worldType, Key featureTypeKey, bool optional) : base(worldType, featureTypeKey, optional ? 1 : 0)
+        public SingleFeatureResolver(WorldType worldType, Key featureTypeKey, bool optional) : base(worldType, featureTypeKey, optional ? 1 : 0)
         {
             
         }
 
         public DataIdentifier DataIdentifier { get; private set; }
 
-        public override bool HasFeature(Tile tile)
+        public bool HasFeature(Tile tile)
         {
             return tile[DataIdentifier] >= IdOffset;
         }
-
-
-        public override bool IsFeatureOnTile(Tile tile, T feature)
-        {
-            return tile[DataIdentifier]  == feature.Id;
-        }
-
-        public override void AddFeature(Tile tile, T feature)
-        {
-            tile[DataIdentifier]  = (ushort) feature.Id;
-            //TODO make this better
-            tile.InvokeTileUpdate(this, feature, feature.Id, DataIdentifier);
-        }
-
-        public override void RemoveFeature(Tile tile, T feature)
-        {
-            if (IsFeatureOnTile(tile, feature)) {
-                tile[DataIdentifier]  = 0;
-                
-                //TODO make this better
-                tile.InvokeTileUpdate(this, feature, 0, DataIdentifier);
-            }
-        } 
+//
+//
+//        public override bool IsFeatureOnTile(Tile tile, T feature)
+//        {
+//            return tile[DataIdentifier]  == feature.Id;
+//        }
+//
+//        public override void AddFeature(Tile tile, T feature)
+//        {
+//            tile[DataIdentifier]  = (ushort) feature.Id;
+//            //TODO make this better
+//            tile.InvokeTileUpdate(this, feature, feature.Id, DataIdentifier);
+//        }
+//
+//        public override void RemoveFeature(Tile tile, T feature)
+//        {
+//            if (IsFeatureOnTile(tile, feature)) {
+//                tile[DataIdentifier]  = 0;
+//                
+//                //TODO make this better
+//                tile.InvokeTileUpdate(this, feature, 0, DataIdentifier);
+//            }
+//        } 
 
         public override DataIdentifier[] GenerateIdentifiers()
         {

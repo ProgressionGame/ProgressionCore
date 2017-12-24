@@ -1,5 +1,5 @@
 ﻿using System;
-using Progression.Resources.Manager;
+using Progression.Resource;
 
 namespace Progression.Resources.Decoder.Yaml
 {

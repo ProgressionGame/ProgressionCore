@@ -34,21 +34,21 @@ namespace Progression.Engine.Core.World
             set => _worldData[c.X, c.Y, identifier[WorldType].Index][identifier[WorldType].Section] = value;
         }
 
-        public bool this[int x, int y, IFeature feature] {
-            get => feature.HasFeature(this[x, y]);
-            set {
-                if (value) feature.AddFeature(this[x, y]);
-                else feature.RemoveFeature(this[x, y]);
-            }
-        }
-
-        public bool this[Coordinate coord, IFeature feature] {
-            get => feature.HasFeature(this[coord]);
-            set {
-                if (value) feature.AddFeature(this[coord]);
-                else feature.RemoveFeature(this[coord]);
-            }
-        }
+//        public bool this[int x, int y, IFeature feature] {
+//            get => feature.HasFeature(this[x, y]);
+//            set {
+//                if (value) feature.AddFeature(this[x, y]);
+//                else feature.RemoveFeature(this[x, y]);
+//            }
+//        }
+//
+//        public bool this[Coordinate coord, IFeature feature] {
+//            get => feature.HasFeature(this[coord]);
+//            set {
+//                if (value) feature.AddFeature(this[coord]);
+//                else feature.RemoveFeature(this[coord]);
+//            }
+//        }
 
 
         public Tile this[ushort x, ushort y] => GetTile(x, y);
@@ -70,20 +70,20 @@ namespace Progression.Engine.Core.World
             return new Tile(coord, this);
         }
 
-        public bool HasFeature<T>(int x, int y, T feature) where T : class, IFeature<T>
-        {
-            return feature.HasFeature(GetTile(x, y));
-        }
-
-        public void AddFeature<T>(int x, int y, T feature) where T : class, IFeature<T>
-        {
-            feature.AddFeature(GetTile(x, y));
-        }
-
-        public void RemoveFeature<T>(int x, int y, T feature) where T : class, IFeature<T>
-        {
-            feature.RemoveFeature(GetTile(x, y));
-        }
+//        public bool HasFeature<T>(int x, int y, T feature) where T : class, IFeature<T>
+//        {
+//            return feature.HasFeature(GetTile(x, y));
+//        }
+//
+//        public void AddFeature<T>(int x, int y, T feature) where T : class, IFeature<T>
+//        {
+//            feature.AddFeature(GetTile(x, y));
+//        }
+//
+//        public void RemoveFeature<T>(int x, int y, T feature) where T : class, IFeature<T>
+//        {
+//            feature.RemoveFeature(GetTile(x, y));
+//        }
 
         public double CalcYield(int x, int y, YieldType type)
         {

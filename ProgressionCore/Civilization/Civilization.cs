@@ -68,21 +68,6 @@ namespace Progression.Engine.Core.Civilization
 
         #region Hidden
 
-        bool IFeature.HasFeature(Tile tile)
-        {
-            return ((IFeatureResolver<Civilization>) Manager.Resolver).IsFeatureOnTile(tile, this);
-        }
-
-        void IFeature.AddFeature(Tile tile)
-        {
-            ((IFeatureResolver<Civilization>) Manager.Resolver).AddFeature(tile, this);
-        }
-
-        void IFeature.RemoveFeature(Tile tile)
-        {
-            ((IFeatureResolver<Civilization>) Manager.Resolver).RemoveFeature(tile, this);
-        }
-
 
         protected bool Equals(Civilization other)
         {

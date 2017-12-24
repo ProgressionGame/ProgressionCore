@@ -1,12 +1,13 @@
-﻿using Progression.Util.Keys;
+﻿using Progression.Engine.Core.World.Features.Base;
+using Progression.Util.Keys;
 
-namespace Progression.Engine.Core.World.Features.Base
+namespace Progression.Engine.Core.World.Features.Simple
 {
-    public class StaticFeature<T> : IStaticFeature<T> where T : StaticFeature<T>
+    public class SimpleFeature<T> : ISimpleFeature<T> where T : SimpleFeature<T>
     {
         private DataIdentifier _dataIdentifier;
 
-        public StaticFeature(string name, StaticFeatureResolver<T> resolver)
+        public SimpleFeature(string name, StaticFeatureResolver<T> resolver)
         {
             Key = new Key(resolver.FeatureTypeKey, name);
             Resolver = resolver;
@@ -14,6 +15,7 @@ namespace Progression.Engine.Core.World.Features.Base
         }
 
         public int Id { get; }
+        internal int Value;
 
         public DataIdentifier DataIdentifier {
             get => _dataIdentifier;
@@ -27,19 +29,21 @@ namespace Progression.Engine.Core.World.Features.Base
         public string Name => Key.Name;
         public Key Key { get; }
         public StaticFeatureResolver<T> Resolver { get; }
+        
+        
         public bool HasFeature(Tile tile)
         {
-            return Resolver.IsFeatureOnTile(tile, (T) this);
+            return tile[DataIdentifier] == Value;
         }
 
         public void AddFeature(Tile tile)
         {
-            Resolver.AddFeature(tile, (T) this);
+            tile[DataIdentifier] = Value;
         }
 
         public void RemoveFeature(Tile tile)
         {
-            Resolver.RemoveFeature(tile, (T) this);
+            tile[DataIdentifier] = 0;
         }
 
         IFeatureResolver IFeature.Resolver => Resolver;

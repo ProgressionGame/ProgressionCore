@@ -1,4 +1,4 @@
-﻿namespace Progression.Resources.Manager {
+﻿namespace Progression.Resource {
     public enum ResourceTypeEnum : uint
     {
         

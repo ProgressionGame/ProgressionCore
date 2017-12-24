@@ -5,7 +5,7 @@ namespace Progression.Util.Keys
 {
     public class AttachmentKey<T> : AttachmentKey { }
 
-    public class AttachmentKey : IFreezable
+    public abstract class AttachmentKey : IFreezable
     {
         private const string OnlyAllowedBeforeRegistration = "Only allowed before registration";
         private readonly List<KeyFlavour> _flavours = new List<KeyFlavour>();
@@ -30,7 +30,6 @@ namespace Progression.Util.Keys
         public void AddFlavour(IKeyFlavourable flavourable) => AddFlavour(flavourable.KeyFlavour);
 
         public int CountFlovours => _flavours.Count;
-
 
         public void Register()
         {

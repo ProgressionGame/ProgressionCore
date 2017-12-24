@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Progression.Util;
 using Progression.Util.Generics;
 
-namespace Progression.Resources.Manager
+namespace Progression.Resource
 {
     public sealed class ResourceType<T> : ResourceType
     {

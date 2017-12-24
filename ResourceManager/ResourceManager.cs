@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices.ComTypes;
-using Progression.Resource.Util;
 
-namespace Progression.Resources.Manager
+namespace Progression.Resource
 {
     public class ResourceManager : IResourceManager
     {
         private readonly Dictionary<string, ResourceType> _resourceTypes = new Dictionary<string, ResourceType>();
         private readonly Dictionary<ResourceTypeEnum, ResourceType> _resourceTypesEnum = new Dictionary<ResourceTypeEnum, ResourceType>();
-        private readonly Dictionary<IResourceable, List<IResourceHook>> _resourceHooksWaiting = new Dictionary<IResourceable, List<IResourceHook>>();
+        private readonly Dictionary<IResourceable, List<ResourceHook>> _resourceHooksWaiting = new Dictionary<IResourceable, List<ResourceHook>>();
         
         public ResourceManager(ResourceDomain environment)
         {
@@ -25,18 +23,18 @@ namespace Progression.Resources.Manager
             
         }
 
-        public void AddHook(IResourceable resourceable, IResourceHook hook)
+        public void AddHook(IResourceable resourceable, ResourceHook hook)
         {
             if (resourceable.IsFrozen) {
                 var e = resourceable.GetResourceables();
                 while (e.Current != null) {
-                    hook.OnHook(e.Current);
+                    hook(e.Current);
                     e.MoveNext();
                 }
             } else {
-                List<IResourceHook> hooks;
+                List<ResourceHook> hooks;
                 if (!_resourceHooksWaiting.ContainsKey(resourceable)) {
-                    hooks = new List<IResourceHook>();
+                    hooks = new List<ResourceHook>();
                     _resourceHooksWaiting[resourceable] = hooks;
                 } else {
                     hooks = _resourceHooksWaiting[resourceable];
@@ -54,7 +52,7 @@ namespace Progression.Resources.Manager
             var e = resourceable.GetResourceables();
             while (e.Current != null) {
                 foreach (var hook in hooks) {
-                    hook.OnHook(e.Current);
+                    hook(e.Current);
                 }
                 e.MoveNext();
             }

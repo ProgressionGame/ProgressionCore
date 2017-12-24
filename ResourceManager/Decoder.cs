@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace Progression.Resources.Manager
+namespace Progression.Resource
 {
     public abstract class Decoder<T> : IDecoder<T>
     {

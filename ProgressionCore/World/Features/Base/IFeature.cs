@@ -8,9 +8,6 @@ namespace Progression.Engine.Core.World.Features.Base
     }
     public interface IFeature : IKeyNameable
     {
-        bool HasFeature(Tile tile);
-        void AddFeature(Tile tile);
-        void RemoveFeature(Tile tile);
         IFeatureResolver Resolver { get; }
     }
 }

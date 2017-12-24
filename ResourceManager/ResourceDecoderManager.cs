@@ -1,11 +1,10 @@
 ﻿using System;
 using System.IO;
-using System.Reflection;
 using Newtonsoft.Json.Linq;
 using Progression.Util;
 using Progression.Util.Extension;
 
-namespace Progression.Resources.Manager
+namespace Progression.Resource
 {
     public class ResourceDecoderManager : ExtensionManager<IResPlugin, ResourceDecoderManager>
     {

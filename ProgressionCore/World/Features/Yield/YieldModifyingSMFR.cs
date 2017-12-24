@@ -1,11 +1,12 @@
 ﻿using Progression.Engine.Core.World.Features.Base;
+using Progression.Engine.Core.World.Features.Simple;
 using Progression.Util.Keys;
 
 namespace Progression.Engine.Core.World.Features.Yield
 {
     // ReSharper disable once InconsistentNaming
-    public class YieldModifyingSMFR<T> : StaticMultiFeatureResolver<T>, ITileYieldModifer
-        where T : class, IStaticFeature<T>, ITileYieldModifer
+    public class YieldModifyingSMFR<T> : MultiFeatureResolver<T>, ITileYieldModifer
+        where T : class, ISimpleFeature<T>, ITileYieldModifer
     {
         private readonly TileYieldModifierPriority _tileModifierPriority;
         public YieldModifyingSMFR(WorldType worldType, Key featureTypeKey, TileYieldModifierPriority tileModifierPriority) : base(worldType, featureTypeKey)
