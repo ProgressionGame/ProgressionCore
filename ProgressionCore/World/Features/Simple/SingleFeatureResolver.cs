@@ -7,7 +7,7 @@ namespace Progression.Engine.Core.World.Features.Simple
     public class SingleFeatureResolver<T> : StaticFeatureResolver<T>, ISingleFeatureResolver<T>
         where T : class, ISimpleFeature<T>
     {
-        public SingleFeatureResolver(WorldType worldType, Key featureTypeKey, bool optional) : base(worldType, featureTypeKey, optional ? 1 : 0)
+        public SingleFeatureResolver(WorldType worldType, Key key, bool optional) : base(worldType, key, optional ? 1 : 0)
         {
             
         }
@@ -18,29 +18,11 @@ namespace Progression.Engine.Core.World.Features.Simple
         {
             return tile[DataIdentifier] >= IdOffset;
         }
-//
-//
-//        public override bool IsFeatureOnTile(Tile tile, T feature)
-//        {
-//            return tile[DataIdentifier]  == feature.Id;
-//        }
-//
-//        public override void AddFeature(Tile tile, T feature)
-//        {
-//            tile[DataIdentifier]  = (ushort) feature.Id;
-//            //TODO make this better
-//            tile.InvokeTileUpdate(this, feature, feature.Id, DataIdentifier);
-//        }
-//
-//        public override void RemoveFeature(Tile tile, T feature)
-//        {
-//            if (IsFeatureOnTile(tile, feature)) {
-//                tile[DataIdentifier]  = 0;
-//                
-//                //TODO make this better
-//                tile.InvokeTileUpdate(this, feature, 0, DataIdentifier);
-//            }
-//        } 
+
+        protected override int GetSettingValue(int id)
+        {
+            return id;
+        }
 
         public override DataIdentifier[] GenerateIdentifiers()
         {

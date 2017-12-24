@@ -9,13 +9,13 @@ namespace Progression.Engine.Core.World.Features.Simple
 
         public SimpleFeature(string name, StaticFeatureResolver<T> resolver)
         {
-            Key = new Key(resolver.FeatureTypeKey, name);
+            Key = new Key(resolver.Key, name);
             Resolver = resolver;
             Id = resolver.Register((T) this);
         }
 
         public int Id { get; }
-        internal int Value;
+        internal int Value=0;
 
         public DataIdentifier DataIdentifier {
             get => _dataIdentifier;

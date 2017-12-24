@@ -32,8 +32,16 @@ namespace TestLauncher
         [STAThread]
         private static void Main()
         {
-            MethodCall();
-            
+            var env = new GameEnv();
+            env.Init();
+            env.Load();
+            Console.WriteLine("Done");
+            new Civilization("Kappaland", env.CivilisationManager);
+        }
+
+
+        private static void TestResourceManPlugins()
+        {
             Console.WriteLine($"Starting version {Utils.ReleaseType}");
 
             Console.WriteLine($"Category of {CategoryUndefined} is {CategoryUndefined.Category()}");
@@ -47,8 +55,7 @@ namespace TestLauncher
             Console.WriteLine($"Loading ressource plugins took {sw.ElapsedMilliseconds}ms");
             //TestWorld();
         }
-
-
+        
         private static void TestBinPackingRealistic()
         {
             const int size = 32;

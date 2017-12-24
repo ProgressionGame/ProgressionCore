@@ -22,7 +22,8 @@ namespace Progression.Engine.Core.Civilization
             Manager = manager;
             Key = new Key(manager.Key, name);
             Index = -1; //this is done to avoid to make this civ not equal another civ with index 0
-            Index = Manager.AddCivilisation(this);
+            Index = Manager.FreeIndex;
+            Manager.AddCivilisation(this);
         }
 
         IFeatureResolver IFeature.Resolver => Manager.Resolver;

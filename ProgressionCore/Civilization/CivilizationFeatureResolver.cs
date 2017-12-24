@@ -3,54 +3,59 @@ using System.Collections;
 using System.Collections.Generic;
 using Progression.Engine.Core.World;
 using Progression.Engine.Core.World.Features.Base;
+using Progression.Resource;
 using Progression.Util;
 using Progression.Util.Generics;
 using Progression.Util.Keys;
 
 namespace Progression.Engine.Core.Civilization
 {
-    public class CivilizationFeatureResolver : FeatureResolverSpecialisedBase<Civilization>
+    public class CivilizationFeatureResolver : IFeatureResolver<Civilization>, IKeyFlavourable
     {
 
-        public CivilizationFeatureResolver(CivilizationManager manager) : base(manager.Key)
+        public CivilizationFeatureResolver(CivilizationManager manager)
         {
             Manager = manager;
         }
 
-        public override IEnumerator<Civilization> GetEnumerator() => Manager.GetEnumerator();
-        public override void Freeze(FeatureWorld fw)
+        public IEnumerator<Civilization> GetEnumerator() => Manager.GetEnumerator();
+        public void Freeze(FeatureWorld fw)
         {
             Manager.Freeze();
             FeatureWorld = fw;
         }
 
-        public override int Count => Manager.Count;
-        public FeatureWorld FeatureWorld { get; private set; }
+        public int Count => Manager.Count;
         public CivilizationManager Manager { get; }
 
 
 
 
 
-        public override DataIdentifier[] GenerateIdentifiers()
+        public DataIdentifier[] GenerateIdentifiers()
         {
             return Manager.Dis;
         }
 
-        public override DataIdentifier GetIdentifier(int index) => index < 0 && index + CivilizationManager.DiExtraCount >= 0
+        public DataIdentifier GetIdentifier(int index) => index < 0 && index + CivilizationManager.DiExtraCount >= 0
             ? Manager.Dis[index + Manager.Max + CivilizationManager.DiExtraCount]
             : Manager.Dis[index];
 
-        public override Civilization Get(int index) => Manager[index];
+        public Civilization Get(int index) => Manager[index];
 
         
         #region Hidden
+
+        public FeatureWorld FeatureWorld { get; set; }
+        KeyFlavour IKeyFlavourable.KeyFlavour => Manager.KeyFlavour;
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        IFeature IFeatureResolver.Get(int index) => Get(index);
+        IEnumerable<IKeyNameable> IResourceable.GetResourceables() => new BaseTypeEnumerableWrapper<Civilization,IKeyNameable>(this);
+        IEnumerable<Civilization> IResourceable<Civilization>.GetResourceables() => this;
+        Key IKeyed.Key => Manager.Key;
         #endregion
 
-        public override bool IsFrozen {
-            get => Manager.IsFrozen;
-            protected set => throw new NotImplementedException();
-        }
+        public bool IsFrozen => Manager.IsFrozen;
     }
 
 }

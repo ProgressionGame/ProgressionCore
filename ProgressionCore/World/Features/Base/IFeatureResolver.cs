@@ -16,7 +16,6 @@ namespace Progression.Engine.Core.World.Features.Base
     {
 //        bool HasFeature(Tile tile);
         void Freeze(FeatureWorld fw);
-        Key FeatureTypeKey { get; }
         int Count { get; }
         FeatureWorld FeatureWorld { get; }
         IFeature Get(int index);

@@ -8,7 +8,7 @@ namespace Progression.Engine.Core.World.Features.Simple
     public class MultiFeatureResolver<T> : StaticFeatureResolver<T>, IMultiFeatureResolver<T>
         where T : class, ISimpleFeature<T>
     {
-        public MultiFeatureResolver(WorldType worldType, Key featureTypeKey) : base(worldType, featureTypeKey, 0) { }
+        public MultiFeatureResolver(WorldType worldType, Key key) : base(worldType, key, 0) { }
 
         private DataIdentifier[] _identifiers;
         
@@ -20,25 +20,12 @@ namespace Progression.Engine.Core.World.Features.Simple
             }
             return false;
         }
-//
-//        public override bool IsFeatureOnTile(Tile tile, T feature)
-//        {
-//            return tile[feature.DataIdentifier] != 0;
-//        }
-//
-//        public override void AddFeature(Tile tile, T feature)
-//        {
-//            tile[feature.DataIdentifier] = 1;
-//            //TODO make this better
-//            tile.InvokeTileUpdate(this, feature, 1, feature.DataIdentifier);
-//        }
-//
-//        public override void RemoveFeature(Tile tile, T feature)
-//        {
-//            tile[feature.DataIdentifier] = 0;
-//            //TODO make this better
-//            tile.InvokeTileUpdate(this, feature, 0, feature.DataIdentifier);
-//        }
+        
+
+        protected override int GetSettingValue(int id)
+        {
+            return 1;
+        }
 
         public override DataIdentifier[] GenerateIdentifiers()
         {

@@ -1,4 +1,5 @@
-﻿using Progression.Engine.Core.Civilization;
+﻿using System;
+using Progression.Engine.Core.Civilization;
 using Progression.Engine.Core.World.Features.Base;
 using Progression.Engine.Core.World.Features.Terrain;
 using Progression.Engine.Core.World.Features.Yield;
@@ -35,6 +36,8 @@ namespace TestLauncher
         private Civilization _civilizationEgypt;
         private YieldManager _yieldManager;
 
+        public CivilizationManager CivilisationManager => _civilizationManager;
+
         private void InitWorldContent()
         {
             
@@ -42,30 +45,44 @@ namespace TestLauncher
             _keysRoot = new RootKey("root");
 
             _yieldManager = new YieldManagerImpl(new Key(_keysRoot, "yield"));
+
+            _wfeatureBiome = new YieldModifyingSSFR<TerrainBiome>(WorldType.World, new Key(_keysRoot, "tb"), false, Terrain);
+            _wfeatureVegetation = new YieldModifyingSMFR<TerrainVegetation>(WorldType.World, new Key(_keysRoot, "tv"), Terrain);
+            _wfeatureLandform = new YieldModifyingSSFR<TerrainLandform>(WorldType.World, new Key(_keysRoot, "tl"), false, Terrain);
+
+            //civs
+            _civilizationManager = new CivilizationManager(new Key(_keysRoot, "civs"), 4);
+
+
+
+        }
+        private void LoadWorldContent()
+        {
+            
+            //game data
+
             _yieldFood = new YieldType("food", _yieldManager);
             _yieldProduction = new YieldType("production", _yieldManager);
             _yieldCommerce = new YieldType("commerce", _yieldManager);
 
-            _wfeatureBiome = new YieldModifyingSSFR<TerrainBiome>(WorldType.World, new Key(_keysRoot, "tb"), false, Terrain);
             _wfeatureGlassland = new TerrainBiome("grassland", _wfeatureBiome, _yieldManager, Addition, new double[] {2, 0, 0});
             _wfeaturePlains = new TerrainBiome("plains", _wfeatureBiome, _yieldManager, Addition, new double[] {1, 1, 0});
             _wfeatureDesert = new TerrainBiome("desert", _wfeatureBiome, _yieldManager, Addition, new double[] {0, 1, 0});
             _wfeatureTundra = new TerrainBiome("tundra", _wfeatureBiome, _yieldManager, Addition, new double[] {1, 0, 0});
             _wfeatureIce = new TerrainBiome("ice", _wfeatureBiome, _yieldManager, Addition, new double[] {0, 0, 0});
-            _wfeatureVegetation = new YieldModifyingSMFR<TerrainVegetation>(WorldType.World, new Key(_keysRoot, "tv"), Terrain);
+            
             _wfeatureJungle = new TerrainVegetation("jungle", _wfeatureVegetation, _yieldManager, Addition, new double[] {0, -1, -1});
             _wfeatureForest = new TerrainVegetation("forest", _wfeatureVegetation, _yieldManager, Addition, new double[] {0, 1, 0});
             _wfeaturePineForest = new TerrainVegetation("pine forest", _wfeatureVegetation, _yieldManager, Addition, new double[] {0, 1, 0});
-            _wfeatureLandform = new YieldModifyingSSFR<TerrainLandform>(WorldType.World, new Key(_keysRoot, "tl"), false, Terrain);
+            
             _wfeatureFlatland = new TerrainLandform("flatland", _wfeatureLandform, _yieldManager, Addition, new double[] {0, 0, 0});
             _wfeatureHills = new TerrainLandform("hills", _wfeatureLandform, _yieldManager, Addition, new double[] {-1, 1, 0});
             _wfeatureMountains = new TerrainLandform("mountains", _wfeatureLandform, _yieldManager, Addition, new double[] {-2, 1, 0});
             _wfeatureHighMountains = new TerrainLandform("high mountains", _wfeatureLandform, _yieldManager, Addition, new double[] {-2, 0, -1});
 
             //civs
-            _civilizationManager = new CivilizationManager(new Key(_keysRoot, "civs"), 4);
-            _civilizationRome = new Civilization("Rome", _civilizationManager);
-            _civilizationEgypt = new Civilization("Egypt", _civilizationManager);
+            _civilizationRome = new Civilization("Rome", CivilisationManager);
+            _civilizationEgypt = new Civilization("Egypt", CivilisationManager);
 
 
 
@@ -78,18 +95,41 @@ namespace TestLauncher
             fw.Register(_wfeatureBiome);
             fw.Register(_wfeatureVegetation);
             fw.Register(_wfeatureLandform);
-            fw.Register(_civilizationManager.Resolver);
+            fw.Register(CivilisationManager.Resolver);
             fw.Lock();
         }
 
         private void AddResourceHooks()
         {
-            
+            ResourceManager.Instance.AddHook(_wfeatureBiome, TerrainHook);
+            ResourceManager.Instance.AddHook(_wfeatureLandform, TerrainHook);
+            ResourceManager.Instance.AddHook(_wfeatureVegetation, TerrainHook);
+            ResourceManager.Instance.AddHook(CivilisationManager.Resolver, TerrainHook);
+        }
+
+        private void TerrainHook(IKeyNameable item)
+        {
+            Console.WriteLine(item.Name);
         }
 
         private void InitResourceMan()
         {
             ResMan.SetInstance(new ResourceManager(ResourceDomain.All)); //All used for test purposes
+        }
+
+
+        public void Init()
+        {
+            InitResourceMan();
+            InitWorldContent();
+        }
+
+
+        public void Load()
+        {
+            LoadWorldContent();
+            AddResourceHooks();
+            LockFeatureWorld();
         }
 
     }

@@ -9,7 +9,7 @@ namespace Progression.Engine.Core.World.Features.Yield
         where T : class, ISimpleFeature<T>, ITileYieldModifer
     {
         private readonly TileYieldModifierPriority _tileModifierPriority;
-        public YieldModifyingSMFR(WorldType worldType, Key featureTypeKey, TileYieldModifierPriority tileModifierPriority) : base(worldType, featureTypeKey)
+        public YieldModifyingSMFR(WorldType worldType, Key key, TileYieldModifierPriority tileModifierPriority) : base(worldType, key)
         {
             _tileModifierPriority = tileModifierPriority;
         }

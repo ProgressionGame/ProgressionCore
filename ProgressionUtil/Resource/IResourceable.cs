@@ -9,15 +9,15 @@ namespace Progression.Resource
     /// 
     /// As soon as the implementing class is frozen FreezeResourceable(IResourceable) from the resource manager is to be called. If the class is never frozen it needs to always return true for frozen
     /// </summary>
-    public interface IResourceable<T> : IResourceable where T : IKeyNameable
+    public interface IResourceable<T> : IResourceable where T : IKeyed, INameable
     {
-        new IEnumerator<T> GetResourceables();
+        new IEnumerable<T> GetResourceables();
         //new T GetResourceable(string name);
     }
 
-    public interface IResourceable : IFrozen, IKeyFlavourable
+    public interface IResourceable : IFrozen
     {
-        IEnumerator<IKeyNameable> GetResourceables();
+        IEnumerable<IKeyNameable> GetResourceables();
         //IKNamed GetResourceable(string name);
     }
 }

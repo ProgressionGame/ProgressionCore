@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Progression.Engine.Core.World;
 using Progression.Engine.Core.World.Features.Base;
+using Progression.Resource;
 using Progression.Util;
 using Progression.Util.Keys;
 
@@ -40,6 +41,8 @@ namespace Progression.Engine.Core.Civilization
             WorldType worldTypeCiv = default(WorldType), byte worldTypePlayerId = 255)
         {
             Key = key;
+            KeyFlavour = new KeyFlavour(this);
+            key.Flavour = KeyFlavour;
             Max = (short) (Math.Pow(2, Math.Ceiling(Math.Log(max, 2)))-1); //this is one lower because 0 -> not owned
             _civilizations = new List<Civilization>(Math.Min((short) 128, Max));
             Resolver = new CivilizationFeatureResolver(this);
@@ -86,26 +89,29 @@ namespace Progression.Engine.Core.Civilization
         public IEnumerator<Civilization> GetEnumerator() => _civilizations.GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => _civilizations.GetEnumerator();
 
-        public int AddCivilisation(Civilization civ)
+        protected internal void AddCivilisation(Civilization civ)
         {
             if (Count == Max)
                 throw new InvalidOperationException(
                     "Maximum number of Civilizations reached. Please contact game developer to raise limit. (it may be possible to configure ingame or per configuration file. To raise limit in savefile please search for such a tool or ask for it to be created.");
             if (_civilizations.Contains(civ)) throw new InvalidOperationException("Cannot register twice.");
+            if (FreeIndex != civ.Index) throw new ArgumentException("Weird civ. FreeIndex does not match Civ index");
+            DiBaseVision[civ.Index].Feature = civ;
             _civilizations.Add(civ);
-            DiBaseVision[_civilizations.Count - 1].Feature = civ;
-            return _civilizations.Count - 1;
+            if (IsFrozen) ResMan.GetInstance().OnNewResourceable(Resolver, civ);
         }
 
         public Key Key { get; }
         public bool IsFrozen { get; private set; }
         public short Count => (short) _civilizations.Count;
+        protected internal short FreeIndex => Count;
         public short Max { get; }
         public CivilizationFeatureResolver Resolver { get; }
 
         public void Freeze()
         {
             if (IsFrozen) throw new FeatureResolverLockedException("Civilization manager already locked");
+            ResMan.GetInstance().FreezeResourceable(Resolver);
             IsFrozen = true;
         }
 
@@ -177,6 +183,9 @@ namespace Progression.Engine.Core.Civilization
             tile[DiOwnerId] = newOwnerValue;
         }
 
-        public KeyFlavour KeyFlavour => Resolver.KeyFlavour;
+        
+        
+        protected internal KeyFlavour KeyFlavour { get; }
+        KeyFlavour IKeyFlavourable.KeyFlavour => KeyFlavour;
     }
 }

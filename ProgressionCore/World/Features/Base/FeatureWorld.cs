@@ -47,7 +47,7 @@ namespace Progression.Engine.Core.World.Features.Base
                         }
 #if DEBUG
                         else {
-                            Console.WriteLine($"Debug: identifier not added {resolver.FeatureTypeKey.Name}\\{(identifier.HasFeature ? identifier.Feature.Name : $"\"null\",id={identifier.Index}")} world type: {i}");
+                            Console.WriteLine($"Debug: identifier not added {resolver.Key.Name}\\{(identifier.HasFeature ? identifier.Feature.Name : $"\"null\",id={identifier.Index}")} world type: {i}");
                         }
 #endif
                     }
