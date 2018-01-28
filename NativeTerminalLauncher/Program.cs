@@ -44,6 +44,8 @@ namespace Progression.CCL
             
             Console.WriteLine(Console.OutputEncoding);
 
+            TestRendering();
+            return;
 
             var ansi = new AnsiInputConverter();
             while (true) {
@@ -98,7 +100,6 @@ namespace Progression.CCL
             con.Write(Console.In.GetType());
             con.Write('\n');
             con.Flush();
-            Console.Beep();
             var view = Test.CreateView(con);
             con.UseNewScreenBuffer();
             if (_render)view.Render();

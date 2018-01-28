@@ -1,6 +1,13 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Runtime.InteropServices.ComTypes;
+using System.Security.Cryptography.X509Certificates;
+using System.Threading.Tasks;
 using Progression.Util;
+using Progression.Util.Async;
 using Progression.Util.Keys;
 
 namespace Progression.Resource
@@ -8,24 +15,35 @@ namespace Progression.Resource
     public class ResourceManager : IResourceManager
     {
         private readonly Dictionary<string, ResourceType> _resourceTypes = new Dictionary<string, ResourceType>();
+        public DirectoryInfo Directory => Utils.AssetsDirectory;
 
         private readonly Dictionary<ResourceTypeEnum, ResourceType> _resourceTypesEnum =
             new Dictionary<ResourceTypeEnum, ResourceType>();
 
         private readonly Dictionary<IResourceable, object> _resourceHooks = new Dictionary<IResourceable, object>();
+        private readonly ConcurrentQueue<LoadRequest> _loadRequests = new ConcurrentQueue<LoadRequest>();
 
         public ResourceManager(ResourceDomain environment)
         {
             Environment = environment;
         }
 
-        public static ResourceManager Instance => ResMan.GetInstance<ResourceManager>();
+        public static ResourceManager Instance => GlobalResourceManager.GetInstance<ResourceManager>();
+
+        public static void Init(ResourceDomain domain)
+        {
+            GlobalResourceManager.Instance = new ResourceManager(domain);
+            
+        }
 
         public ResourceDomain Environment { get; private set; }
         public bool Loaded { get; private set; }
 
 
-        public void Register() { }
+        public void Register(ResourceType type)
+        {
+            _resourceTypes.Add(type.Name, type);
+        }
 
         public void OnNewResourceable<T>(IResourceable<T> resourceable, T item) where T : IKeyed, INameable
         {
@@ -50,6 +68,38 @@ namespace Progression.Resource
             }
             _resourceHooks[resourceable] = hooks;
         }
+
+
+        public AsyncResult<T> LoadResource<T>(ResourceType<T> type, IKeyed holder, AttachmentKey key, ResourceDomain domain)
+        {
+            var result = new AsyncResult<T>();
+            var request = new LoadRequest(type, holder, key, domain, result);
+            _loadRequests.Enqueue(request);
+            return result;
+        }
+
+        private void ProcessResourceQueue()
+        {
+            while (!_loadRequests.IsEmpty) {
+                if (_loadRequests.TryDequeue(out var res))
+                {
+                    res.Type.
+                }
+                
+            }
+        }
+
+        private void LoadResourceSync(ResourceType type, IKeyed holder)
+        {
+            
+        }
+
+        public FileInfo ResolveFile(Key key)
+        {
+            
+        }
+        
+        
 
         /// <inheritdoc cref="IResourceManager.FreezeResourceable{T}"/>
         public void FreezeResourceable<T>(IResourceable<T> resourceable) where T : IKeyed, INameable

@@ -17,6 +17,7 @@ using Progression.Util.BinPacking;
 using Progression.Engine.Core.World.Features.Terrain;
 using Progression.Resource;
 using Progression.Util;
+using Progression.Util.Async;
 using static Progression.Resource.ResourceTypeEnum;
 
 // ReSharper disable LocalizableElement

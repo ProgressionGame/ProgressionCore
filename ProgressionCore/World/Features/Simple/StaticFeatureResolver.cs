@@ -46,7 +46,7 @@ namespace Progression.Engine.Core.World.Features.Simple
             FeatureWorld = fw;
             Features.TrimExcess();
             OnFreeze();
-            ResMan.GetInstance().FreezeResourceable(this); //so that hooks on this get resolved
+            GlobalResourceManager.Instance.FreezeResourceable(this); //so that hooks on this get resolved
             IsFrozen = true;
         }
 

@@ -46,7 +46,9 @@
     <Compile Include="Resource\IResourceable.cs" />
     <Compile Include="Resource\ResourceHook.cs" />
     <Compile Include="Resource\IResourceManager.cs" />
-    <Compile Include="Resource\ResMan.cs" />
+    <Compile Include="Resource\GlobalResourceManager.cs" />
+    <Compile Include="Util\Async\AsyncResult.cs" />
+    <Compile Include="Util\Async\IResult.cs" />
     <Compile Include="Util\BinPacking\Bin.cs" />
     <Compile Include="Util\BinPacking\BinPackingSolvers.cs" />
     <Compile Include="Util\BinPacking\Packet.cs" />

@@ -98,7 +98,7 @@ namespace Progression.Engine.Core.Civilization
             if (FreeIndex != civ.Index) throw new ArgumentException("Weird civ. FreeIndex does not match Civ index");
             DiBaseVision[civ.Index].Feature = civ;
             _civilizations.Add(civ);
-            if (IsFrozen) ResMan.GetInstance().OnNewResourceable(Resolver, civ);
+            if (IsFrozen) GlobalResourceManager.Instance.OnNewResourceable(Resolver, civ);
         }
 
         public Key Key { get; }
@@ -111,7 +111,7 @@ namespace Progression.Engine.Core.Civilization
         public void Freeze()
         {
             if (IsFrozen) throw new FeatureResolverLockedException("Civilization manager already locked");
-            ResMan.GetInstance().FreezeResourceable(Resolver);
+            GlobalResourceManager.Instance.FreezeResourceable(Resolver);
             IsFrozen = true;
         }
 

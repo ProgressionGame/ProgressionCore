@@ -15,6 +15,7 @@ namespace Progression.Util
             ResLibraryDirectory = new DirectoryInfo(Path.Combine(ExtensionsDirectory.FullName, FolderNameResLibrary));
             ModDirectory = new DirectoryInfo(Path.Combine(ExtensionsDirectory.FullName, FolderNameMods));
             ScriptModDirectory = new DirectoryInfo(Path.Combine(ExtensionsDirectory.FullName, FolderNameScriptMods));
+            AssetsDirectory = new DirectoryInfo(Path.Combine(WorkingDirectory.FullName, FolderNameAssets));
             
         }
         public const string FolderNameExtensions = "extension";
@@ -22,6 +23,7 @@ namespace Progression.Util
         public const string FolderNameResLibrary = "reslib";
         public const string FolderNameMods = "mods";
         public const string FolderNameScriptMods = "scriptmods";
+        public const string FolderNameAssets = "assets";
 
 
         public  static void Init(){}
@@ -31,6 +33,7 @@ namespace Progression.Util
         public static DirectoryInfo ResLibraryDirectory{ get; }
         public static DirectoryInfo ModDirectory{ get; }
         public static DirectoryInfo ScriptModDirectory{ get; }
+        public static DirectoryInfo AssetsDirectory{ get; }
 
         public static ReleaseType ReleaseType =>
 #if DEBUG

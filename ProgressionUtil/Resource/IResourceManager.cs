@@ -1,4 +1,5 @@
-﻿using Progression.Util;
+﻿using System;
+using Progression.Util;
 using Progression.Util.Keys;
 
 namespace Progression.Resource

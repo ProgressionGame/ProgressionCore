@@ -109,12 +109,12 @@ namespace TestLauncher
 
         private void TerrainHook(IKeyNameable item)
         {
-            Console.WriteLine(item.Name);
+            ResourceManager.Instance.LoadResource()
         }
 
         private void InitResourceMan()
         {
-            ResMan.SetInstance(new ResourceManager(ResourceDomain.All)); //All used for test purposes
+            ResourceManager.Init(ResourceDomain.All); //All used for test purposes
         }
 
 
