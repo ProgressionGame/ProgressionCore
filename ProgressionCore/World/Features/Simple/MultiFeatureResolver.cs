@@ -45,6 +45,11 @@ namespace Progression.Engine.Core.World.Features.Simple
             throw new NotImplementedException();
         }
 
+        protected internal override bool ValidateData(Tile tile, T feature, bool set)
+        {
+            return true;
+        }
+
         public T[] GetFeatures(Tile tile)
         {
             var result = new List<T>(Count);

@@ -9,7 +9,7 @@ using Progression.Util.Keys;
 
 namespace Progression.Engine.Core.Civilization
 {
-    public class CivilizationManager : IEnumerable<Civilization>, IFrozen, IKeyFlavourable
+    public class CivilizationManager : IEnumerable<Civilization>, IFrozen, IKeyed
     {
         protected internal const int DiExtraCount = 3;
         private readonly List<Civilization> _civilizations;
@@ -41,8 +41,10 @@ namespace Progression.Engine.Core.Civilization
             WorldType worldTypeCiv = default(WorldType), byte worldTypePlayerId = 255)
         {
             Key = key;
-            KeyFlavour = new KeyFlavour(this);
-            key.Flavour = KeyFlavour;
+            
+            key.Flavour = key.Flavour ?? new KeyFlavour(this);
+            KeyFlavour = key.Flavour;
+            FeatureKeyFlavour= new KeyFlavour(this);
             Max = (short) (Math.Pow(2, Math.Ceiling(Math.Log(max, 2)))-1); //this is one lower because 0 -> not owned
             _civilizations = new List<Civilization>(Math.Min((short) 128, Max));
             Resolver = new CivilizationFeatureResolver(this);
@@ -67,10 +69,10 @@ namespace Progression.Engine.Core.Civilization
             
             //set all Dis
             // ReSharper disable once VirtualMemberCallInConstructor
-            PopulateDataIdenfiers();
+            PopulateDataIdentifiers();
         }
 
-        protected virtual void PopulateDataIdenfiers()
+        protected virtual void PopulateDataIdentifiers()
         {
             DiOwnerId = new DataIdentifier(Resolver, -1, (int) Math.Ceiling(Math.Log(Max)), WorldTypeBoth);
             DiCivVision = new DataIdentifier(Resolver, -2, 2, WorldTypeCiv);
@@ -98,6 +100,9 @@ namespace Progression.Engine.Core.Civilization
             if (FreeIndex != civ.Index) throw new ArgumentException("Weird civ. FreeIndex does not match Civ index");
             DiBaseVision[civ.Index].Feature = civ;
             _civilizations.Add(civ);
+            civ.Key.Flavour = FeatureKeyFlavour;
+            
+            
             if (IsFrozen) GlobalResourceManager.Instance.OnNewResourceable(Resolver, civ);
         }
 
@@ -186,6 +191,6 @@ namespace Progression.Engine.Core.Civilization
         
         
         protected internal KeyFlavour KeyFlavour { get; }
-        KeyFlavour IKeyFlavourable.KeyFlavour => KeyFlavour;
+        protected internal KeyFlavour FeatureKeyFlavour { get; }
     }
 }

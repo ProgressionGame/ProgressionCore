@@ -1,5 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using Progression.Engine.Core.World.Features.Base;
+using Progression.Engine.Core.World.Features.Simple;
 using Progression.Engine.Core.World.Threading;
 
 namespace Progression.Engine.Core.World
@@ -53,12 +54,10 @@ namespace Progression.Engine.Core.World
 //            return type.Manager.CalcYield(type, this);
 //        }
 
-        public void InvokeTileUpdate<TFeature, TResolver>(TResolver resolver, TFeature feature, int newValue,
-            DataIdentifier dataIdentifier)
-            where TFeature : class, IFeature<TFeature>
-            where TResolver : IFeatureResolver<TFeature>
+        public void InvokeTileUpdate<TFeature>(TFeature feature, bool set)
+            where TFeature : class, ISimpleFeature<TFeature>
         {
-            World.ScheduleUpdate(new FeatureUpdate<TFeature, TResolver>(Coordinate, resolver, feature, newValue, dataIdentifier));
+            World.ScheduleUpdate(new SimpleFeatureUpdate<TFeature>(Coordinate, feature, set));
         }
 
 

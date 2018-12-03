@@ -9,12 +9,14 @@ namespace Progression.Util.Keys
     {
         private readonly List<AttachmentKey> _attachmentKeys = new List<AttachmentKey>();
         
-        public KeyFlavour(IKeyFlavourable keyFlavourable)
+        public KeyFlavour(IKeyed keyFlavourable) : this(keyFlavourable.GetType()) {}
+        
+        public KeyFlavour(Type identifier)
         {
-            KeyFlavourable = keyFlavourable;
+            Identifier = identifier;
         }
 
-        public IKeyFlavourable KeyFlavourable { get; }
+        public Type Identifier { get; }
 
         public bool IsFree(int id, AttachmentKey attachmentKey)
         {

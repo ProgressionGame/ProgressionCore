@@ -27,7 +27,7 @@ namespace Progression.Util.Keys
             _flavours.Add(flavour);
         }
 
-        public void AddFlavour(IKeyFlavourable flavourable) => AddFlavour(flavourable.KeyFlavour);
+        public void AddFlavour(IKeyed flavourable) => AddFlavour(flavourable.Key.Flavour);
 
         public int CountFlovours => _flavours.Count;
 

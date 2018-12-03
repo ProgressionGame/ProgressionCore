@@ -52,6 +52,7 @@
     <Compile Include="ResourceDecoderManager.cs" />
     <Compile Include="ResourceDomain.cs" />
     <Compile Include="ResourceManager.cs" />
+    <Compile Include="ResourceTree.cs" />
     <Compile Include="ResourceType.cs" />
     <Compile Include="ResourceTypeEnum.cs" />
   </ItemGroup>

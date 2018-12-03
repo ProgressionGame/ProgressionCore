@@ -10,7 +10,7 @@ using Progression.Util.Keys;
 
 namespace Progression.Engine.Core.Civilization
 {
-    public class CivilizationFeatureResolver : IFeatureResolver<Civilization>, IKeyFlavourable
+    public class CivilizationFeatureResolver : IFeatureResolver<Civilization>
     {
 
         public CivilizationFeatureResolver(CivilizationManager manager)
@@ -47,7 +47,6 @@ namespace Progression.Engine.Core.Civilization
         #region Hidden
 
         public FeatureWorld FeatureWorld { get; set; }
-        KeyFlavour IKeyFlavourable.KeyFlavour => Manager.KeyFlavour;
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         IFeature IFeatureResolver.Get(int index) => Get(index);
         IEnumerable<IKeyNameable> IResourceable.GetResourceables() => new BaseTypeEnumerableWrapper<Civilization,IKeyNameable>(this);

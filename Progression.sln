@@ -24,6 +24,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProgressionUtil", "Progress
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YamlSupport", "YamlSupport\YamlSupport.csproj", "{8B34FFDB-8810-4369-9918-B9EADACBB760}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "UnityTestRenderer\Assembly-CSharp.csproj", "{6AC780C0-DDAD-02EE-B04C-C920766FD7B5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -142,6 +144,10 @@ Global
 		{8B34FFDB-8810-4369-9918-B9EADACBB760}.Release|x64.Build.0 = Release|Any CPU
 		{8B34FFDB-8810-4369-9918-B9EADACBB760}.Release|x86.ActiveCfg = Release|Any CPU
 		{8B34FFDB-8810-4369-9918-B9EADACBB760}.Release|x86.Build.0 = Release|Any CPU
+		{6AC780C0-DDAD-02EE-B04C-C920766FD7B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6AC780C0-DDAD-02EE-B04C-C920766FD7B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6AC780C0-DDAD-02EE-B04C-C920766FD7B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6AC780C0-DDAD-02EE-B04C-C920766FD7B5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

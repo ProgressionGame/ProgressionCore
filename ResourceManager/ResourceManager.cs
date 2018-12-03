@@ -80,10 +80,11 @@ namespace Progression.Resource
 
         private void ProcessResourceQueue()
         {
+            throw new NotImplementedException();
             while (!_loadRequests.IsEmpty) {
                 if (_loadRequests.TryDequeue(out var res))
                 {
-                    res.Type.
+                    
                 }
                 
             }
@@ -97,6 +98,7 @@ namespace Progression.Resource
         public FileInfo ResolveFile(Key key)
         {
             
+            throw new NotImplementedException();
         }
         
         

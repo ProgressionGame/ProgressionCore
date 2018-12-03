@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using Progression.Engine.Core.Civilization;
 using Progression.Engine.Core.World.Features.Base;
 using Progression.Engine.Core.World.Features.Terrain;
 using Progression.Engine.Core.World.Features.Yield;
 using Progression.Resource;
 using Progression.Util.Keys;
+using TestLauncher.Properties;
 using static Progression.Engine.Core.World.Features.Yield.YieldModifierType;
 using static Progression.Engine.Core.World.Features.Yield.TileYieldModifierPriority;
 
@@ -97,6 +99,8 @@ namespace TestLauncher
             fw.Register(_wfeatureLandform);
             fw.Register(CivilisationManager.Resolver);
             fw.Lock();
+            
+            InitTexture();
         }
 
         private void AddResourceHooks()
@@ -106,10 +110,32 @@ namespace TestLauncher
             ResourceManager.Instance.AddHook(_wfeatureVegetation, TerrainHook);
             ResourceManager.Instance.AddHook(CivilisationManager.Resolver, TerrainHook);
         }
+        
+        private static List<IKeyNameable> _texturedFeatures = new List<IKeyNameable>();
+        public static readonly AttachmentKey<object> TextureLocation = new AttachmentKey<object>();
+
+        public static void InitTexture()
+        {
+
+            foreach (var item in _texturedFeatures) {
+                if (!TextureLocation.Applicable(item.Key.Flavour)) {
+                    TextureLocation.AddFlavour(item.Key.Flavour);
+                }
+            }
+
+            TextureLocation.Register();
+            TextureLocation.Freeze();
+
+
+            foreach (var item in _texturedFeatures) {
+                item.Key.Set(TextureLocation, new object());
+            }
+        }
 
         private void TerrainHook(IKeyNameable item)
         {
-            ResourceManager.Instance.LoadResource()
+            _texturedFeatures.Add(item);
+            Console.WriteLine(item.Name);
         }
 
         private void InitResourceMan()

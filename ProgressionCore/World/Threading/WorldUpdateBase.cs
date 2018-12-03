@@ -1,4 +1,4 @@
-﻿using Progression.Engine.Core.Threading;
+﻿using Progression.Util.Threading;
 
 namespace Progression.Engine.Core.World.Threading
 {

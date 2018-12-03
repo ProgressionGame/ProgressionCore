@@ -8,7 +8,7 @@ using Progression.Util.Keys;
 
 namespace Progression.Engine.Core.World.Features.Simple
 {
-    public abstract class StaticFeatureResolver<T> : IFeatureResolver<T>, IKeyFlavourable where T : class, ISimpleFeature<T>
+    public abstract class StaticFeatureResolver<T> : IFeatureResolver<T> where T : class, ISimpleFeature<T>
     {
         protected readonly List<T> Features = new List<T>();
         protected readonly int IdOffset;
@@ -19,8 +19,10 @@ namespace Progression.Engine.Core.World.Features.Simple
             IdOffset = idOffset;
             Key = key;
             WorldType = worldType;
-            KeyFlavour = new KeyFlavour(this);
-            key.Flavour = KeyFlavour;
+            key.Flavour = key.Flavour ?? new KeyFlavour(this);
+            KeyFlavour = key.Flavour;
+            FeatureKeyFlavour= new KeyFlavour(this);
+            
         }
 
         public int Count => Features.Count;
@@ -31,6 +33,8 @@ namespace Progression.Engine.Core.World.Features.Simple
                 throw new FeatureResolverLockedException("Feature locked. Cannot add new features during game.");
             if (Features.Contains(feature)) throw new InvalidOperationException("Cannot register twice.");
             Features.Add(feature);
+            feature.Key.Flavour = FeatureKeyFlavour;
+            
             var id =  Features.Count - 1 + IdOffset; //id may not match index
             //feature.Value = GetSettingValue(id);
             return id;
@@ -64,13 +68,15 @@ namespace Progression.Engine.Core.World.Features.Simple
             return Features.GetEnumerator();
         }
 
+        protected internal abstract bool ValidateData(Tile tile, T feature, bool set);
+
         #region Hidden
 
         public Key Key { get; }
         public FeatureWorld FeatureWorld { get; set; }
         protected KeyFlavour KeyFlavour { get; }
+        protected KeyFlavour FeatureKeyFlavour { get; }
         public bool IsFrozen { get; protected set; }
-        KeyFlavour IKeyFlavourable.KeyFlavour => KeyFlavour;
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         IFeature IFeatureResolver.Get(int index) => Get(index);
         IEnumerable<IKeyNameable> IResourceable.GetResourceables() => new BaseTypeEnumerableWrapper<T,IKeyNameable>(this);

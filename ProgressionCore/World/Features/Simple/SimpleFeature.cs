@@ -1,4 +1,5 @@
-﻿using Progression.Engine.Core.World.Features.Base;
+﻿using System;
+using Progression.Engine.Core.World.Features.Base;
 using Progression.Util.Keys;
 
 namespace Progression.Engine.Core.World.Features.Simple
@@ -10,6 +11,7 @@ namespace Progression.Engine.Core.World.Features.Simple
         public SimpleFeature(string name, StaticFeatureResolver<T> resolver)
         {
             Key = new Key(resolver.Key, name);
+            
             Resolver = resolver;
             Id = resolver.Register((T) this);
         }
@@ -38,14 +40,19 @@ namespace Progression.Engine.Core.World.Features.Simple
 
         public void AddFeature(Tile tile)
         {
+            if (!Resolver.ValidateData(tile, (T) this, true)) throw new InvalidOperationException();
             tile[DataIdentifier] = Value;
+            tile.InvokeTileUpdate((T) this, true);
         }
 
         public void RemoveFeature(Tile tile)
         {
+            if (!Resolver.ValidateData(tile, (T) this, true)) throw new InvalidOperationException();
             tile[DataIdentifier] = 0;
+            tile.InvokeTileUpdate((T) this, false);
         }
 
         IFeatureResolver IFeature.Resolver => Resolver;
+        public KeyFlavour KeyFlavour { get; }
     }
 }

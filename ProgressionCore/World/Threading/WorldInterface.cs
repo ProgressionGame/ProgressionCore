@@ -1,6 +1,7 @@
 ﻿using System;
-using Progression.Engine.Core.Threading;
 using Progression.Engine.Core.World.Features.Base;
+using Progression.Engine.Core.World.Features.Simple;
+using Progression.Util.Threading;
 
 namespace Progression.Engine.Core.World.Threading
 {
@@ -10,22 +11,25 @@ namespace Progression.Engine.Core.World.Threading
         {
             World = world;
         }
-
+        
         public TileWorld World { get; }
 
-
-        public virtual void GenericFeatureUpdate<TFeature, TResolver>(Coordinate coord, TResolver resolver, TFeature feature, int newValue, DataIdentifier dataIdentifier)
-            where TFeature : class, IFeature<TFeature>
-            where TResolver : IFeatureResolver<TFeature>
+        public virtual Tile GenericFeatureUpdate<TSimpleFeature>(Coordinate coordinate, TSimpleFeature feature, bool set) where TSimpleFeature : class, ISimpleFeature<TSimpleFeature>
         {
-            //this is a race condition that should never ever happen in a release. If it happens very unexpected stuff is going to happen
 #if DEBUG 
-            if (!World.FeatureWorld.Equals(resolver.FeatureWorld))
+            if (!World.FeatureWorld.Equals(feature.Resolver.FeatureWorld))
                 throw new ArgumentException(
                     "FeatureWorld not matching! This is a serious exception. This should never ever happen. This exception will only be thrown in Debug mode. Please fix your programm. ");
 #endif
+            var tile = World[coordinate];
+            if (set) {
+                feature.AddFeature(tile);
+            } else {
+                
+                feature.AddFeature(tile);
+            }
 
-            World[coord, dataIdentifier] = newValue;
+            return tile;
         }
     }
 }

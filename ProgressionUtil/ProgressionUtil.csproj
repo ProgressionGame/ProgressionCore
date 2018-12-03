@@ -64,13 +64,14 @@
     <Compile Include="Util\INameable.cs" />
     <Compile Include="Util\JoinedEnumerator.cs" />
     <Compile Include="Util\Keys\AttachmentKey.cs" />
-    <Compile Include="Util\Keys\IKeyFlavourable.cs" />
     <Compile Include="Util\Keys\IKeyed.cs" />
     <Compile Include="Util\Keys\IKeyNameable.cs" />
     <Compile Include="Util\Keys\Key.cs" />
     <Compile Include="Util\Keys\KeyFlavour.cs" />
     <Compile Include="Util\Keys\RootKey.cs" />
     <Compile Include="Util\ReleaseType.cs" />
+    <Compile Include="Util\Threading\ThreadingInterface.cs" />
+    <Compile Include="Util\Threading\UpdateBase.cs" />
     <Compile Include="Util\Utils.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

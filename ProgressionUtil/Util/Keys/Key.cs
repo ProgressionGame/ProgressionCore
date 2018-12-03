@@ -91,11 +91,11 @@ namespace Progression.Util.Keys
                 _attachments = new List<object>(_flavour.Count);
             }
             key.Use();
-            int id = key.Id-1;
-            while (_attachments.Count < id) {
+            int id = key.Id;
+            while (_attachments.Count <= id) {
                 _attachments.Add(null);
             }
-            _attachments[id + 1] = value;
+            _attachments[id] = value;
         }
         
 

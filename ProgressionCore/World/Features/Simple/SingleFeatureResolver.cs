@@ -46,6 +46,11 @@ namespace Progression.Engine.Core.World.Features.Simple
             }
         }
 
+        protected internal override bool ValidateData(Tile tile, T feature, bool set)
+        {
+            return true;
+        }
+
         public T GetFeature(Tile tile)
         {
             var index = tile[DataIdentifier]  - IdOffset;
