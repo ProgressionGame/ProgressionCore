@@ -29,7 +29,7 @@ namespace Progression.Engine.Core.World.Features.Simple
             if (DataIdentifier != null || IsFrozen) {
                 throw new InvalidOperationException("GenerateIdentifiers should only be called by FeatureWorld");
             }
-            DataIdentifier = new DataIdentifier(this, 0, (int)Math.Ceiling(Math.Log((int)Math.Ceiling(Math.Log(Count+IdOffset, 2)), 2)), WorldType);
+            DataIdentifier = new DataIdentifier(this, 0, (int)Math.Ceiling(Math.Log(Count+IdOffset, 2)), WorldType);
             foreach (var feature in Features) {
                 feature.DataIdentifier = DataIdentifier;
             }

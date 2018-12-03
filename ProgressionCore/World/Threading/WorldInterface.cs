@@ -23,10 +23,10 @@ namespace Progression.Engine.Core.World.Threading
 #endif
             var tile = World[coordinate];
             if (set) {
-                feature.AddFeature(tile);
+                feature.AddFeature(tile, true);
             } else {
                 
-                feature.AddFeature(tile);
+                feature.AddFeature(tile, true);
             }
 
             return tile;

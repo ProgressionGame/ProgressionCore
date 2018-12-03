@@ -7,6 +7,7 @@ namespace Progression.Engine.Core.World.Features.Simple
     public class SimpleFeature<T> : ISimpleFeature<T> where T : SimpleFeature<T>
     {
         private DataIdentifier _dataIdentifier;
+        private int _dataRepresentation;
 
         public SimpleFeature(string name, StaticFeatureResolver<T> resolver)
         {
@@ -17,7 +18,6 @@ namespace Progression.Engine.Core.World.Features.Simple
         }
 
         public int Id { get; }
-        internal int Value=0;
 
         public DataIdentifier DataIdentifier {
             get => _dataIdentifier;
@@ -25,6 +25,15 @@ namespace Progression.Engine.Core.World.Features.Simple
                 if (Resolver.IsFrozen)
                     throw new FeatureResolverLockedException("DataOffset has only to be changed by FeatureManager");
                 _dataIdentifier = value;
+            }
+        }
+        
+        public int DataRepresentation {
+            get => _dataRepresentation;
+            set {
+                if (Resolver.IsFrozen)
+                    throw new FeatureResolverLockedException("DataOffset has only to be changed by FeatureManager");
+                _dataRepresentation = value;
             }
         }
 
@@ -35,21 +44,22 @@ namespace Progression.Engine.Core.World.Features.Simple
         
         public bool HasFeature(Tile tile)
         {
-            return tile[DataIdentifier] == Value;
+            return tile[DataIdentifier] == _dataRepresentation;
         }
 
-        public void AddFeature(Tile tile)
+        public void AddFeature(Tile tile, bool sync=false)
         {
             if (!Resolver.ValidateData(tile, (T) this, true)) throw new InvalidOperationException();
-            tile[DataIdentifier] = Value;
-            tile.InvokeTileUpdate((T) this, true);
+            Console.WriteLine($"{Name} value={_dataRepresentation}");
+            tile[DataIdentifier] = _dataRepresentation;
+            if (!sync)tile.InvokeTileUpdate((T) this, true);
         }
 
-        public void RemoveFeature(Tile tile)
+        public void RemoveFeature(Tile tile, bool sync=false)
         {
             if (!Resolver.ValidateData(tile, (T) this, true)) throw new InvalidOperationException();
             tile[DataIdentifier] = 0;
-            tile.InvokeTileUpdate((T) this, false);
+            if (!sync)tile.InvokeTileUpdate((T) this, false);
         }
 
         IFeatureResolver IFeature.Resolver => Resolver;

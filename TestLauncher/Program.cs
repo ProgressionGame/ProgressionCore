@@ -38,7 +38,21 @@ namespace TestLauncher
             env.Load();
             Console.WriteLine("Done");
             new Civilization("Kappaland", env.CivilisationManager);
+            
+            
+            //world creation
+            var world = new TileWorld(env.FeatureWorld, 5, 5);
+
+            // ReSharper disable once InconsistentNaming
+            var tile3_3 = world[3, 3];
+
+            Console.WriteLine(env.WFeatureBiome.GetFeature(tile3_3).Name);
+            env.WFeatureDesert.AddFeature(tile3_3);
+            Console.WriteLine(env.WFeatureBiome.GetFeature(tile3_3).Name);
+            env.WFeatureHighMountains.AddFeature(tile3_3);
+            Console.WriteLine(env.WFeatureBiome.GetFeature(tile3_3).Name);
         }
+        
 
 
         private static void TestResourceManPlugins()

@@ -24,7 +24,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProgressionUtil", "Progress
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YamlSupport", "YamlSupport\YamlSupport.csproj", "{8B34FFDB-8810-4369-9918-B9EADACBB760}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnityTestRenderer", "UnityTestRenderer\UnityTestRenderer.csproj", "{6AC780C0-DDAD-02EE-B04C-C920766FD7B5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC};{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1}") = "UnityTestRenderer", "UnityTestRenderer\Assembly-CSharp.csproj", "{957D0551-F09D-A940-ED89-7167706A19F2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -144,10 +144,10 @@ Global
 		{8B34FFDB-8810-4369-9918-B9EADACBB760}.Release|x64.Build.0 = Release|Any CPU
 		{8B34FFDB-8810-4369-9918-B9EADACBB760}.Release|x86.ActiveCfg = Release|Any CPU
 		{8B34FFDB-8810-4369-9918-B9EADACBB760}.Release|x86.Build.0 = Release|Any CPU
-		{6AC780C0-DDAD-02EE-B04C-C920766FD7B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6AC780C0-DDAD-02EE-B04C-C920766FD7B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6AC780C0-DDAD-02EE-B04C-C920766FD7B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6AC780C0-DDAD-02EE-B04C-C920766FD7B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

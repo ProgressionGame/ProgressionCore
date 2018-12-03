@@ -36,7 +36,7 @@ namespace Progression.Engine.Core.World.Features.Simple
             feature.Key.Flavour = FeatureKeyFlavour;
             
             var id =  Features.Count - 1 + IdOffset; //id may not match index
-            //feature.Value = GetSettingValue(id);
+            feature.DataRepresentation = GetSettingValue(id);
             return id;
         }
 

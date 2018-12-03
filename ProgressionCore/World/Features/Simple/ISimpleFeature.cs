@@ -7,18 +7,20 @@ namespace Progression.Engine.Core.World.Features.Simple
         new StaticFeatureResolver<T> Resolver { get; }
     }
 
-    public interface ISimpleFeature
+    public interface ISimpleFeature : IFeature
+
     {
-        /// <summary>
-        /// Id can start with 1 - this is because 0 may represent absense of feature
-        /// </summary>
-        int Id { get; }
+    /// <summary>
+    /// Id can start with 1 - this is because 0 may represent absense of feature
+    /// </summary>
+    int Id { get; }
+    int DataRepresentation { get; set; }
 
-        bool HasFeature(Tile tile);
-        void AddFeature(Tile tile);
-        void RemoveFeature(Tile tile);
+    bool HasFeature(Tile tile);
+    void AddFeature(Tile tile, bool sync = false);
+    void RemoveFeature(Tile tile, bool sync = false);
 
-        DataIdentifier DataIdentifier { get; set; }
-        //StaticFeatureResolver<T> Resolver { get; }
+    DataIdentifier DataIdentifier { get; set; }
+    //StaticFeatureResolver<T> Resolver { get; }
     }
 }
