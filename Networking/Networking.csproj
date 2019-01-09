@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{DB4BC21B-896E-4D8B-A97A-1365E8E4D4C9}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Progression.IO</RootNamespace>
+    <AssemblyName>Networking</AssemblyName>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Encoders\Base\ArrayEncoderBase.cs" />
+    <Compile Include="Encoders\Base\Derived1EncoderBase.cs" />
+    <Compile Include="Encoders\Base\Derived2EncoderBase.cs" />
+    <Compile Include="Encoders\Base\DerivedEncoderBase.cs" />
+    <Compile Include="Encoders\Base\IEncoder.cs" />
+    <Compile Include="Encoders\Base\NullableEncoderBase.cs" />
+    <Compile Include="Encoders\Base\EncoderBase.cs" />
+    <Compile Include="Encoders\Base\StructEncoderBase.cs" />
+    <Compile Include="Encoders\BoolEncoder.cs" />
+    <Compile Include="Encoders\Collections\Base\CollectionEncoderBase.cs" />
+    <Compile Include="Encoders\Collections\Base\DictionaryEncoderBase.cs" />
+    <Compile Include="Encoders\Collections\Base\EnumerableEncoderBase.cs" />
+    <Compile Include="Encoders\Float32Encoder.cs" />
+    <Compile Include="Encoders\Float64Encoder.cs" />
+    <Compile Include="Encoders\GuidEncoder.cs" />
+    <Compile Include="Encoders\Int16Encoder.cs" />
+    <Compile Include="Encoders\Int64Encoder.cs" />
+    <Compile Include="Encoders\Int8Encoder.cs" />
+    <Compile Include="Encoders\Special\ArrayEncoder.cs" />
+    <Compile Include="Encoders\Special\BoolArrayEncoder.cs" />
+    <Compile Include="Encoders\Special\NullableArrayEncoder.cs" />
+    <Compile Include="Encoders\Special\NullableEncoder.cs" />
+    <Compile Include="Encoders\Special\Tuple2Encoder.cs" />
+    <Compile Include="Encoders\UInt16Encoder.cs" />
+    <Compile Include="Encoders\UInt32Encoder.cs" />
+    <Compile Include="Encoders\StringEncoder.cs" />
+    <Compile Include="Encoders\Int32Encoder.cs" />
+    <Compile Include="Encoders\UInt64Encoder.cs" />
+    <Compile Include="Encoders\UInt8Encoder.cs" />
+    <Compile Include="Encoders\Util\Int16Converter.cs" />
+    <Compile Include="Encoders\Util\Int32Converter.cs" />
+    <Compile Include="Encoders\Util\Int64Converter.cs" />
+    <Compile Include="PacketData.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Types.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ProgressionUtil\ProgressionUtil.csproj">
+      <Project>{bf8e1e3f-8e30-4496-b69c-2e07036c4e67}</Project>
+      <Name>ProgressionUtil</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+         Other similar extension points exist, see Microsoft.Common.targets.
+    <Target Name="BeforeBuild">
+    </Target>
+    <Target Name="AfterBuild">
+    </Target>
+    -->
+</Project>

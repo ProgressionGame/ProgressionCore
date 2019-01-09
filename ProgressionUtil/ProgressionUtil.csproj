@@ -60,6 +60,7 @@
     <Compile Include="Util\Generics\BaseTypeEnumeratorWrapper.cs" />
     <Compile Include="Util\Generics\BaseTypeKeyValuePairEnumeratorWrapper.cs" />
     <Compile Include="Util\Generics\DoubleTypeDictionary.cs" />
+    <Compile Include="Util\GuidUtil.cs" />
     <Compile Include="Util\IFreezable.cs" />
     <Compile Include="Util\INameable.cs" />
     <Compile Include="Util\JoinedEnumerator.cs" />

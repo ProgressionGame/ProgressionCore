@@ -13,7 +13,7 @@ namespace Util
         public static Texture2D FontAtlas;
         public static Texture2D TextureAtlas;
         private static List<IKeyNameable> _texturedFeatures = new List<IKeyNameable>();
-        public const int TextureSize = 256;
+        public const int TextureSize = 64;
         public const int FontSize = 16;
         public static readonly AttachmentKey<TextureLocation> TextureLocation = new AttachmentKey<TextureLocation>();
         
@@ -53,7 +53,7 @@ namespace Util
             TextureAtlas.filterMode = FilterMode.Point;
             
             TextureAtlas.Apply();
-            byte[] bytes = TextureAtlas.EncodeToPNG();
+            /*byte[] bytes = TextureAtlas.EncodeToPNG();
             var rnd = new System.Random();
             File.WriteAllBytes("C:\\Users\\sirati97\\Desktop\\" + rnd.Next() + ".png", bytes);/**/
             
