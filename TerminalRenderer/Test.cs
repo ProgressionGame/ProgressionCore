@@ -17,7 +17,7 @@ namespace Progression.TerminalRenderer
             var fw = new FeatureWorld(1, ym);
             fw.Lock();
             
-            var world = new TileWorld(fw, 50, 50);
+            var world = new TileWorld(fw, 50, 50, WorldMode.Master);
             var view = new WorldView(console, world);
             view.Renderers.Add(new TestCRenderer());
             return view;

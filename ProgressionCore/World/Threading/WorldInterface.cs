@@ -2,6 +2,7 @@
 using Progression.Engine.Core.World.Features.Base;
 using Progression.Engine.Core.World.Features.Simple;
 using Progression.Util.Threading;
+using Progression.Engine.Core.Civilization;
 
 namespace Progression.Engine.Core.World.Threading
 {
@@ -14,22 +15,36 @@ namespace Progression.Engine.Core.World.Threading
         
         public TileWorld World { get; }
 
-        public virtual Tile GenericFeatureUpdate<TSimpleFeature>(Coordinate coordinate, TSimpleFeature feature, bool set) where TSimpleFeature : class, ISimpleFeature<TSimpleFeature>
+        private void assertFeatureWorld(FeatureWorld other)
         {
-#if DEBUG 
-            if (!World.FeatureWorld.Equals(feature.Resolver.FeatureWorld))
+            if (!World.FeatureWorld.Equals(other))
                 throw new ArgumentException(
-                    "FeatureWorld not matching! This is a serious exception. This should never ever happen. This exception will only be thrown in Debug mode. Please fix your programm. ");
-#endif
+                    "FeatureWorld not matching! This is a serious exception. This should never ever happen as FeatureWorld describes the features of a world. Setting different features will lead to undefined behavior");
+        }
+
+        public virtual void GenericFeatureUpdate<TSimpleFeature>(Coordinate coordinate, TSimpleFeature feature, bool set) where TSimpleFeature : class, ISimpleFeature<TSimpleFeature>
+        {
+            assertFeatureWorld(feature.Resolver.FeatureWorld);
             var tile = World[coordinate];
             if (set) {
                 feature.AddFeature(tile, true);
             } else {
                 
-                feature.AddFeature(tile, true);
+                feature.RemoveFeature(tile, true);
             }
+        }
 
-            return tile;
+        public virtual void CivilisationOwnershipUpdate(Coordinate coordinate, Civilization.Civilization civ)
+        {
+            assertFeatureWorld(civ.Register.Resolver.FeatureWorld);
+            var tile = World[coordinate];
+            civ.Register.Resolver.SetOwner(tile, civ, true);
+        }
+        public virtual void CivilisationVisionUpdate(Coordinate coordinate, Civilization.Civilization civ, Vision vision)
+        {
+            assertFeatureWorld(civ.Register.Resolver.FeatureWorld);
+            var tile = World[coordinate];
+            civ.Register.Resolver.SetVision(tile, civ, vision, true);
         }
     }
 }

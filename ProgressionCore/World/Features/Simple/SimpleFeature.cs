@@ -47,19 +47,19 @@ namespace Progression.Engine.Core.World.Features.Simple
             return tile[DataIdentifier] == _dataRepresentation;
         }
 
-        public void AddFeature(Tile tile, bool sync=false)
+        public void AddFeature(Tile tile, bool remoteUpdate=false)
         {
             if (!Resolver.ValidateData(tile, (T) this, true)) throw new InvalidOperationException();
             Console.WriteLine($"{Name} value={_dataRepresentation}");
             tile[DataIdentifier] = _dataRepresentation;
-            if (!sync)tile.InvokeTileUpdate((T) this, true);
+            if (!remoteUpdate)tile.InvokeTileUpdate((T) this, true);
         }
 
-        public void RemoveFeature(Tile tile, bool sync=false)
+        public void RemoveFeature(Tile tile, bool remoteUpdate=false)
         {
             if (!Resolver.ValidateData(tile, (T) this, true)) throw new InvalidOperationException();
             tile[DataIdentifier] = 0;
-            if (!sync)tile.InvokeTileUpdate((T) this, false);
+            if (!remoteUpdate)tile.InvokeTileUpdate((T) this, false);
         }
 
         IFeatureResolver IFeature.Resolver => Resolver;

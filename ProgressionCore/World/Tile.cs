@@ -51,7 +51,7 @@ namespace Progression.Engine.Core.World
 //
 //        public double CalcYield(YieldType type)
 //        {
-//            return type.Manager.CalcYield(type, this);
+//            return type.Register.CalcYield(type, this);
 //        }
 
         public void InvokeTileUpdate<TFeature>(TFeature feature, bool set)
@@ -59,6 +59,10 @@ namespace Progression.Engine.Core.World
         {
             World.ScheduleUpdate(new SimpleFeatureUpdate<TFeature>(Coordinate, feature, set));
         }
+
+        public bool OutOfBounds => Coordinate.X == ushort.MaxValue && Coordinate.Y == ushort.MaxValue;
+        
+
 
 
 

@@ -18,7 +18,7 @@ namespace Util
         private Mesh _mesh;
         private const int TileSize = StartUp.TileSize;
         
-        public BetterTileMap(string name, ISingleFeatureResolver resolver)
+        public BetterTileMap(string name, ISingleFeatureResolver resolver, params object[] components)
         {
             Resolver = resolver;
             GameObject = new GameObject(name);

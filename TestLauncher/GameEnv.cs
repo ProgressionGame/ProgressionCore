@@ -33,12 +33,12 @@ namespace TestLauncher
         public TerrainLandform WFeatureHills;
         public TerrainLandform WFeatureMountains;
         public TerrainLandform WFeatureHighMountains;
-        public CivilizationManager CivilizationManager;
+        public CivilizationRegister CivilizationRegister;
         public Civilization CivilizationRome;
         public Civilization CivilizationEgypt;
         public YieldManager YieldManager;
 
-        public CivilizationManager CivilisationManager => CivilizationManager;
+        public CivilizationRegister CivilisationRegister => CivilizationRegister;
         public FeatureWorld FeatureWorld;
 
         private void InitWorldContent()
@@ -54,7 +54,7 @@ namespace TestLauncher
             WFeatureLandform = new YieldModifyingSSFR<TerrainLandform>(WorldType.World, new Key(KeysRoot, "tl"), false, Terrain);
 
             //civs
-            CivilizationManager = new CivilizationManager(new Key(KeysRoot, "civs"), 4);
+            CivilizationRegister = new CivilizationRegister(new Key(KeysRoot, "civs"), 4, WorldType.Base, WorldType.World);
 
 
 
@@ -84,8 +84,8 @@ namespace TestLauncher
             WFeatureHighMountains = new TerrainLandform("high mountains", WFeatureLandform, YieldManager, Addition, new double[] {-2, 0, -1});
 
             //civs
-            CivilizationRome = new Civilization("Rome", CivilisationManager);
-            CivilizationEgypt = new Civilization("Egypt", CivilisationManager);
+            CivilizationRome = new Civilization("Rome", CivilisationRegister);
+            CivilizationEgypt = new Civilization("Egypt", CivilisationRegister);
 
 
 
@@ -98,7 +98,7 @@ namespace TestLauncher
             fw.Register(WFeatureBiome);
             fw.Register(WFeatureVegetation);
             fw.Register(WFeatureLandform);
-            fw.Register(CivilisationManager.Resolver);
+            fw.Register(CivilisationRegister.Resolver);
             fw.Lock();
             FeatureWorld = fw;
             
@@ -110,7 +110,7 @@ namespace TestLauncher
             ResourceManager.Instance.AddHook(WFeatureBiome, TerrainHook);
             ResourceManager.Instance.AddHook(WFeatureLandform, TerrainHook);
             ResourceManager.Instance.AddHook(WFeatureVegetation, TerrainHook);
-            ResourceManager.Instance.AddHook(CivilisationManager.Resolver, TerrainHook);
+            ResourceManager.Instance.AddHook(CivilisationRegister.Resolver, TerrainHook);
         }
         
         private static List<IKeyNameable> _texturedFeatures = new List<IKeyNameable>();

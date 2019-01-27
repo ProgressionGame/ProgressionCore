@@ -14,20 +14,22 @@ public class MouseHandler : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        Ray ray = Camera.main.ScreenPointToRay( Input.mousePosition );
-        RaycastHit hitInfo;
 		
-        if( GetComponent<Collider>().Raycast( ray, out hitInfo, Mathf.Infinity ) ) {
-            int x = Mathf.FloorToInt( hitInfo.point.x / StartUp.TileSize);
-            int y = Mathf.FloorToInt( hitInfo.point.y / StartUp.TileSize);
-            //Debug.Log ("Tile: " + x + ", " + z);
-        }
-        else {
-            // Hide selection cube?
-        }
 		
         if(Input.GetMouseButtonDown(0)) {
+            Ray ray = Camera.main.ScreenPointToRay( Input.mousePosition );
+            RaycastHit hitInfo;
             Debug.Log ("Click!");
+            
+            if( GetComponent<Collider>().Raycast( ray, out hitInfo, Mathf.Infinity ) ) {
+                int x = Mathf.FloorToInt( hitInfo.point.x / StartUp.TileSize);
+                int y = Mathf.FloorToInt( hitInfo.point.y / StartUp.TileSize);
+                //Debug.Log ("Tile: " + x + ", " + z);
+                Debug.Log ($"Clicked at tile x={x}. y={y}");
+            }
+            else {
+                Debug.Log ("clicked outside of mesh");
+            }
         }
     }
 }

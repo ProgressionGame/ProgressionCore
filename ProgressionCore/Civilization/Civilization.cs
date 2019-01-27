@@ -16,17 +16,17 @@ namespace Progression.Engine.Core.Civilization
         public IPuppetLevel PuppetLevel => _puppetLevel;
 
 
-        public Civilization(string name, CivilizationManager manager)
+        public Civilization(string name, CivilizationRegister register)
         {
             Name = name;
-            Manager = manager;
-            Key = new Key(manager.Key, name);
+            Register = register;
+            Key = new Key(register.Key, name);
             Index = -1; //this is done to avoid to make this civ not equal another civ with index 0
-            Index = Manager.FreeIndex;
-            Manager.AddCivilisation(this);
+            Index = Register.FreeIndex;
+            Register.AddCivilisation(this);
         }
 
-        IFeatureResolver IFeature.Resolver => Manager.Resolver;
+        IFeatureResolver IFeature.Resolver => Register.Resolver;
 
         public virtual void AddPuppet(Civilization civ, IPuppetLevel puppetLevel)
         {
@@ -46,24 +46,24 @@ namespace Progression.Engine.Core.Civilization
         public string Name { get; }
         public Key Key { get; }
         public int Index { get; }
-        public CivilizationManager Manager { get; }
+        public CivilizationRegister Register { get; }
 
 
         public Vision GetVision(Tile tile)
         {
-            return Manager.GetVision(tile, this);
+            return tile.World.CivilisationManager.GetVision(tile, this);
         }
 
-        public int GetLastMapUpdate(Tile tile) => Manager.GetLastMapUpdate(tile);
+        public int GetLastMapUpdate(Tile tile) => tile.World.CivilisationManager.GetLastMapUpdate(tile);
 
         public bool IsOwning(Tile tile)
         {
-            return Manager.GetOwnerId(tile) == Index;
+            return tile.World.CivilisationManager.Register.Resolver.GetOwnerId(tile) == Index;
         }
 
         public void Own(Tile tile)
         {
-            Manager.SetOwner(tile, this);
+            tile.World.CivilisationManager.SetOwner(tile, this);
         }
 
 
@@ -72,7 +72,7 @@ namespace Progression.Engine.Core.Civilization
 
         protected bool Equals(Civilization other)
         {
-            return Index!=-1 && Index == other.Index && Equals(Manager, other.Manager);
+            return Index!=-1 && Index == other.Index && Equals(Register, other.Register);
         }
 
         public override bool Equals(object obj)
@@ -87,6 +87,6 @@ namespace Progression.Engine.Core.Civilization
 
         #endregion
 
-        public byte WorldType => Manager.WorldTypePlayerId;
+        public byte WorldType => Register.Resolver.WorldTypePlayerId;
     }
 }

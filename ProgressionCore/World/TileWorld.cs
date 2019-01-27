@@ -1,4 +1,5 @@
 ﻿using System.Collections.Specialized;
+using Progression.Engine.Core.Civilization;
 using Progression.Engine.Core.World.Features.Base;
 using Progression.Engine.Core.World.Features.Yield;
 using Progression.Engine.Core.World.Threading;
@@ -9,23 +10,32 @@ namespace Progression.Engine.Core.World
     {
         public int Height { get; }
         public int Width { get; }
+        public bool WrapVertical { get; }
+        public bool WrapHorizontal { get; }
+        public WorldMode Mode { get; }
         public readonly FeatureWorld FeatureWorld;
         private readonly BitVector32[,,] _worldData;
         private ScheduleUpdate _updates;
         public readonly byte WorldType;
         public readonly IWorldHolder Holder;
+        public readonly CivilisationManager CivilisationManager;
+        public readonly Tile OutOfBounds;
 
 
-        public TileWorld(FeatureWorld features, int height, int width) 
-            : this(features, height, width, WorldHolder.BaseWorld) { }
 
-        public TileWorld(FeatureWorld features, int height, int width, IWorldHolder holder)
+        public TileWorld(FeatureWorld features, int height, int width, IWorldHolder holder, WorldMode mode,
+            CivilisationManager civilisationManager, bool wrapVertical, bool wrapHorizontal)
         {
             Height = height;
             Width = width;
             FeatureWorld = features;
             WorldType = holder.WorldType;
             Holder = holder;
+            Mode = mode;
+            CivilisationManager = civilisationManager;
+            WrapVertical = wrapVertical;
+            WrapHorizontal = wrapHorizontal;
+            OutOfBounds = new Tile(ushort.MaxValue, ushort.MaxValue,this);
             _worldData = new BitVector32[height, width, features.GetTileSize(WorldType)];
         }
 

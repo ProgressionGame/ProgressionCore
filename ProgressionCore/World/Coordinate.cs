@@ -1,6 +1,8 @@
-﻿namespace Progression.Engine.Core.World
+﻿using System;
+
+namespace Progression.Engine.Core.World
 {
-    public struct Coordinate
+    public struct Coordinate : IEquatable<Coordinate>
     {
         public readonly ushort X;
         public readonly ushort Y;
@@ -42,6 +44,6 @@
         {
             return X==t.X&&Y==t.Y;
         }
-        #endregion  
+        #endregion
     }
 }

@@ -100,7 +100,7 @@ namespace Util
 
             int fontY = fontMaxY - cIndex / fontMaxY - 1;
             var colors = font.GetPixels(fontX * FontSize, fontY * FontSize, FontSize, FontSize);
-            Debug.Log($"x={x} y={y} colors.Length={colors.Length} to.width={to.width} to.height={to.height} {fontX} {fontY} {c}");
+            //Debug.Log($"x={x} y={y} colors.Length={colors.Length} to.width={to.width} to.height={to.height} {fontX} {fontY} {c}");
             for (int i = 0; i < fontMaxY; i++) {
                 for (int j = 0; j < fontMaxX; j++) {
                     int index = i * fontMaxX + j;

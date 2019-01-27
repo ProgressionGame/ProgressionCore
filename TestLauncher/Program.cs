@@ -37,7 +37,7 @@ namespace TestLauncher
             env.Init();
             env.Load();
             Console.WriteLine("Done");
-            new Civilization("Kappaland", env.CivilisationManager);
+            new Civilization("Kappaland", env.CivilisationRegister);
             
             
             //world creation
@@ -200,7 +200,7 @@ namespace TestLauncher
             var highMountains = new TerrainLandform("high mountains", resTl, ym, Addition, new double[] {-2, 0, -1});
 
             //civs
-            var civMan = new CivilizationManager(new Key(root, "civs"), 4);
+            var civMan = new CivilizationRegister(new Key(root, "civs"), 4);
             var rome = new Civilization("Rome", civMan);
             var egypt = new Civilization("Egypt", civMan);
 

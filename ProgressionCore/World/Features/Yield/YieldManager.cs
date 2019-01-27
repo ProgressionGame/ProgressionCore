@@ -18,7 +18,7 @@ namespace Progression.Engine.Core.World.Features.Yield
         public int Register(YieldType type)
         {
             if (Locked)
-                throw new YieldManagerLockedException("Yield manager locked. Cannot add new yield types during game.");
+                throw new YieldManagerLockedException("Yield register locked. Cannot add new yield types during game.");
             _types.Add(type);
             return _types.Count-1; 
         }

@@ -17,8 +17,8 @@ namespace Progression.Engine.Core.World.Features.Simple
     int DataRepresentation { get; set; }
 
     bool HasFeature(Tile tile);
-    void AddFeature(Tile tile, bool sync = false);
-    void RemoveFeature(Tile tile, bool sync = false);
+    void AddFeature(Tile tile, bool remoteUpdate = false);
+    void RemoveFeature(Tile tile, bool remoteUpdate = false);
 
     DataIdentifier DataIdentifier { get; set; }
     //StaticFeatureResolver<T> Resolver { get; }

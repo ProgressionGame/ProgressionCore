@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Progression.Engine.Core</RootNamespace>
     <AssemblyName>ProgressionCore</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -79,9 +79,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="City\City.cs" />
+    <Compile Include="City\CityFeature.cs" />
+    <Compile Include="City\CityFeatureResolver.cs" />
+    <Compile Include="City\CityManager.cs" />
+    <Compile Include="City\Updates\AddCityUpdate.cs" />
+    <Compile Include="City\Updates\CityOwnerUpdate.cs" />
+    <Compile Include="City\Updates\CityUpdateBase.cs" />
+    <Compile Include="City\Updates\CityNameUpdate.cs" />
+    <Compile Include="Civilization\CivilisationManager.cs" />
     <Compile Include="Civilization\Civilization.cs" />
     <Compile Include="Civilization\CivilizationFeatureResolver.cs" />
-    <Compile Include="Civilization\CivilizationManager.cs" />
+    <Compile Include="Civilization\CivilizationRegister.cs" />
     <Compile Include="Civilization\IPuppetLevel.cs" />
     <Compile Include="Civilization\PuppetLevel.cs" />
     <Compile Include="Civilization\Vision.cs" />
@@ -122,19 +130,29 @@
     <Compile Include="World\Features\Yield\YieldModifyingSMFR.cs" />
     <Compile Include="World\Features\Yield\YieldModifyingSSFR.cs" />
     <Compile Include="World\Features\Yield\YieldType.cs" />
+    <Compile Include="World\GridDirection.cs" />
+    <Compile Include="World\HexagonGrid.cs" />
     <Compile Include="World\IWorldHolder.cs" />
+    <Compile Include="World\Threading\CivilisationVisionUpdate.cs" />
+    <Compile Include="World\Threading\CivilisationOwnershipUpdate.cs" />
     <Compile Include="World\Threading\SimpleFeatureUpdate.cs" />
+    <Compile Include="World\Threading\TileUpdateBase.cs" />
     <Compile Include="World\Threading\UpdateManager.cs" />
     <Compile Include="World\Threading\WorldUpdateBase.cs" />
     <Compile Include="World\Threading\WorldInterface.cs" />
     <Compile Include="World\Tile.cs" />
     <Compile Include="World\TileWorld.cs" />
+    <Compile Include="World\VisibilityManager.cs" />
+    <Compile Include="World\WorldMode.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ProgressionUtil\ProgressionUtil.csproj">
       <Project>{bf8e1e3f-8e30-4496-b69c-2e07036c4e67}</Project>
       <Name>ProgressionUtil</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="World\Update" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -58,6 +58,9 @@ public class StartUp : MonoBehaviour
         _biomeTileMap = new BetterTileMap("Biome", GameEnv.WFeatureBiome);
         _landformTileMap = new BetterTileMap("Landform", GameEnv.WFeatureLandform);
         //var vegetationTileMap = new BetterTileMap("Vegetation", GameEnv.WFeatureVegetation);
+
+        _biomeTileMap.GameObject.AddComponent<MeshCollider>();
+        _biomeTileMap.GameObject.AddComponent<MouseHandler>();
         
         _wui = new WorldUpdateInterface(World, GameEnv.WFeatureBiome, GameEnv.WFeatureLandform, _biomeTileMap, _landformTileMap);
         World.RegisterUpdate(_wui.ScheduleUpdate);
@@ -69,7 +72,7 @@ public class StartUp : MonoBehaviour
     void Update()
     {
         if (!hasInit) {
-            Debug.Log("skipped update because not initiased");
+            Debug.Log("skipped update because not initialised");
             return;
         }
         _wui.Execute();
@@ -78,7 +81,7 @@ public class StartUp : MonoBehaviour
         i = 0;
         ISimpleFeature[] allFeatures = {
             GameEnv.WFeatureDesert, GameEnv.WFeatureHighMountains, GameEnv.WFeatureHills, GameEnv.WFeatureIce, GameEnv.WFeatureMountains, GameEnv.WFeaturePlains,
-            GameEnv.WFeatureTundra/*, GameEnv.WFeatureFlatland, GameEnv.WFeatureGlassland*/
+            GameEnv.WFeatureTundra/*, GameEnv.WFeatureFlatland, GameEnv.WFeatureGrassland*/
         };
         var rnd = new Random();
         int y = rnd.Next(World.Width);
