@@ -13,6 +13,7 @@ using static Progression.Engine.Core.World.Features.Yield.TileYieldModifierPrior
 using System.Threading;
 using Progression.Engine.Core.City;
 using Progression.Engine.Core.Civilization;
+using Progression.Engine.Core.World.ChangeState;
 using Progression.Engine.Core.World.Features.Simple;
 using Progression.Util.BinPacking;
 using Progression.Engine.Core.World.Features.Terrain;
@@ -52,6 +53,9 @@ namespace TestLauncher
             var tile3_3M = worldMaster[3, 3];
             var tile3_3S = worldSlave[3, 3];
 
+            
+            
+            Console.WriteLine("Testing sync between master and slave");
             Console.WriteLine(env.WFeatureBiome.GetFeature(tile3_3M).Name);
             env.WFeatureDesert.AddFeature(tile3_3M);
             Console.WriteLine(env.WFeatureBiome.GetFeature(tile3_3M).Name);
@@ -61,6 +65,30 @@ namespace TestLauncher
             Console.WriteLine(env.WFeatureLandform.GetFeature(tile3_3S).Name);
             
             
+            Console.WriteLine("Testing changestate");
+            var worldState = new RectChangeState(worldMaster, new Rect(0,0, 1, 1), env.WFeatureBiome);
+            
+            var tile0_0M = worldMaster[0, 0];
+            var tile0_0C = worldState[0, 0];
+            var tile1_1C = worldState[1, 1];
+            env.WFeatureDesert.AddFeature(tile0_0C);
+            Console.WriteLine($"Master 0,0: {env.WFeatureBiome.GetFeature(tile0_0M).Name}");
+            Console.WriteLine($"Change 0,0: {env.WFeatureBiome.GetFeature(tile0_0C).Name}");
+            try {
+                env.WFeatureHighMountains.AddFeature(tile0_0C);
+                Console.WriteLine("Setting within bound of ChangeState of wrong feature type succeeded, this should not happen");
+            } catch (Exception e) {
+                Console.WriteLine($"Setting feature not applicable to ChangeState resulted in {e.GetType()}: {e.Message}");
+            }
+            try {
+                env.WFeatureDesert.AddFeature(tile1_1C);
+                Console.WriteLine("Setting outside bound of ChangeState succeeded, this should not happen");
+            } catch (Exception e) {
+                Console.WriteLine($"Setting outside bound of ChangeState resulted in {e.GetType()}: {e.Message}");
+            }
+            
+            
+            Console.WriteLine("Testing cities");
             var romeM = new City(tile3_3M, "Rome", env.CivilizationRome);
             env.CityManager.AddCity(romeM,true);
 
