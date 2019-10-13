@@ -94,6 +94,10 @@
     <Compile Include="Civilization\PuppetLevel.cs" />
     <Compile Include="Civilization\Vision.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="World\ChangeState\ChangeStateBase.cs" />
+    <Compile Include="World\ChangeState\IChangeState.cs" />
+    <Compile Include="World\ChangeState\RectChangeState.cs" />
+    <Compile Include="World\ChangeState\TransformableChangeStateBase.cs" />
     <Compile Include="World\Coordinate.cs" />
     <Compile Include="World\DataLocation.cs" />
     <Compile Include="World\Features\Base\DataIdentifier.cs" />
@@ -132,6 +136,7 @@
     <Compile Include="World\Features\Yield\YieldType.cs" />
     <Compile Include="World\GridDirection.cs" />
     <Compile Include="World\HexagonGrid.cs" />
+    <Compile Include="World\ITileWorld.cs" />
     <Compile Include="World\IWorldHolder.cs" />
     <Compile Include="World\Manager\IWMan.cs" />
     <Compile Include="World\Manager\WManManager.cs" />
@@ -144,6 +149,7 @@
     <Compile Include="World\Threading\WorldInterface.cs" />
     <Compile Include="World\Tile.cs" />
     <Compile Include="World\TileWorld.cs" />
+    <Compile Include="World\TileWorldBase.cs" />
     <Compile Include="World\VisibilityManager.cs" />
     <Compile Include="World\WorldMode.cs" />
   </ItemGroup>

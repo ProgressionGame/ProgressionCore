@@ -6,20 +6,20 @@ using Progression.Engine.Core.World.Threading;
 
 namespace Progression.Engine.Core.World
 {
-    public class TileWorld
+
+    public class TileWorld : TileWorldBase
     {
-        public int Height { get; }
-        public int Width { get; }
-        public bool WrapVertical { get; }
-        public bool WrapHorizontal { get; }
-        public WorldMode Mode { get; }
+        public override int Height { get; }
+        public override int Width { get; }
+        public override bool WrapVertical { get; }
+        public override bool WrapHorizontal { get; }
+        public override WorldMode Mode { get; }
+        public override byte WorldType { get; }
+        public override IWorldHolder Holder { get; }
+        public override CivilizationManager CivilizationManager { get; }
         public readonly FeatureWorld FeatureWorld;
         private readonly BitVector32[,,] _worldData;
         private ScheduleUpdate _updates;
-        public readonly byte WorldType;
-        public readonly IWorldHolder Holder;
-        public readonly CivilizationManager CivilizationManager;
-        public readonly Tile OutOfBounds;
 
 
 
@@ -35,65 +35,14 @@ namespace Progression.Engine.Core.World
             CivilizationManager = civilizationManager;
             WrapVertical = wrapVertical;
             WrapHorizontal = wrapHorizontal;
-            OutOfBounds = new Tile(ushort.MaxValue, ushort.MaxValue,this);
             _worldData = new BitVector32[height, width, features.GetTileSize(WorldType)];
         }
 
-        public int this[Coordinate c, DataIdentifier identifier] {
+        public override int this[Coordinate c, DataIdentifier identifier] {
             get => _worldData[c.X, c.Y, identifier[WorldType].Index][identifier[WorldType].Section];
             set => _worldData[c.X, c.Y, identifier[WorldType].Index][identifier[WorldType].Section] = value;
         }
 
-//        public bool this[int x, int y, IFeature feature] {
-//            get => feature.HasFeature(this[x, y]);
-//            set {
-//                if (value) feature.AddFeature(this[x, y]);
-//                else feature.RemoveFeature(this[x, y]);
-//            }
-//        }
-//
-//        public bool this[Coordinate coord, IFeature feature] {
-//            get => feature.HasFeature(this[coord]);
-//            set {
-//                if (value) feature.AddFeature(this[coord]);
-//                else feature.RemoveFeature(this[coord]);
-//            }
-//        }
-
-
-        public Tile this[ushort x, ushort y] => GetTile(x, y);
-        public Tile this[int x, int y] => GetTile(x, y);
-        public Tile this[Coordinate coord] => GetTile(coord);
-
-        public Tile GetTile(ushort x, ushort y)
-        {
-            return new Tile(x, y, this);
-        }
-
-        public Tile GetTile(int x, int y)
-        {
-            return new Tile((ushort) x, (ushort) y, this);
-        }
-
-        public Tile GetTile(Coordinate coord)
-        {
-            return new Tile(coord, this);
-        }
-
-//        public bool HasFeature<T>(int x, int y, T feature) where T : class, IFeature<T>
-//        {
-//            return feature.HasFeature(GetTile(x, y));
-//        }
-//
-//        public void AddFeature<T>(int x, int y, T feature) where T : class, IFeature<T>
-//        {
-//            feature.AddFeature(GetTile(x, y));
-//        }
-//
-//        public void RemoveFeature<T>(int x, int y, T feature) where T : class, IFeature<T>
-//        {
-//            feature.RemoveFeature(GetTile(x, y));
-//        }
 
         public double CalcYield(int x, int y, YieldType type)
         {
@@ -109,9 +58,16 @@ namespace Progression.Engine.Core.World
             }
         }
 
-        public void ScheduleUpdate(WorldUpdateBase update)
+        public override void ScheduleUpdate(WorldUpdateBase update)
         {
             _updates?.Invoke(update);
+        }
+        
+        
+
+        public override Coordinate WrapCoordinate(Coordinate coord)
+        {
+            throw new System.NotImplementedException();
         }
     }
 

@@ -9,15 +9,15 @@ namespace Progression.Engine.Core.World
     {
         public readonly Coordinate Coordinate;
         
-        public readonly TileWorld World;
+        public readonly ITileWorld World;
 
-        public Tile(Coordinate coord, TileWorld world)
+        public Tile(Coordinate coord, ITileWorld world)
         {
             Coordinate = coord;
             World = world;
         }
 
-        public Tile(ushort x, ushort y, TileWorld world) : this(new Coordinate(x, y), world) {}
+        public Tile(ushort x, ushort y, ITileWorld world) : this(new Coordinate(x, y), world) {}
 
         public int this[DataIdentifier identifier] {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
