@@ -1,3 +1,4 @@
+using System;
 using Progression.Engine.Core.World;
 using Progression.Engine.Core.World.Threading;
 using Progression.Util;
@@ -18,8 +19,7 @@ namespace Progression.Engine.Core.City.Updates
         public bool JustFounded { get; }
         public override void Execute(WorldInterface @on)
         {
-            on.World.
-            on.World
+            throw new NotImplementedException();
         }
     }
 }
