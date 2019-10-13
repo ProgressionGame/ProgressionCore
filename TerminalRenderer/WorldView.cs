@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Progression.Engine.Core.World;
+using Progression.Util;
 
 namespace Progression.TerminalRenderer
 {

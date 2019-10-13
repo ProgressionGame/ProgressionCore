@@ -52,6 +52,7 @@
     <Compile Include="Util\BinPacking\Bin.cs" />
     <Compile Include="Util\BinPacking\BinPackingSolvers.cs" />
     <Compile Include="Util\BinPacking\Packet.cs" />
+    <Compile Include="Util\Coordinate.cs" />
     <Compile Include="Util\Extension\ExtensionInspectorHelper.cs" />
     <Compile Include="Util\Extension\ExtensionManager.cs" />
     <Compile Include="Util\Extension\ExtensionValidator.cs" />

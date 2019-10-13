@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Progression.Engine.Core.World
+namespace Progression.Util
 {
     public struct Coordinate : IEquatable<Coordinate>
     {

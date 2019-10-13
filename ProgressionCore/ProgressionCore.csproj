@@ -98,7 +98,6 @@
     <Compile Include="World\ChangeState\IChangeState.cs" />
     <Compile Include="World\ChangeState\RectChangeState.cs" />
     <Compile Include="World\ChangeState\TransformableChangeStateBase.cs" />
-    <Compile Include="World\Coordinate.cs" />
     <Compile Include="World\DataLocation.cs" />
     <Compile Include="World\Features\Base\DataIdentifier.cs" />
     <Compile Include="World\Features\Base\FeatureWorld.cs" />

@@ -2,22 +2,20 @@ namespace Progression.Util
 {
     public struct Rect
     {
-        public Rect(ushort left, ushort top, ushort width, ushort height)
+        public Rect(Coordinate @base, ushort width, ushort height)
         {
-            Left = left;
-            Top = top;
+            Base = @base;
             Width = width;
             Height = height;
         }
 
-        public ushort Left { get; }
-        public ushort Top { get; }
+        public Coordinate Base { get; }
         public ushort Width { get; }
         public ushort Height { get; }
 
         public bool IsInside(ushort x, ushort y)
         {
-            return x >= Top && x < Top + Height && y >= Left && y < Left + Width;
+            return x >= Base.X && x < Base.X + Height && y >= Base.Y && y < Base.Y + Width;
         }
     }
 }

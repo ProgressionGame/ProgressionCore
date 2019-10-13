@@ -18,7 +18,7 @@ namespace Progression.Engine.Core.World.ChangeState
 
         protected override Coordinate transform(Coordinate coord)
         {
-            return new Coordinate((ushort) (coord.X - AffectedRect.Top), (ushort) (coord.Y - AffectedRect.Left));
+            return new Coordinate((ushort) (coord.X - AffectedRect.Base.X), (ushort) (coord.Y - AffectedRect.Base.Y));
         }
 
         protected override bool IsContained(Coordinate coord)

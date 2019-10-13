@@ -1,3 +1,5 @@
+using Progression.Util;
+
 namespace Progression.Engine.Core.World.Threading
 {
     public class CivilisationOwnershipUpdate : TileUpdateBase
