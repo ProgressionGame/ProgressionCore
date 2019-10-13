@@ -11,13 +11,17 @@ namespace Progression.Engine.Core.World.ChangeState
 
         protected abstract Coordinate transform(Coordinate coord);
         protected abstract bool IsContained(Coordinate coord, DataIdentifier identifier);
+        protected abstract bool IsChanged(Coordinate transCoord, DataIdentifier identifier);
         protected abstract int getChange(Coordinate transCoord);
-        protected abstract void setChange(Coordinate transCoord, int v);
+        protected abstract void setChange(Coordinate t, int v);
 
         
         
         public override int this[Coordinate c, DataIdentifier i] {
-            get => IsContained(c, i) ? getChange(transform(c)) : Parent[c, i];
+            get {
+                Coordinate t;
+                return IsContained(c, i) && IsChanged(t= transform(c), i) ? getChange(t) : Parent[c, i]; }
+            
             set {
                 if (IsContained(c, i)) {
                     setChange(transform(c), value);
