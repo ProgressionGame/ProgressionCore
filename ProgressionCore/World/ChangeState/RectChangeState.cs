@@ -6,13 +6,15 @@ namespace Progression.Engine.Core.World.ChangeState
 {
     public class RectChangeState : TransformableChangeStateBase
     {
-        public RectChangeState(ITileWorld parent, Rect affectedRect) : base(parent)
+        public RectChangeState(ITileWorld parent, Rect affectedRect, IFeatureResolver applicableFeatures) : base(parent)
         {
             AffectedRect = affectedRect;
+            ApplicableFeatures = applicableFeatures;
             _data = new int[affectedRect.Height,affectedRect.Width];
         }
 
         public Rect AffectedRect { get; }
+        public IFeatureResolver ApplicableFeatures { get; }
         private int[,] _data;
 
 
@@ -21,9 +23,9 @@ namespace Progression.Engine.Core.World.ChangeState
             return new Coordinate((ushort) (coord.X - AffectedRect.Base.X), (ushort) (coord.Y - AffectedRect.Base.Y));
         }
 
-        protected override bool IsContained(Coordinate coord)
+        protected override bool IsContained(Coordinate coord, DataIdentifier identifier)
         {
-            return AffectedRect.IsInside(coord.X, coord.Y);
+            return identifier.Resolver == ApplicableFeatures && AffectedRect.IsInside(coord.X, coord.Y);
         }
 
         protected override int getChange(Coordinate transCoord)

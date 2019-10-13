@@ -35,7 +35,7 @@ namespace Progression.Engine.Core.World.ChangeState
 
         public override void ScheduleUpdate(WorldUpdateBase update)
         {
-            throw new System.NotImplementedException();
+            //do not actually schedule update as this is to be done at a later point on time. however TODO: updates still have to be stored
         }
     }
 }
