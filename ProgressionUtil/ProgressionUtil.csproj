@@ -70,6 +70,7 @@
     <Compile Include="Util\Keys\Key.cs" />
     <Compile Include="Util\Keys\KeyFlavour.cs" />
     <Compile Include="Util\Keys\RootKey.cs" />
+    <Compile Include="Util\Rect.cs" />
     <Compile Include="Util\ReleaseType.cs" />
     <Compile Include="Util\SingleItemEnumerator.cs" />
     <Compile Include="Util\Threading\ThreadingInterface.cs" />
