@@ -2,9 +2,9 @@ using Progression.Engine.Core.World;
 
 namespace Progression.Engine.Core.Civilization
 {
-    public class CivilisationManager
+    public class CivilizationManager
     {
-        public CivilisationManager(CivilizationRegister register)
+        public CivilizationManager(CivilizationRegister register)
         {
             Register = register;
         }

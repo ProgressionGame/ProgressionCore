@@ -90,7 +90,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PuppetLevelAddition1.cs" />
     <Compile Include="PuppetLevelAddition2.cs" />
-    <Compile Include="WorldInterfaceImpl.cs" />
+    <Compile Include="SyncWorldInterface.cs" />
     <Compile Include="YieldManagerImpl.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

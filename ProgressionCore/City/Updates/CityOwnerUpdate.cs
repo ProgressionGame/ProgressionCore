@@ -1,6 +1,6 @@
 using Progression.Engine.Core.World.Threading;
 
-namespace Progression.Engine.Core.City
+namespace Progression.Engine.Core.City.Updates
 {
     public class CityOwnerUpdate : CityUpdateBase
     {

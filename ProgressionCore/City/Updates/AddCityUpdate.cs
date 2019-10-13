@@ -1,7 +1,7 @@
 using Progression.Engine.Core.World;
 using Progression.Engine.Core.World.Threading;
 
-namespace Progression.Engine.Core.City
+namespace Progression.Engine.Core.City.Updates
 {
     public class AddCityUpdate : TileUpdateBase
     {
@@ -17,7 +17,8 @@ namespace Progression.Engine.Core.City
         public bool JustFounded { get; }
         public override void Execute(WorldInterface @on)
         {
-            throw new System.NotImplementedException();
+            on.World.
+            on.World
         }
     }
 }

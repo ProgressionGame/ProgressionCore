@@ -63,7 +63,8 @@ namespace Progression.Engine.Core.City
 
         public void AddCity(City city, bool remoteUpdate = false)
         {
-            
+            var tile = city.Tile;
+            tile[DataIdentifier] = 1;
         }
     }
 }

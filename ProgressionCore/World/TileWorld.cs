@@ -18,13 +18,13 @@ namespace Progression.Engine.Core.World
         private ScheduleUpdate _updates;
         public readonly byte WorldType;
         public readonly IWorldHolder Holder;
-        public readonly CivilisationManager CivilisationManager;
+        public readonly CivilizationManager CivilizationManager;
         public readonly Tile OutOfBounds;
 
 
 
         public TileWorld(FeatureWorld features, int height, int width, IWorldHolder holder, WorldMode mode,
-            CivilisationManager civilisationManager, bool wrapVertical, bool wrapHorizontal)
+            CivilizationManager civilizationManager, bool wrapVertical, bool wrapHorizontal)
         {
             Height = height;
             Width = width;
@@ -32,7 +32,7 @@ namespace Progression.Engine.Core.World
             WorldType = holder.WorldType;
             Holder = holder;
             Mode = mode;
-            CivilisationManager = civilisationManager;
+            CivilizationManager = civilizationManager;
             WrapVertical = wrapVertical;
             WrapHorizontal = wrapHorizontal;
             OutOfBounds = new Tile(ushort.MaxValue, ushort.MaxValue,this);

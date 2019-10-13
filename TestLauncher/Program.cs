@@ -11,6 +11,7 @@ using Progression.Engine.Core.World.Features.Yield;
 using static Progression.Engine.Core.World.Features.Yield.YieldModifierType;
 using static Progression.Engine.Core.World.Features.Yield.TileYieldModifierPriority;
 using System.Threading;
+using Progression.Engine.Core.City;
 using Progression.Engine.Core.Civilization;
 using Progression.Engine.Core.World.Features.Simple;
 using Progression.Util.BinPacking;
@@ -41,16 +42,36 @@ namespace TestLauncher
             
             
             //world creation
-            var world = new TileWorld(env.FeatureWorld, 5, 5);
+            var worldMaster = new TileWorld(env.FeatureWorld, 5, 5, WorldHolder.BaseWorld, WorldMode.Master, env.CivilizationManager, true, true);
+            var worldSlave = new TileWorld(env.FeatureWorld, 5, 5, WorldHolder.BaseWorld, WorldMode.Slave, env.CivilizationManager, true, true);
+            var syncer = new SyncWorldInterface(worldSlave);
+            worldMaster.RegisterUpdate(syncer.ScheduleUpdate);
 
+            Console.WriteLine("Test start");
             // ReSharper disable once InconsistentNaming
-            var tile3_3 = world[3, 3];
+            var tile3_3M = worldMaster[3, 3];
+            var tile3_3S = worldSlave[3, 3];
 
-            Console.WriteLine(env.WFeatureBiome.GetFeature(tile3_3).Name);
-            env.WFeatureDesert.AddFeature(tile3_3);
-            Console.WriteLine(env.WFeatureBiome.GetFeature(tile3_3).Name);
-            env.WFeatureHighMountains.AddFeature(tile3_3);
-            Console.WriteLine(env.WFeatureBiome.GetFeature(tile3_3).Name);
+            Console.WriteLine(env.WFeatureBiome.GetFeature(tile3_3M).Name);
+            env.WFeatureDesert.AddFeature(tile3_3M);
+            Console.WriteLine(env.WFeatureBiome.GetFeature(tile3_3M).Name);
+            Console.WriteLine(env.WFeatureBiome.GetFeature(tile3_3S).Name);
+            env.WFeatureHighMountains.AddFeature(tile3_3M);
+            Console.WriteLine(env.WFeatureLandform.GetFeature(tile3_3M).Name);
+            Console.WriteLine(env.WFeatureLandform.GetFeature(tile3_3S).Name);
+            
+            
+            var romeM = new City(tile3_3M, "Rome", env.CivilizationRome);
+            env.CityManager.AddCity(romeM,true);
+
+            var romeS = env.CityManager.GetCity(tile3_3S);
+            Console.WriteLine(romeS.Name);
+
+            romeM.SetName("Neo Roma");
+            Console.WriteLine(romeS.Name);
+
+
+
         }
         
 
@@ -173,7 +194,7 @@ namespace TestLauncher
             }
         }
 
-        private static void TestWorld()
+        /*private static void TestWorld()
         {
             //game data
             var root = new RootKey("root");
@@ -338,7 +359,7 @@ namespace TestLauncher
             Console.WriteLine(mountains.HasFeature(tile3_3));
 
             Console.ReadKey();
-        }
+        }*/
 
 
         private static void TestPuppetLevel()

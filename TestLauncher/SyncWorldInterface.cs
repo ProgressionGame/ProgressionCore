@@ -4,13 +4,18 @@ using Progression.Engine.Core.World.Threading;
 
 namespace TestLauncher
 {
-    public class WorldInterfaceImpl : WorldInterface
+    public class SyncWorldInterface : WorldInterface
     {
-        public WorldInterfaceImpl(TileWorld world) : base(world) { }
+        public SyncWorldInterface(TileWorld world) : base(world) { }
         protected override bool ThreadWaiting => false;
         protected override void Notify()
         {
             throw new NotImplementedException();
+        }
+
+        public override void ScheduleUpdate(WorldUpdateBase update)
+        {
+            update.Execute(this);
         }
 
 //        public override void GenericFeatureUpdate<TFeature, TResolver>(Coordinate coord, TResolver resolver, TFeature feature, int newValue,

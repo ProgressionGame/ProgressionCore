@@ -51,19 +51,19 @@ namespace Progression.Engine.Core.Civilization
 
         public Vision GetVision(Tile tile)
         {
-            return tile.World.CivilisationManager.GetVision(tile, this);
+            return tile.World.CivilizationManager.GetVision(tile, this);
         }
 
-        public int GetLastMapUpdate(Tile tile) => tile.World.CivilisationManager.GetLastMapUpdate(tile);
+        public int GetLastMapUpdate(Tile tile) => tile.World.CivilizationManager.GetLastMapUpdate(tile);
 
         public bool IsOwning(Tile tile)
         {
-            return tile.World.CivilisationManager.Register.Resolver.GetOwnerId(tile) == Index;
+            return tile.World.CivilizationManager.Register.Resolver.GetOwnerId(tile) == Index;
         }
 
         public void Own(Tile tile)
         {
-            tile.World.CivilisationManager.SetOwner(tile, this);
+            tile.World.CivilizationManager.SetOwner(tile, this);
         }
 
 

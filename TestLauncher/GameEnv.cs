@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Progression.Engine.Core.City;
 using Progression.Engine.Core.Civilization;
 using Progression.Engine.Core.World.Features.Base;
 using Progression.Engine.Core.World.Features.Terrain;
@@ -34,9 +35,11 @@ namespace TestLauncher
         public TerrainLandform WFeatureMountains;
         public TerrainLandform WFeatureHighMountains;
         public CivilizationRegister CivilizationRegister;
+        public CivilizationManager CivilizationManager;
         public Civilization CivilizationRome;
         public Civilization CivilizationEgypt;
         public YieldManager YieldManager;
+        public CityManager CityManager;
 
         public CivilizationRegister CivilisationRegister => CivilizationRegister;
         public FeatureWorld FeatureWorld;
@@ -55,6 +58,10 @@ namespace TestLauncher
 
             //civs
             CivilizationRegister = new CivilizationRegister(new Key(KeysRoot, "civs"), 4, WorldType.Base, WorldType.World);
+            CivilizationManager = new CivilizationManager(CivilizationRegister);
+            
+            //city
+            CityManager = new CityManager(new CityFeatureResolver(WorldType.World, new Key(KeysRoot, "city")));
 
 
 
@@ -99,6 +106,7 @@ namespace TestLauncher
             fw.Register(WFeatureVegetation);
             fw.Register(WFeatureLandform);
             fw.Register(CivilisationRegister.Resolver);
+            fw.Register(CityManager.Resolver);
             fw.Lock();
             FeatureWorld = fw;
             

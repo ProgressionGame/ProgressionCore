@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Progression.Engine.Core.City.Updates;
 using Progression.Engine.Core.World;
 using Progression.Util.Keys;
 
@@ -24,7 +25,7 @@ namespace Progression.Engine.Core.City
         
         public City GetCity(Tile tile)
         {
-            if (_cities.TryGetValue(tile.Coordinate, out var result)) throw new ArgumentException("No city on this tile");
+            if (!_cities.TryGetValue(tile.Coordinate, out var result)) throw new ArgumentException("No city on this tile");
             return result;
         }
 
@@ -32,6 +33,7 @@ namespace Progression.Engine.Core.City
         {
             if (HasCity(city.Tile)) throw new ArgumentException("There is already a city");
             _cities.Add(city.Tile.Coordinate, city);
+            Resolver.AddCity(city, remoteUpdate);
             if (!remoteUpdate) city.Tile.World.ScheduleUpdate(new AddCityUpdate(city.Tile.Coordinate, city.Name, city.Owner, founded));
         }
     }

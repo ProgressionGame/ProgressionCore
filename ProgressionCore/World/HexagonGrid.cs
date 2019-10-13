@@ -29,10 +29,11 @@ namespace Progression.Engine.Core.World
 
             var t1Off = width - t2 / 2;
             
-            s1 = (s1 + t1Off)%width;
-            var r1 = 
-                //TODO: delete, no conversation is probably best. does only really matter for renderer and out of bounds everyway
-
+            //s1 = (s1 + t1Off)%width;
+            //var r1 = 
+            //TODO: delete, no conversation is probably best. does only really matter for renderer and out of bounds everyway
+            //NOT IMPEMENTED
+            return tile;
         } 
 
         public float Distance() => 1;

@@ -12,7 +12,7 @@ namespace Progression.Util.Threading
         protected abstract bool ThreadWaiting { get; }
 
 
-        public void ScheduleUpdate(TUpdate update)
+        public virtual void ScheduleUpdate(TUpdate update)
         {
             UpdatesQueue.Enqueue(update);
             if (ThreadWaiting) Notify();

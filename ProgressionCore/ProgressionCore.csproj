@@ -86,7 +86,7 @@
     <Compile Include="City\Updates\CityOwnerUpdate.cs" />
     <Compile Include="City\Updates\CityUpdateBase.cs" />
     <Compile Include="City\Updates\CityNameUpdate.cs" />
-    <Compile Include="Civilization\CivilisationManager.cs" />
+    <Compile Include="Civilization\CivilizationManager.cs" />
     <Compile Include="Civilization\Civilization.cs" />
     <Compile Include="Civilization\CivilizationFeatureResolver.cs" />
     <Compile Include="Civilization\CivilizationRegister.cs" />
@@ -133,6 +133,8 @@
     <Compile Include="World\GridDirection.cs" />
     <Compile Include="World\HexagonGrid.cs" />
     <Compile Include="World\IWorldHolder.cs" />
+    <Compile Include="World\Manager\IWMan.cs" />
+    <Compile Include="World\Manager\WManManager.cs" />
     <Compile Include="World\Threading\CivilisationVisionUpdate.cs" />
     <Compile Include="World\Threading\CivilisationOwnershipUpdate.cs" />
     <Compile Include="World\Threading\SimpleFeatureUpdate.cs" />
