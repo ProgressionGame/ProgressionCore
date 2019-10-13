@@ -9,6 +9,10 @@ namespace Progression.Util
             Height = height;
         }
 
+        public Rect(ushort baseX, ushort baseY, ushort width, ushort height) : this(new Coordinate(baseX, baseY), width, height)
+        {
+        }
+        
         public Coordinate Base { get; }
         public ushort Width { get; }
         public ushort Height { get; }
